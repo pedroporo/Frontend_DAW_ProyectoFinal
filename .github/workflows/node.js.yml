@@ -1,0 +1,78 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Deploy web
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Construir la app
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 21.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the project
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci --progress=false
+    - run: npm run build --if-present
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+          name: Build
+          path: dist
+          retention-days: 7
+  test:
+    name: Test de la app
+    runs-on: ubuntu-latest
+    needs: [build]
+    strategy:
+      matrix:
+        node-version: [ 21.x]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: echo "Ejecutando las pruebas"
+      name: Test node
+  deploy:
+    name: Subir la pagina al server
+    runs-on: ubuntu-latest
+    container: alpine
+    needs: [test]
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: Build
+        path: dist
+    - name: Instalar dependencias requeridas
+      run: apk add --no-cache rsync openssh openssh-client
+    - name: Configure SSH
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H 52.71.205.244 >> /root/.ssh/known_hosts
+    - name: Copiar archivos al servidor
+      run: rsync -rav --delete dist/ deployer@52.71.205.244:/var/www/todolist/html/dist
+    
+
+
+    
