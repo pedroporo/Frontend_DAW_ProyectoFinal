@@ -9,3 +9,4 @@ describe('HelloWorld', () => {
     expect(wrapper.text()).toContain('Hello Vitest')
   })
 })
+
