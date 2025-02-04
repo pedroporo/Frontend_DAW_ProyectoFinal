@@ -33,6 +33,8 @@ export const empleados = {
   login: (user, passwd) =>
     apiClient.get(`/empleados?user=${user}&passwd=${passwd}`),
 };
+
+
 export default {
   pacientes,
   llamadas,
