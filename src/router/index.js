@@ -1,14 +1,21 @@
 import InformeList from '@/components/InformeList.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [ 
+  routes: [
     {
-    path: '/informeList',
-    name: 'informeList',
-    component: InformeList
-  }
+      path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
   ],
 })
 
