@@ -1,7 +1,13 @@
-<script setup>
+<script>
 import { useRoute } from 'vue-router';
 
-const route = useRoute();
+export default {
+  computed: {
+    route() {
+      return useRoute();
+    }
+  }
+};
 </script>
 
 <template>
@@ -10,10 +16,10 @@ const route = useRoute();
       <h1>Teleasistencia</h1>
       <nav>
         <RouterLink to="/">Mi Cuenta</RouterLink>
-        <RouterLink to="/">Lista de Pacientes</RouterLink>
+        <RouterLink to="/patients">Lista de Pacientes</RouterLink>
         <RouterLink to="/">Registro de Llamadas</RouterLink>
         <RouterLink to="/">Avisos y Alarmas</RouterLink>
-        <RouterLink to="/">Informes</RouterLink>
+        <RouterLink to="/informes">Informes</RouterLink>
         <RouterLink to="/">Calendario</RouterLink>
         <RouterLink to="/">Gestión de Operadores</RouterLink>
         <RouterLink to="/">Cerrar Sesión</RouterLink>
@@ -22,3 +28,4 @@ const route = useRoute();
   </header>
   <RouterView />
 </template>
+
