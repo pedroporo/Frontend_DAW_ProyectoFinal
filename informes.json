@@ -1,0 +1,23 @@
+{
+    "pacientes": [
+      { "id": 1, "nombre": "Juan Pérez", "edad": 45 },
+      { "id": 2, "nombre": "María García", "edad": 32 },
+      { "id": 3, "nombre": "Carlos López", "edad": 58 }
+    ],
+    "emergencias": [
+      { "id": 1, "tipo": "Accidente de tráfico", "fecha": "2023-05-15" },
+      { "id": 2, "tipo": "Incendio", "fecha": "2023-05-16" }
+    ],
+    "llamadasPrevistas": [
+      { "id": 1, "paciente": "Ana Martínez", "fecha": "2023-05-20" },
+      { "id": 2, "paciente": "Pedro Sánchez", "fecha": "2023-05-21" }
+    ],
+    "llamadasRealizadas": [
+      { "id": 1, "paciente": "Luisa Fernández", "fecha": "2023-05-10", "duracion": "15 min" },
+      { "id": 2, "paciente": "Antonio Ruiz", "fecha": "2023-05-11", "duracion": "20 min" }
+    ],
+    "historicoLlamdasPaciente": [
+      { "id": 1, "paciente": "Elena Gómez", "fechas": ["2023-04-01", "2023-04-15", "2023-05-01"] },
+      { "id": 2, "paciente": "Roberto Díaz", "fechas": ["2023-04-05", "2023-04-20", "2023-05-05"] }
+    ]
+  }

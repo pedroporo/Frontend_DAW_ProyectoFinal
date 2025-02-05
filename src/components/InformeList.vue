@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <h1>📊 Informes Disponibles</h1>
-
         <table>
             <thead>
                 <tr>
@@ -26,7 +25,7 @@
                </tr>
                 <tr>
                 <td>Histórico Paciente</td>
-                <td><button @click="verInformes('historicoLlamdasPaciente')">Ver</button></td>
+                <td><button @click="verInformes('historicoLlamadasPaciente')">Ver</button></td>
                </tr>
             </tbody>
         </table>
@@ -37,17 +36,11 @@
 import axios from 'axios';
 export default {
     methods: {
+        //Dependiendo del tipo de informe que nos manden
+        //Pediremos unos informes u otros
      verInformes(tipoInforme) {
-        this.$router.push(`/informes/${tipoInforme}`);
-     },
-     async getInformePacientes() {
-        //Substituir per metodo del store
-         try {
-            return listaPacientes = await axios.get('http://localhost:3000/pacientes');
-         } catch (error) {
-             console.error(error);
-         }
-     }   
+        this.$router.push(`/informe/${tipoInforme}`);
+     },  
     },
 };
 </script>
@@ -70,14 +63,14 @@ th {
     color: white;
     padding: 12px;
     text-align: left;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 /* Celdas de la tabla */
 td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 19px;
 }
 
 /* Filas alternas */
@@ -98,7 +91,7 @@ button {
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 20px;
     transition: background 0.3s ease;
 }
 
