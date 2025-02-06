@@ -10,7 +10,7 @@ export const useStore = defineStore('store', {
   }),
   getters: {
     userNames: (state) => (id) => state.users.find((user) => user.id == id)?.first_name,
-    contactNames: (state) => (id) => state.contacts.find((contact) => contact.patient_id == id)?.first_name
+    contactNames: (state) => (id) => state.contacts.find((contact) => contact.patient_id == id)?.first_name ?? "Desconocido" 
   },
   actions: {
     async getPatients() {
@@ -21,10 +21,17 @@ export const useStore = defineStore('store', {
         alert("Error al obtener pacientes:", error)
       }
     },
-    async createPatient(patient) {
+    async getPatient(id) {
       try {
-        const { data } = await axios.post(urlPacientes, patient)
+        const { data } = await axios.get(`${urlPacientes}/${id}`)
         return data
+      } catch (error) {
+        alert("Error al obtener paciente:", error)
+      }
+    },
+    async addPatient(patient) {
+      try {
+        await axios.post(urlPacientes, patient)
       } catch (error) {
         alert("Error al crear paciente:", error)
       }
@@ -37,10 +44,9 @@ export const useStore = defineStore('store', {
         alert("Error al actualizar paciente:", error)
       }
     },
-    async deletePatient(id) {
+    async removePatient(id) {
       try {
-        const { data } = await axios.delete(`${urlPacientes}/${id}`)
-        return data
+        await axios.delete(`${urlPacientes}/${id}`)
       } catch (error) {
         alert("Error al eliminar paciente:", error)
       }
@@ -53,12 +59,13 @@ export const useStore = defineStore('store', {
         alert("Error al obtener usuarios:", error)
       }
     },
-    async getContacts() {
+    async getContactsByPatientId(id) {
       try {
-        const { data } = await axios.get("http://localhost:3000/contacts")
-        this.contacts = data
+        const { data } = await axios.get(`http://localhost:3000/contacts?patient_id=${id}`);
+        return data;
       } catch (error) {
-        alert("Error al obtener contactos:", error)
+        console.error("Error al obtener contactos:", error);
+        return [];
       }
     }
   }

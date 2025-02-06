@@ -1,19 +1,34 @@
 {
   "zones": [
-    { "id": 1, "name": "North Zone" },
-    { "id": 2, "name": "South Zone" },
-    { "id": 3, "name": "East Zone" },
-    { "id": 4, "name": "West Zone" },
-    { "id": 5, "name": "Central Zone" }
+    {
+      "id": "1",
+      "name": "North Zone"
+    },
+    {
+      "id": "2",
+      "name": "South Zone"
+    },
+    {
+      "id": "3",
+      "name": "East Zone"
+    },
+    {
+      "id": "4",
+      "name": "West Zone"
+    },
+    {
+      "id": "5",
+      "name": "Central Zone"
+    }
   ],
   "patients": [
     {
-      "id": 1,
-      "name": "Juan",
+      "id": "1",
+      "name": "Juanaabanana",
       "last_name": "García",
       "birth_date": "1950-05-15",
       "address": "Calle Mayor 123",
-      "city": "Madrid",
+      "city": "Madridddd",
       "postal_code": "28001",
       "dni": "12345678A",
       "health_card_number": 123456789,
@@ -28,7 +43,7 @@
       "economic_situation": "Pensión de jubilación"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "María",
       "last_name": "López",
       "birth_date": "1945-09-22",
@@ -44,13 +59,51 @@
       "personal_situation": "Casada, vive con su esposo",
       "health_situation": "Artritis, problemas de visión",
       "housing_situation": "Casa unifamiliar",
-      "personal_autonomy": "Necesita ayuda para algunas tareas",
+      "personal_autonomy": "Necesita ayuda para algunas tareasdwdwaaaaa",
       "economic_situation": "Pensión de jubilación y ahorros"
+    },
+    {
+      "name": "Aaron",
+      "last_name": "López",
+      "birth_date": "2025-02-18",
+      "address": "Avenida de la Constitución 45",
+      "city": "Barcelona",
+      "postal_code": "08001",
+      "dni": "23912111T",
+      "health_card_number": "987654321",
+      "phone": "+34 623456789",
+      "email": "aaronfloressanchez12@gmail.com",
+      "zone_id": "2",
+      "personal_situation": "dwadwa",
+      "health_situation": "dwadwaddwadwa",
+      "housing_situation": "awdwadaw",
+      "personal_autonomy": "dwadawdwad",
+      "economic_situation": "awdwadaw",
+      "id": "e03b"
+    },
+    {
+      "id": "ee7b",
+      "name": "xd",
+      "last_name": "dwadaw",
+      "birth_date": "2025-03-05",
+      "address": "Avenida de la Constitución 45",
+      "city": "Barcelona",
+      "postal_code": "08001",
+      "dni": "23912111T",
+      "health_card_number": "987654321",
+      "phone": "+34 623456789",
+      "email": "aaronfloressanchez12@gmail.com",
+      "zone_id": "2",
+      "personal_situation": "dwad",
+      "health_situation": "adwadaw",
+      "housing_situation": "dwadawd",
+      "personal_autonomy": "awdaw",
+      "economic_situation": "dwadwa"
     }
   ],
   "contacts": [
     {
-      "id": 1,
+      "id": "1",
       "patient_id": 1,
       "first_name": "Ana",
       "last_name": "García",
@@ -58,7 +111,7 @@
       "relationship": "Hija"
     },
     {
-      "id": 2,
+      "id": "2",
       "patient_id": 2,
       "first_name": "Carlos",
       "last_name": "López",
@@ -68,7 +121,7 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "first_name": "Admin",
       "last_name": "User",
       "email": "admin@example.com",
@@ -80,7 +133,7 @@
       "termination_date": null
     },
     {
-      "id": 2,
+      "id": "2",
       "first_name": "Regular",
       "last_name": "User",
       "email": "user@example.com",
@@ -93,13 +146,25 @@
     }
   ],
   "users_zones": [
-    { "id": 1, "user_id": 1, "zone_id": 1 },
-    { "id": 2, "user_id": 1, "zone_id": 2 },
-    { "id": 3, "user_id": 2, "zone_id": 3 }
+    {
+      "id": "1",
+      "user_id": 1,
+      "zone_id": 1
+    },
+    {
+      "id": "2",
+      "user_id": 1,
+      "zone_id": 2
+    },
+    {
+      "id": "3",
+      "user_id": 2,
+      "zone_id": 3
+    }
   ],
   "incoming_calls": [
     {
-      "id": 1,
+      "id": "1",
       "timestamp": "2023-05-01T10:30:00",
       "patient_id": 1,
       "user_id": 2,
@@ -107,7 +172,7 @@
       "description": "El paciente reporta dolor en el pecho"
     },
     {
-      "id": 2,
+      "id": "2",
       "timestamp": "2023-05-02T14:45:00",
       "patient_id": 2,
       "user_id": 2,
@@ -117,7 +182,7 @@
   ],
   "outgoing_calls": [
     {
-      "id": 1,
+      "id": "1",
       "timestamp": "2023-05-03T09:15:00",
       "patient_id": 1,
       "user_id": 2,
@@ -126,7 +191,7 @@
       "alarm_id": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "timestamp": "2023-05-04T11:00:00",
       "patient_id": 2,
       "user_id": 2,
@@ -136,13 +201,25 @@
     }
   ],
   "alarm_types": [
-    { "id": 1, "name": "Medicación", "description": "Recordatorio de toma de medicamentos" },
-    { "id": 2, "name": "Cita médica", "description": "Recordatorio de cita médica programada" },
-    { "id": 3, "name": "Llamada de seguimiento", "description": "Llamada periódica de seguimiento" }
+    {
+      "id": "1",
+      "name": "Medicación",
+      "description": "Recordatorio de toma de medicamentos"
+    },
+    {
+      "id": "2",
+      "name": "Cita médica",
+      "description": "Recordatorio de cita médica programada"
+    },
+    {
+      "id": "3",
+      "name": "Llamada de seguimiento",
+      "description": "Llamada periódica de seguimiento"
+    }
   ],
   "alarms": [
     {
-      "id": 1,
+      "id": "1",
       "patient_id": 1,
       "alarm_type_id": 1,
       "type": "medication",
@@ -151,7 +228,7 @@
       "weekday": "monday"
     },
     {
-      "id": 2,
+      "id": "2",
       "patient_id": 2,
       "alarm_type_id": 3,
       "type": "special_alert",
@@ -162,7 +239,7 @@
   ],
   "preventive_alarms": [
     {
-      "id": 1,
+      "id": "1",
       "zone_id": 1,
       "alarm_type_id": 2,
       "start_date": "2023-06-01",
@@ -170,7 +247,7 @@
       "description": "Campaña de vacunación contra la gripe"
     },
     {
-      "id": 2,
+      "id": "2",
       "zone_id": 2,
       "alarm_type_id": 3,
       "start_date": "2023-07-01",
@@ -180,14 +257,14 @@
   ],
   "patient_history": [
     {
-      "id": 1,
+      "id": "1",
       "patient_id": 1,
       "timestamp": "2023-05-01T10:30:00",
       "type": "emergency",
       "description": "Atendido por dolor en el pecho, derivado a urgencias"
     },
     {
-      "id": 2,
+      "id": "2",
       "patient_id": 2,
       "timestamp": "2023-05-02T14:45:00",
       "type": "followup",
