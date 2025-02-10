@@ -1,46 +1,79 @@
 <script>
-import { ref, onMounted } from 'vue';
-//Estos datos se recogerán de la api de momento es para ver la funcionalidad
-const informesData = {
-  "pacientes": [
-    { "id": 1, "nombre": "Juan Pérez", "edad": 45 },
-    { "id": 2, "nombre": "María García", "edad": 32 },
-    { "id": 3, "nombre": "Carlos López", "edad": 58 }
-  ],
-  "emergencias": [
-    { "id": 1, "tipo": "Accidente de tráfico", "fecha": "2023-05-15" },
-    { "id": 2, "tipo": "Incendio", "fecha": "2023-05-16" }
-  ],
-  "llamadasPrevistas": [
-    { "id": 1, "paciente": "Ana Martínez", "fecha": "2023-05-20" },
-    { "id": 2, "paciente": "Pedro Sánchez", "fecha": "2023-05-21" }
-  ],
-  "llamadasRealizadas": [
-    { "id": 1, "paciente": "Luisa Fernández", "fecha": "2023-05-10", "duracion": "15 min" },
-    { "id": 2, "paciente": "Antonio Ruiz", "fecha": "2023-05-11", "duracion": "20 min" }
-  ],
-  "historicoLlamdasPaciente": [
-    { "id": 1, "paciente": "Elena Gómez", "fechas": ["2023-04-01", "2023-04-15", "2023-05-01"] },
-    { "id": 2, "paciente": "Roberto Díaz", "fechas": ["2023-04-05", "2023-04-20", "2023-05-05"] }
-  ]
-};
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
 
 export default {
   name: 'InformeView',
   props: ['tipo'],
   setup(props) {
     const informes = ref([]);
+    const informesFiltrados = ref([]);
     const error = ref(null);
+    const fechaFiltro = ref('');
+    const loading = ref(true);
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/${props.tipo}`);
+        informes.value = response.data;
+        if (props.tipo === 'patients') {
+          informes.value.sort((a, b) => a.last_name.localeCompare(b.last_name));
+        }
+        informesFiltrados.value = informes.value;
+        loading.value = false;
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        error.value = `Error al cargar los datos para: ${props.tipo}`;
+        loading.value = false;
+      }
+    };
 
     onMounted(() => {
-      if (informesData[props.tipo]) {
-        informes.value = informesData[props.tipo];
-      } else {
-        error.value = `No se encontraron datos para el tipo: ${props.tipo}`;
-      }
+      fetchData();
     });
 
-    return { informes, error };
+    const filtrarPorFecha = () => {
+      if (props.tipo !== 'patients' && fechaFiltro.value) {
+        informesFiltrados.value = informes.value.filter(informe => {
+          if (props.tipo === 'historicoLlamadasPaciente') {
+            return informe.llamadas.some(llamada => llamada.fecha === fechaFiltro.value);
+          } else {
+            return informe.fecha === fechaFiltro.value || informe.birth_date === fechaFiltro.value;
+          }
+        });
+      } else {
+        informesFiltrados.value = informes.value;
+      }
+    };
+
+    const resetearFiltro = () => {
+      fechaFiltro.value = '';
+      informesFiltrados.value = informes.value;
+    };
+
+    const columnas = computed(() => {
+      if (informesFiltrados.value.length > 0) {
+        if (props.tipo === 'patients') {
+          return ['id', 'name', 'last_name', 'birth_date', 'phone', 'email'];
+        }
+        return Object.keys(informesFiltrados.value[0]);
+      }
+      return [];
+    });
+
+    const mostrarFiltroFecha = computed(() => props.tipo !== 'patients');
+
+    return { 
+      informesFiltrados, 
+      error, 
+      fechaFiltro, 
+      filtrarPorFecha, 
+      resetearFiltro, 
+      columnas, 
+      tipo: props.tipo,
+      loading,
+      mostrarFiltroFecha
+    };
   }
 }
 </script>
@@ -48,27 +81,34 @@ export default {
 <template>
   <div>
     <h1>Lista de {{ tipo }}</h1>
-    <div v-if="error" class="error">{{ error }}</div>
-    <table v-else-if="informes.length > 0">
-      <thead>
-        <tr>
-          <th v-for="(value, key) in informes[0]" :key="key">{{ key }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="informe in informes" :key="informe.id">
-          <td v-for="(value, key) in informe" :key="key">
-            {{ Array.isArray(value) ? value.join(', ') : value }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p v-else>No hay datos disponibles para {{ tipo }}</p>
+    <div v-if="loading" class="loading">Cargando datos...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-else>
+      <div v-if="mostrarFiltroFecha" class="filtro">
+        <input type="date" v-model="fechaFiltro" />
+        <button @click="filtrarPorFecha" class="filtrar">Filtrar por fecha</button>
+        <button @click="resetearFiltro" class="resetear">Resetear filtro</button>
+      </div>
+      <table v-if="informesFiltrados.length > 0">
+        <thead>
+          <tr>
+            <th v-for="columna in columnas" :key="columna">{{ columna }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="informe in informesFiltrados" :key="informe.id">
+            <td v-for="columna in columnas" :key="columna">
+              {{ Array.isArray(informe[columna]) ? informe[columna].join(', ') : informe[columna] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else>No hay datos disponibles para {{ tipo }}</p>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* Estilos generales de la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -79,7 +119,6 @@ table {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Encabezado de la tabla */
 th {
     background-color: #007bff;
     color: white;
@@ -88,24 +127,20 @@ th {
     font-size: 20px;
 }
 
-/* Celdas de la tabla */
 td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     font-size: 20px;
 }
 
-/* Filas alternas */
 tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
-/* Efecto hover en filas */
 tbody tr:hover {
     background-color: #e2e6ea;
 }
 
-/* Estilo del botón */
 button {
     padding: 8px 12px;
     border: none;
@@ -119,5 +154,58 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.filtro {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.filtrar, .resetear {
+  padding: 8px 12px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.filtrar {
+  background-color: #007bff;
+}
+
+.resetear {
+  background-color: #6c757d;
+}
+
+.filtrar:hover {
+  background-color: #0056b3;
+}
+
+.resetear:hover {
+  background-color: #5a6268;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
 }
 </style>
