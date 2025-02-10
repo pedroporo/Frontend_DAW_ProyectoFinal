@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import CallsView from '@/views/OutgoingCallsView.vue'
+import IncomingCallsView from '@/views/IncomingCallsView.vue'
+import OutgoingCallsView from '@/views/OutgoingCallsView.vue'
+import IncomingCallForm from '@/views/IncomingCallForm.vue'
+import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +21,26 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
     },
+    {
+      path: '/incoming_calls',
+      name: 'incoming_calls',
+      component: IncomingCallsView
+    },
+    {
+      path: '/outgoing_calls',
+      name: 'outgoing_calls',
+      component: OutgoingCallsView
+    },
+    {
+      path: '/incomingForm/:id?',
+      name: 'incomingForm',
+      component: IncomingCallForm
+    },
+    {
+      path: '/outgoingForm/:id?',
+      name: 'outgoingForm',
+      component: OutgoingCallForm
+    }
   ],
 })
 
