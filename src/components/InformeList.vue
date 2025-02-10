@@ -11,21 +11,21 @@
             <tbody>
                <tr>
                 <td>Emergencias</td>
-                <td><button @click="verInformes('emergencias')">Ver</button></td>
+                <td><button @click="verInformes('alarms')">Ver</button></td>
                </tr>
                <tr>
                 <td>Pacientes</td>
-                <td><button @click="verInformes('pacientes')">Ver</button></td>
+                <td><button @click="verInformes('patients')">Ver</button></td>
                </tr>
                 <td>Llamadas Previstas</td>
-                <td><button @click="verInformes('llamadasPrevistas')">Ver</button></td>
+                <td><button @click="verInformes('incoming_calls')">Ver</button></td>
                 <tr>
                 <td>Llamadas Realizadas</td>
-                <td><button @click="verInformes('llamadasRealizadas')">Ver</button></td>
+                <td><button @click="verInformes('outgoing_calls')">Ver</button></td>
                </tr>
                 <tr>
                 <td>Histórico Paciente</td>
-                <td><button @click="verInformes('historicoLlamadasPaciente')">Ver</button></td>
+                <td><button @click="verInformes('patient_history')">Ver</button></td>
                </tr>
             </tbody>
         </table>
