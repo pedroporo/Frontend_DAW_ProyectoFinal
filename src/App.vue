@@ -1,11 +1,7 @@
 <script>
 import { mapActions } from 'pinia';
-import { RouterLink, useRoute } from 'vue-router';
 import { useDataStore } from './stores/store';
-
-import PatientsView from './views/PatientsView.vue';
 import { RouterLink, RouterView , useRoute} from 'vue-router'
-import { useStore } from './stores/patientStore';
 export default {
   computed: {
     route() {
