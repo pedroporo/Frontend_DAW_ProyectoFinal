@@ -30,7 +30,6 @@ export default {
         <RouterLink to="/patients">Lista de Pacientes</RouterLink> |
         <RouterLink to="/incoming_calls">Llamadas Entrantes</RouterLink> |
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink> |
-        <RouterLink to="/">Avisos y Alarmas</RouterLink> |
         <RouterLink to="/informes">Informes</RouterLink> |
         <RouterLink to="/">Calendario</RouterLink> |
         <RouterLink to="/">Gestión de Operadores</RouterLink>
