@@ -1,9 +1,11 @@
 <script>
 import { mapActions, mapState } from 'pinia';
-import { useStore } from '@/stores/patientStore';
+import { usePatientsStore } from '@/stores/patientStore';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-
+import { useContactsStore } from '@/stores/contactStore';
+import { useZonesStore } from '@/stores/zonesStore';
+import { useUsersStore } from '@/stores/usersStore';
 export default {
   components: {
     Field,
@@ -11,7 +13,9 @@ export default {
     ErrorMessage
   },
   computed: {
-    ...mapState(useStore, ['zones', 'users', 'contacts', 'contactNames']),
+    ...mapState(useUsersStore, ['userNames', 'users']),
+    ...mapState(useContactsStore, ['contactNames', 'contacts']),
+    ...mapState(useZonesStore, ['zones'])
   },
   data() {
     const schema = yup.object({
@@ -35,7 +39,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useStore, ['getPatient', 'updatePatient', 'addPatient', 'deleteContact']),
+    ...mapActions(usePatientsStore, ['getPatient', 'updatePatient', 'addPatient']),
+    ...mapActions(useContactsStore, ['deleteContact']),
     async loadPatient() {
       const id = this.$route.params.id;
       if (id) {

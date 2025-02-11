@@ -1,22 +1,26 @@
 <script>
 import { mapActions, mapState } from "pinia";
-import { useDataStore } from "@/stores/store";
-
+import { useAlarmsStore } from "@/stores/alarmsStore";
+import { useUsersStore } from "@/stores/usersStore";
+import { usePatientsStore } from "@/stores/patientStore";
+import { useOutgoingCallsStore } from "@/stores/outgoingCallsStore";
 export default {
     data() {
         return {
             llamadasSalientes: [],
+            patients: [],
         };
     },
     computed: {
-        ...mapState(useDataStore, ['getAlarmName', "getUserNameSaliente", "getPatientNameSaliente"]),
+        ...mapState(useUsersStore, ['userNames']),
+        ...mapState(useAlarmsStore, ['getAlarmName']),
     },
     methods: {
-        ...mapActions(useDataStore, ["getLlamadasSalientes", 'removeOutgoingCall']),
-
-        deleteCall(id) {
+        ...mapActions(useOutgoingCallsStore, ['fetchCalls', 'deleteCall']),
+        ...mapActions(usePatientsStore, ['getPatients']),
+        deleteOutgoingCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
-                if (this.removeOutgoingCall(id)) {
+                if (this.deleteCall(id)) {
                     this.llamadasSalientes = this.llamadasSalientes.filter(llamada => llamada.id != id);
                 }
             }
@@ -33,10 +37,15 @@ export default {
 
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
+        },
+        getPatientName(id) {
+            const patient = this.patients.find(patient => patient.id == id);
+            return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
         }
     },
     async mounted() {
-        this.llamadasSalientes = await this.getLlamadasSalientes();
+        this.llamadasSalientes = await this.fetchCalls();
+        this.patients = await this.getPatients();
     }
 };
 </script>
@@ -62,14 +71,14 @@ export default {
                 <tr v-for="call in llamadasSalientes" :key="call.id">
                     <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientNameSaliente(call.patient_id) }}</td>
-                    <td>{{ getUserNameSaliente(call.user_id) }}</td>
+                    <td>{{ getPatientName(call.patient_id) }}</td>
+                    <td>{{ userNames(call.user_id) }}</td>
                     <td>{{ call.type === 'planned' ? 'Planificada' : 'No planificada' }}</td>
                     <td>{{ call.description }}</td>
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
                     <td>
                         <button @click="edit(call.id)">Editar</button>
-                        <button @click="deleteCall(call.id)">Eliminar</button>
+                        <button @click="deleteOutgoingCall(call.id)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

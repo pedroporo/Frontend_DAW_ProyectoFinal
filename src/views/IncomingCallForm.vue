@@ -1,5 +1,8 @@
 <script>
-import { useDataStore } from "@/stores/store";
+import { useIncomingCallsStore } from "@/stores/incomingCallsStore";
+import { usePatientsStore } from "@/stores/patientStore";
+import { useUsersStore } from "@/stores/usersStore";
+import { useAlarmsStore } from "@/stores/alarmsStore";
 import { mapActions, mapState } from "pinia";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
@@ -12,6 +15,7 @@ export default {
     },
     data() {
         return {
+            patients: [],
             isEdit: false,
             llamada: {},
             fecha: "",
@@ -32,8 +36,8 @@ export default {
     },
 
     methods: {
-        ...mapActions(useDataStore, ['getLlamadasEntrantesId', 'addIncomingCall', 'updateIncomingCall']),
-
+        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesId', 'addIncomingCall', 'updateIncomingCall']),
+        ...mapActions(usePatientsStore, ['getPatients']),
         async loadForm() {
             const llamadaId = this.$route.params.id
             if (llamadaId) {
@@ -76,12 +80,13 @@ export default {
         },
     },
 
-    mounted() {
+    async mounted() {
         this.loadForm();
+        this.patients = await this.getPatients();
     },
     computed: {
-        ...mapState(useDataStore, ['users', 'pacientes', 'tiposLlamada']),
-
+        ...mapState(useIncomingCallsStore, ['tiposLlamada']),
+        ...mapState(useUsersStore, ['users']),
         tiposDisponibles() {
             return this.selectedCategory ? this.tiposLlamada[this.selectedCategory] : {};
         }
@@ -123,7 +128,7 @@ export default {
             <label>Paciente: </label>
             <Field as="select" name="patient_id" v-model="llamada.patient_id">
                 <option value="" selected disabled>-- Selecciona paciente --</option>
-                <option v-for="patient in pacientes" :key="patient.id" :value="patient.id">
+                <option v-for="patient in patients" :key="patient.id" :value="patient.id">
                     {{ patient.name + " " + patient.last_name }}
                 </option>
             </Field>
