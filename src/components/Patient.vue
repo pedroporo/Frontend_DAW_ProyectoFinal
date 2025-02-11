@@ -1,9 +1,10 @@
 <script>
 import { mapActions, mapState } from 'pinia';
-import { useStore } from '@/stores/patientStore';
+import { usePatientsStore } from '@/stores/patientStore';
+import { useContactsStore } from '@/stores/contactStore';
 export default {
     computed: {
-        ...mapState(useStore, ['contactNames'])
+        ...mapState(useContactsStore, ['contactNames'])
     },
     data() {
         return {
@@ -11,7 +12,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(useStore, ['getPatient', 'removePatient']),
+        ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },

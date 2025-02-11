@@ -1,16 +1,21 @@
 <script>
 import { mapActions, mapState } from "pinia";
-import { useDataStore } from "@/stores/store";
-
+import { useAlarmsStore } from "@/stores/alarmsStore";
+import { useUsersStore } from "@/stores/usersStore";
+import { usePatientsStore } from "@/stores/patientStore";
+import { useOutgoingCallsStore } from "@/stores/outgoingCallsStore";
 export default {
     data() {
         return {
             llamadasSalientes: [],
-            search: ''
+            search: '',
+            patients: [],
         };
     },
     computed: {
         ...mapState(useDataStore, ['getAlarmName', "getUserNameSaliente", "getPatientNameSaliente"]),
+        ...mapState(useUsersStore, ['userNames']),
+        ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
             return this.llamadasSalientes.filter(call => {
                 const searchLower = this.search.toLowerCase();
@@ -24,14 +29,13 @@ export default {
                     this.getType(call.type).toLowerCase().includes(searchLower)
                 );
             });
-        }
-    },
+        }        },
     methods: {
-        ...mapActions(useDataStore, ["getLlamadasSalientes", 'removeOutgoingCall']),
-
-        deleteCall(id) {
+        ...mapActions(useOutgoingCallsStore, ['fetchCalls', 'deleteCall']),
+        ...mapActions(usePatientsStore, ['getPatients']),
+        deleteOutgoingCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
-                if (this.removeOutgoingCall(id)) {
+                if (this.deleteCall(id)) {
                     this.llamadasSalientes = this.llamadasSalientes.filter(llamada => llamada.id != id);
                 }
             }
@@ -50,10 +54,15 @@ export default {
 
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
+        },
+        getPatientName(id) {
+            const patient = this.patients.find(patient => patient.id == id);
+            return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
         }
     },
     async mounted() {
-        this.llamadasSalientes = await this.getLlamadasSalientes();
+        this.llamadasSalientes = await this.fetchCalls();
+        this.patients = await this.getPatients();
     }
 };
 </script>
@@ -89,7 +98,7 @@ export default {
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
                     <td>
                         <button @click="edit(call.id)">Editar</button>
-                        <button @click="deleteCall(call.id)">Eliminar</button>
+                        <button @click="deleteOutgoingCall(call.id)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

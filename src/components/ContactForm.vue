@@ -1,6 +1,6 @@
 <script>
 import { mapActions, mapState } from 'pinia';
-import { useStore } from '@/stores/patientStore';
+import { useContactsStore } from '@/stores/contactStore';
 
 export default {
     name: 'ContactForm',
@@ -14,7 +14,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(useStore, ['getContact', 'updateContact', 'addContact']),
+        ...mapActions(useContactsStore, ['getContact', 'updateContact', 'addContact']),
         async loadForm() {
             const id = this.$route.params.id;
             const edit = this.$route.params.edit;

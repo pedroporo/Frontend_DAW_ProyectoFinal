@@ -1,12 +1,11 @@
 <script>
 import { mapActions } from 'pinia';
-import { useRoute } from 'vue-router';
-import { useDataStore } from './stores/store';
 import AppMessages from './components/AppMessages.vue';
-
-import PatientsView from './views/PatientsView.vue';
 import { RouterLink, RouterView , useRoute} from 'vue-router'
-import { useStore } from './stores/patientStore';
+import { useContactsStore } from './stores/contactStore';
+import { useUsersStore } from './stores/usersStore';
+import { useZonesStore } from './stores/zonesStore';
+import { useAlarmsStore } from './stores/alarmsStore';
 export default {
   name: 'App',
   components: {
@@ -19,11 +18,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(useDataStore, ["getUsers", "getPatients", 'getAlarmas','getContacts', 'getZones']),
+    ...mapActions(useAlarmsStore, ['getAlarmas']),
+    ...mapActions(useContactsStore, ['getContacts']),
+    ...mapActions(useZonesStore, ['getZones']),
+    ...mapActions(useUsersStore, ['getUsers'])
   },
   async mounted() {
     await this.getUsers();
-    await this.getPatients();
     await this.getAlarmas();
     await this.getZones(),
     await this.getContacts()

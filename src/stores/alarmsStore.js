@@ -1,79 +1,50 @@
 import axios from 'axios'
 import { defineStore, mapActions } from 'pinia'
 import { useMessagesStore } from './messagesStore'
-const SERVER = 'http://localhost:3000'
-const ALARMS = '/alarms/'
-const ALARMS_TYPE = '/alarms/'
-
-
+const urlAlarms = 'http://localhost:3000/alarms'
 export const useAlarmsStore = defineStore('alarms', {
   state: () => ({
-    alarms: [],
+            alarmas: [
+                { id: 1, type: 'medication' },
+                { id: 2, type: 'special_alert' },
+                { id: 3, type: 'emergency_followup' },
+                { id: 4, type: 'bereavement' },
+                { id: 5, type: 'hospital_discharge' },
+                { id: 6, type: 'absence_suspension' },
+                { id: 7, type: 'return_from_absence' }
+            ],
+            alarmasTraduccion: {
+                medication: 'Medicación',
+                special_alert: 'Alerta Especial',
+                emergency_followup: 'Seguimiento de Emergencia',
+                bereavement: 'Duelo',
+                hospital_discharge: 'Alta Hospitalaria',
+                absence_suspension: 'Suspensión por Ausencia',
+                return_from_absence: 'Regreso de Ausencia',
+            }
   }),
   getters: {
-    getAlarmById: (state) => (id) => state.alarms.find(alarm => alarm.id == id) || {},
+    getAlarmName: (state) => (id) => {
+      const alarm = state.alarmas.find(alarm => alarm.id == id);
+      if (alarm) {
+          return state.alarmasTraduccion[alarm.type] || alarm.type;
+      }
+      return 'Alarma desconocida';
+  },
+  translateAlarmType: (state) => (alarmType) => {
+      return state.alarmasTraduccion[alarmType] || alarmType;
+  }
   },
   actions: {
     ...mapActions(useMessagesStore, ['addMessage']),
-   async fetchAlarms() {
-      try {
-        const response = await axios.get(SERVER + ALARMS);
-        this.alarms = response.data;
-        return response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async fetchAlarmsByPatientId(id) {
-      try {
-        const response = await axios.get(SERVER + ALARMS + '?patient_id=' + id);
-        return response.data;
-      } catch (error) {
-        this.addMessage('Error al obtener las alarmas', 'error');
-        console.log(error);
-      }
-    },
-    async deleteAlarm(id) {
-      try {
-          const response = await axios.delete(SERVER + ALARMS + id);
-          this.addMessage('Alarma eliminada correctamente', 'success');
-          return response.data;
-      } catch (error) {
-          this.addMessage('Error al eliminar la alarma', 'error');
-          console.log(error);
-      }
-  },
-      async saveAlarm(alarm) {
-        if (alarm.id) {
-          try {
-            // actualizar alarma
-            const response = await axios.put(SERVER + ALARMS + alarm.id, alarm);
-            this.addMessage('Alarma actualizada correctamente', 'success');
-            return response.data;
-          } catch (error) {
-            this.addMessage('Error al actualizar la alarma', 'error');
-            console.log(error);
-          }
-        } else {
-          // guardar nueva alarma
-          try {
-            const response = await axios.post(SERVER + ALARMS, alarm);
-            this.addMessage('Alarma guardada correctamente', 'success');
-            return response.data;
-          } catch (error) {
-            this.addMessage('Error al guardar la alarma', 'error');
-            console.log(error);
-          }
-        }
-      },
-      async getAlarmTypeById(id){
-        try {
-            const response = await axios.get(SERVER + ALARMS_TYPE + id);
-            return response.data;
-          } catch (error) {
-            console.log(error);
-          }
-      },
-
+   async getAlarmas() {
+     try {
+       const response = await axios.get(urlAlarms);
+       this.alarmas = response.data;
+       return response.data;
+     } catch (error) {
+       console.error("Error al obtener las alarmas:", error);
+     }
+   }
   }
 })

@@ -1,16 +1,20 @@
 <script>
 import { mapActions, mapState } from "pinia";
-import { useDataStore } from "@/stores/store";
+import { usePatientsStore } from "@/stores/patientStore";
+import { useUsersStore } from "@/stores/usersStore";
+import { useIncomingCallsStore } from "@/stores/incomingCallsStore";
 
 export default {
     data() {
         return {
             llamadasEntrantes: [],
-            search: ''
+            search: '',
+            patients: [],
         };
     },
     computed: {
-        ...mapState(useDataStore, ['getUserNameEntrante', 'getPatientNameEntrante', 'tiposLlamada']),
+        ...mapState(useIncomingCallsStore, ['tiposLlamada']),
+        ...mapState(useUsersStore, ['userNames']),
         filteredIncomingCalls() {
             return this.llamadasEntrantes.filter(call => {
                 const searchLower = this.search.toLowerCase();
@@ -26,8 +30,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions(useDataStore, ["getLlamadasEntrantes", 'removeIncomingCall']),
-
+        ...mapActions(useIncomingCallsStore, ["getLlamadasEntrantes", 'removeIncomingCall']),
+        ...mapActions(usePatientsStore, ['getPatients']),
         translateTipoLlamada(type) {
             for (let categoria in this.tiposLlamada) {
                 if (type in this.tiposLlamada[categoria]) {
@@ -57,10 +61,15 @@ export default {
         edit(id) {
             this.$router.push(`/incomingForm/${id}`);
         },
+        getPatientName(id) {
+            const patient = this.patients.find(patient => patient.id == id);
+            return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
+        }
     },
 
     async mounted() {
         this.llamadasEntrantes = await this.getLlamadasEntrantes();
+        this.patients = await this.getPatients();
     }
 };
 </script>
@@ -68,7 +77,7 @@ export default {
 <template>
     <div>
         <h2>Historial de Llamadas Entrantes</h2>
-        <div class="search-wrapper panel-heading col-sm-12"> 
+        <div class="search-wrapper panel-heading col-sm-12">
             <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar llamadas...">
         </div>
         <button @click="$router.push('/incomingForm')">+ Llamada Entrante</button>
@@ -88,8 +97,8 @@ export default {
                 <tr v-for="call in filteredIncomingCalls" :key="call.id">
                     <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientNameEntrante(call.patient_id) }}</td>
-                    <td>{{ getUserNameEntrante(call.user_id) }}</td>
+                    <td>{{ getPatientName(call.patient_id) }}</td>
+                    <td>{{ userNames(call.user_id) }}</td>
                     <td>{{ translateTipoLlamada(call.type) }}</td>
                     <td>{{ call.description }}</td>
                 <tr>

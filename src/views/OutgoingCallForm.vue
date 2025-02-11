@@ -1,8 +1,11 @@
 <script>
-import { useDataStore } from "@/stores/store";
+import { useAlarmsStore } from "@/stores/alarmsStore";
+import { useUsersStore } from "@/stores/usersStore";
+import { usePatientsStore } from "@/stores/patientStore";
 import { mapActions, mapState } from "pinia";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
+import { useOutgoingCallsStore } from "@/stores/outgoingCallsStore";
 
 export default {
     components: {
@@ -12,6 +15,7 @@ export default {
     },
     data() {
         return {
+            patients: [],
             isEdit: false,
             llamada: {},
             fecha: "",
@@ -29,13 +33,13 @@ export default {
     },
 
     methods: {
-        ...mapActions(useDataStore, ['getLlamadasSalientesId', 'addOutgoingCall', 'updateOutgoingCall']),
-
+        ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
+        ...mapActions(usePatientsStore, ['getPatients']),
         async loadForm() {
             const llamadaId = this.$route.params.id
             if (llamadaId) {
                 this.isEdit = true
-                this.llamada = await this.getLlamadasSalientesId(llamadaId);
+                this.llamada = await this.getCallById(llamadaId);
                 this.formatDateTime(this.llamada.timestamp);
             } else {
                 this.isEdit = false
@@ -48,9 +52,9 @@ export default {
             const timestamp = `${this.fecha}T${this.hora}:00`;
             this.llamada.timestamp = timestamp;
             if (this.isEdit) {
-                await this.updateOutgoingCall(this.llamada);
+                await this.updateCall(this.llamada);
             } else {
-                await this.addOutgoingCall(this.llamada);
+                await this.addCall(this.llamada);
             }
             this.$router.push('/outgoing_calls');
         },
@@ -64,11 +68,13 @@ export default {
 
     },
 
-    mounted() {
+    async mounted() {
         this.loadForm();
+        this.patients = await this.getPatients();
     },
     computed: {
-        ...mapState(useDataStore, ['users', 'pacientes', 'alarmas', 'translateAlarmType']),
+        ...mapState(useAlarmsStore, ['alarmas', 'translateAlarmType']),
+        ...mapState(useUsersStore, ['users']),
     },
 };
 </script>
@@ -108,7 +114,7 @@ export default {
             <label>Paciente: </label>
             <Field as="select" name="patient_id" v-model="llamada.patient_id">
                 <option value="" selected disabled>-- Selecciona paciente --</option>
-                <option v-for="patient in pacientes" :key="patient.id" :value="patient.id">
+                <option v-for="patient in patients" :key="patient.id" :value="patient.id">
                     {{ patient.name + " " + patient.last_name }}
                 </option>
             </Field>

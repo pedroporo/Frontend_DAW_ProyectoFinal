@@ -40,7 +40,7 @@
       "health_situation": "Hipertensión, diabetes tipo 2",
       "housing_situation": "Apartamento en primer piso, sin ascensor",
       "personal_autonomy": "Independiente para actividades básicas",
-      "economic_situation": "Pensión de jubilación"
+      "economic_situation": "Pensión de jubilaciónn"
     },
     {
       "name": "Aaron",
@@ -79,7 +79,8 @@
       "health_situation": "adwadaw",
       "housing_situation": "dwadawd",
       "personal_autonomy": "awdaw",
-      "economic_situation": "dwadwa"
+      "economic_situation": "dwadwa",
+      "user_id": "1"
     },
     {
       "id": "9fe9",
@@ -166,14 +167,6 @@
       "relationship": "awdawdawdw"
     },
     {
-      "id": "3707",
-      "patient_id": "ee7b",
-      "first_name": "dwadwa",
-      "last_name": "García",
-      "phone": "+34 623456789",
-      "relationship": "Hija"
-    },
-    {
       "id": "258a",
       "patient_id": "9fe9",
       "first_name": "Juan",
@@ -206,12 +199,12 @@
       "relationship": "Hija"
     },
     {
-      "id": "5838",
-      "patient_id": "9fe9",
-      "first_name": "Ivana",
-      "last_name": "Banana",
-      "phone": "666",
-      "relationship": "Sentimantal"
+      "id": "3eb0",
+      "patient_id": "1",
+      "first_name": "dwadwa",
+      "last_name": "García",
+      "phone": "+34 623456789",
+      "relationship": "Hijaaaa"
     }
   ],
   "users": [
@@ -264,15 +257,15 @@
       "patient_id": 1,
       "user_id": 2,
       "type": "medical_emergency",
-      "description": "El paciente reporta dolor en el pecho"
+      "description": "El paciente reporta dolor en el pechoeeeedwee"
     },
     {
-      "id": "2",
-      "timestamp": "2023-05-02T14:45:00",
-      "patient_id": 2,
-      "user_id": 2,
+      "id": "9aae",
+      "user_id": "1",
+      "patient_id": "e03b",
       "type": "loneliness_crisis",
-      "description": "La paciente se siente sola y necesita hablar"
+      "description": "dwadadwa",
+      "timestamp": "2025-02-11T19:56:00"
     }
   ],
   "outgoing_calls": [
@@ -286,13 +279,13 @@
       "alarm_id": 1
     },
     {
-      "id": "2",
-      "timestamp": "2023-05-04T11:00:00",
-      "patient_id": 2,
-      "user_id": 2,
-      "type": "planned",
-      "description": "Llamada de seguimiento semanal",
-      "alarm_id": 2
+      "id": "d948",
+      "user_id": "1",
+      "patient_id": "ee7b",
+      "type": "unplanned",
+      "description": "dwadwadaw",
+      "alarm_id": "1",
+      "timestamp": "2025-02-11T19:42:00"
     }
   ],
   "alarm_types": [
