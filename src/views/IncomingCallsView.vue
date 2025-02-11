@@ -6,10 +6,24 @@ export default {
     data() {
         return {
             llamadasEntrantes: [],
+            search: ''
         };
     },
     computed: {
         ...mapState(useDataStore, ['getUserNameEntrante', 'getPatientNameEntrante', 'tiposLlamada']),
+        filteredIncomingCalls() {
+            return this.llamadasEntrantes.filter(call => {
+                const searchLower = this.search.toLowerCase();
+                // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora y descripción
+                return (
+                    this.getPatientNameEntrante(call.patient_id).toLowerCase().includes(searchLower) ||
+                    call.timestamp.includes(searchLower) ||
+                    this.getUserNameEntrante(call.user_id).includes(searchLower) ||
+                    this.translateTipoLlamada(call.type).toLowerCase().includes(searchLower) ||
+                    call.description.toLowerCase().includes(searchLower)
+                );
+            });
+        }
     },
     methods: {
         ...mapActions(useDataStore, ["getLlamadasEntrantes", 'removeIncomingCall']),
@@ -54,6 +68,9 @@ export default {
 <template>
     <div>
         <h2>Historial de Llamadas Entrantes</h2>
+        <div class="search-wrapper panel-heading col-sm-12"> 
+            <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar llamadas...">
+        </div>
         <button @click="$router.push('/incomingForm')">+ Llamada Entrante</button>
         <table>
             <thead>
@@ -68,7 +85,7 @@ export default {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="call in llamadasEntrantes" :key="call.id">
+                <tr v-for="call in filteredIncomingCalls" :key="call.id">
                     <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
                     <td>{{ getPatientNameEntrante(call.patient_id) }}</td>
