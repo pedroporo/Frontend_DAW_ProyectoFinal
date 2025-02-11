@@ -6,15 +6,16 @@ export default {
     data() {
         return {
             llamadasSalientes: [],
-            search: ''
+            search: '',
+            sortKey: '',
+            sortOrder: 1
         };
     },
     computed: {
         ...mapState(useDataStore, ['getAlarmName', "getUserNameSaliente", "getPatientNameSaliente"]),
         filteredOutgoingCalls() {
-            return this.llamadasSalientes.filter(call => {
+            let filtered = this.llamadasSalientes.filter(call => {
                 const searchLower = this.search.toLowerCase();
-                // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora, descripción y alarma
                 return (
                     this.getPatientNameSaliente(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
@@ -24,7 +25,53 @@ export default {
                     this.getType(call.type).toLowerCase().includes(searchLower)
                 );
             });
+
+            if (this.sortKey) {
+                filtered.sort((a, b) => {
+                    let valueA, valueB;
+
+                    switch (this.sortKey) {
+                        case "fecha":
+                            valueA = a.timestamp.split("T")[0];
+                            valueB = b.timestamp.split("T")[0];
+                            break;
+                        case "hora":
+                            valueA = a.timestamp.split("T")[1];
+                            valueB = b.timestamp.split("T")[1];
+                            break;
+                        case "patient":
+                            valueA = this.getPatientNameSaliente(a.patient_id).toLowerCase();
+                            valueB = this.getPatientNameSaliente(b.patient_id).toLowerCase();
+                            break;
+                        case "operator":
+                            valueA = this.getUserNameSaliente(a.user_id).toLowerCase();
+                            valueB = this.getUserNameSaliente(b.user_id).toLowerCase();
+                            break;
+                        case "type":
+                            valueA = this.getType(a.type).toLowerCase();
+                            valueB = this.getType(b.type).toLowerCase();
+                            break;
+                        case "description":
+                            valueA = a.description.toLowerCase();
+                            valueB = b.description.toLowerCase();
+                            break;
+                        case "alarm":
+                            valueA = this.getAlarmName(a.alarm_id).toLowerCase();
+                            valueB = this.getAlarmName(b.alarm_id).toLowerCase();
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    if (valueA < valueB) return -1 * this.sortOrder;
+                    if (valueA > valueB) return 1 * this.sortOrder;
+                    return 0;
+                });
+            }
+
+            return filtered;
         }
+
     },
     methods: {
         ...mapActions(useDataStore, ["getLlamadasSalientes", 'removeOutgoingCall']),
@@ -50,7 +97,26 @@ export default {
 
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
+        },
+        
+        sortBy(key) {
+            if (this.sortKey === key) {
+                if (this.sortOrder === 1) {
+                    this.sortOrder = -1;
+                } else if (this.sortOrder === -1) {
+                    this.sortKey = '';
+                    this.sortOrder = 1;
+                }
+            } else {
+                this.sortKey = key;
+                this.sortOrder = 1; 
+            }
+        },
+
+        changeIconSortOrder(){
+            return (this.sortOrder === 1 ? '🔼' : (this.sortOrder === -1 ? '🔽' : ''));
         }
+
     },
     async mounted() {
         this.llamadasSalientes = await this.getLlamadasSalientes();
@@ -68,13 +134,48 @@ export default {
         <table>
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Paciente</th>
-                    <th>Operador</th>
-                    <th>Tipo</th>
-                    <th>Descripción</th>
-                    <th>Alarmas</th>
+                    <th @click="sortBy('fecha')" class="click-order">
+                        Fecha 
+                        <span v-if="sortKey === 'fecha'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('hora')" class="click-order">
+                        Hora 
+                        <span v-if="sortKey === 'hora'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('patient')" class="click-order">
+                        Paciente 
+                        <span v-if="sortKey === 'patient'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('operator')" class="click-order">
+                        Operador 
+                        <span v-if="sortKey === 'operator'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('type')" class="click-order">
+                        Tipo 
+                        <span v-if="sortKey === 'type'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('description')" class="click-order">
+                        Descripción 
+                        <span v-if="sortKey === 'description'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
+                    <th @click="sortBy('alarm')" class="click-order">
+                        Alarmas 
+                        <span v-if="sortKey === 'alarm'">
+                            {{ changeIconSortOrder() }}
+                        </span>
+                    </th>
                     <th>Acciones</th>
                 </tr>
             </thead>
