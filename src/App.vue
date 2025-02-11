@@ -3,6 +3,9 @@ import { mapActions } from 'pinia';
 import { useRoute } from 'vue-router';
 import { useDataStore } from './stores/store';
 
+import PatientsView from './views/PatientsView.vue';
+import { RouterLink, RouterView , useRoute} from 'vue-router'
+import { useStore } from './stores/patientStore';
 export default {
   computed: {
     route() {
@@ -11,12 +14,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(useDataStore, ["getUsers", "getPatients", 'getAlarmas']),
+    ...mapActions(useDataStore, ["getUsers", "getPatients", 'getAlarmas','getContacts', 'getZones']),
   },
   async mounted() {
     await this.getUsers();
     await this.getPatients();
     await this.getAlarmas();
+    await this.getZones(),
+    await this.getContacts()
   }
 };
 </script>
@@ -40,3 +45,7 @@ export default {
   <RouterView />
 </template>
 
+
+<style scoped>
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css");
+</style>
