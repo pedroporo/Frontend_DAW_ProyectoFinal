@@ -1,6 +1,6 @@
 <script>
 import { mapActions } from 'pinia';
-import { useRoute } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { useDataStore } from './stores/store';
 
 export default {
@@ -31,8 +31,8 @@ export default {
         <RouterLink to="/incoming_calls">Llamadas Entrantes</RouterLink> |
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink> |
         <RouterLink to="/informes">Informes</RouterLink> |
-        <RouterLink to="/">Calendario</RouterLink> |
-        <RouterLink to="/">Gestión de Operadores</RouterLink>
+        <RouterLink to="/">Gestión de Operadores</RouterLink> |
+        <RouterLink to="/">Cerrar Sesión</RouterLink>
       </nav>
     </div>
   </header>
