@@ -8,7 +8,7 @@ export default {
         filteredPatients() {
             return this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
-                
+                //Filtra por nombre completo, cumpleaños, ubicación, dni, tarjeta sanitaria, telefono, e-mail y sus situaciones
                 return (
                     p.name.toLowerCase().includes(searchLower) ||
                     p.last_name.toLowerCase().includes(searchLower) ||
