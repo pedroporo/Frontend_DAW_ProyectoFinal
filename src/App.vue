@@ -2,8 +2,13 @@
 import { mapActions } from 'pinia';
 import { useRoute } from 'vue-router';
 import { useDataStore } from './stores/store';
+import AppMessages from './components/AppMessages.vue';
 
 export default {
+  name: 'App',
+  components: {
+    AppMessages
+  },
   computed: {
     route() {
       return useRoute();
@@ -35,6 +40,7 @@ export default {
         <RouterLink to="/">Calendario</RouterLink> |
         <RouterLink to="/">Gestión de Operadores</RouterLink>
       </nav>
+      <app-messages></app-messages>
     </div>
   </header>
   <RouterView />
