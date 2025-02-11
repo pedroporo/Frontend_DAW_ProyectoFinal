@@ -8,7 +8,18 @@ export default {
             llamadasSalientes: [],
             search: '',
             sortKey: '',
-            sortOrder: 1
+            sortOrder: 1,
+            sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description", "alarm"],
+            columnNames: {
+                fecha: "Fecha",
+                hora: "Hora",
+                patient: "Paciente",
+                operator: "Operador",
+                type: "Tipo",
+                description: "Descripción",
+                alarm: "Alarmas"
+            }
+
         };
     },
     computed: {
@@ -63,9 +74,7 @@ export default {
                             return 0;
                     }
 
-                    if (valueA < valueB) return -1 * this.sortOrder;
-                    if (valueA > valueB) return 1 * this.sortOrder;
-                    return 0;
+                    return valueA.localeCompare(valueB) * this.sortOrder;
                 });
             }
 
@@ -109,7 +118,7 @@ export default {
                 }
             } else {
                 this.sortKey = key;
-                this.sortOrder = 1; 
+                this.sortOrder = 1;
             }
         },
 
@@ -134,47 +143,9 @@ export default {
         <table>
             <thead>
                 <tr>
-                    <th @click="sortBy('fecha')" class="click-order">
-                        Fecha 
-                        <span v-if="sortKey === 'fecha'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('hora')" class="click-order">
-                        Hora 
-                        <span v-if="sortKey === 'hora'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('patient')" class="click-order">
-                        Paciente 
-                        <span v-if="sortKey === 'patient'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('operator')" class="click-order">
-                        Operador 
-                        <span v-if="sortKey === 'operator'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('type')" class="click-order">
-                        Tipo 
-                        <span v-if="sortKey === 'type'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('description')" class="click-order">
-                        Descripción 
-                        <span v-if="sortKey === 'description'">
-                            {{ changeIconSortOrder() }}
-                        </span>
-                    </th>
-                    <th @click="sortBy('alarm')" class="click-order">
-                        Alarmas 
-                        <span v-if="sortKey === 'alarm'">
-                            {{ changeIconSortOrder() }}
-                        </span>
+                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                        {{ columnNames[key] }}
+                        <span v-if="sortKey === key">{{ changeIconSortOrder() }}</span>
                     </th>
                     <th>Acciones</th>
                 </tr>
