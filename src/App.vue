@@ -10,10 +10,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useStore, ['getUsers',])
+    ...mapActions(useStore, ['getUsers', 'getZones', 'getContacts'])
   },
   mounted() {
-    this.getUsers()
+    this.getUsers(),
+    this.getZones(),
+    this.getContacts()
   }
 }
 </script>

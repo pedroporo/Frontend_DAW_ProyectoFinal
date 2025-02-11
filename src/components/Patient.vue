@@ -3,7 +3,7 @@ import { mapActions, mapState } from 'pinia';
 import { useStore } from '@/stores/patientStore';
 export default {
     computed: {
-        ...mapState(useStore, [])
+        ...mapState(useStore, ['contactNames'])
     },
     data() {
         return {
@@ -19,8 +19,10 @@ export default {
             this.$router.push({ name: 'patientForm', params: { id } });
         },
         async deletePatient(id) {
-            await this.removePatient(id);
-            this.$router.push({ name: 'patients' });
+            if (confirm('Estas seguro de eliminar el paciente?')) {
+                await this.removePatient(id);
+                this.$router.push({ name: 'patients' });
+            }
         }
     },
     async mounted() {
@@ -48,6 +50,7 @@ export default {
                     <th>Número tarjeta sanitaria</th>
                     <th>Teléfono</th>
                     <th>Email</th>
+                    <th>Contacto</th>
                     <th>Zona</th>
                     <th>Situación personal</th>
                     <th>Estado de salud</th>
@@ -59,7 +62,7 @@ export default {
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ patient.name + " " +patient.last_name}}</td>
+                    <td>{{ patient.name + " " + patient.last_name }}</td>
                     <td>{{ patient.birth_date }}</td>
                     <td>{{ patient.address }}</td>
                     <td>{{ patient.city }}</td>
@@ -68,6 +71,11 @@ export default {
                     <td>{{ patient.health_card_number }}</td>
                     <td>{{ patient.phone }}</td>
                     <td>{{ patient.email }}</td>
+                    <td>
+                        {{ contactNames(patient.id).length > 0
+                            ? contactNames(patient.id).map(contact => contact.name).join(', ')
+                            : 'Sin contacto' }}
+                    </td>
                     <td>{{ patient.zone_id }}</td>
                     <td>{{ patient.personal_situation }}</td>
                     <td>{{ patient.health_situation }}</td>

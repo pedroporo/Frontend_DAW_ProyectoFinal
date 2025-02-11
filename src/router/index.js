@@ -4,6 +4,7 @@ import Patient from '../components/Patient.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import PatientForm from '@/components/PatientForm.vue'
+import ContactForm from '@/components/ContactForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
     },
+    {
+      path: '/contactForm/:id?/:edit?',
+      name: 'contactForm',
+      component: ContactForm
+    }
   ],
 })
 

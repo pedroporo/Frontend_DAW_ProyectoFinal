@@ -1,39 +1,66 @@
 <script>
 import { mapActions, mapState } from 'pinia';
 import { useStore } from '@/stores/patientStore';
+import { Field, Form, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
+  components: {
+    Field,
+    Form,
+    ErrorMessage
+  },
   computed: {
-    ...mapState(useStore, [])
+    ...mapState(useStore, ['zones', 'users', 'contacts', 'contactNames']),
   },
   data() {
+    const schema = yup.object({
+      name: yup.string().required('El nombre es requerido'),
+      last_name: yup.string().required('El apellido es requerido'),
+      birth_date: yup.date().max(new Date(), 'La fecha de nacimiento no puede ser en el futuro').required('La fecha de nacimiento es requerida'),
+      address: yup.string().required('La dirección es requerida'),
+      city: yup.string().required('La ciudad es requerida'),
+      postal_code: yup.string().matches(/^\d{5}$/, 'El código postal debe tener 5 dígitos').required('El código postal es requerido'),
+      dni: yup.string().matches(/^\d{8}[A-Z]$/, 'El DNI debe tener 8 números seguidos de una letra mayúscula').required('El DNI es requerido'),
+      health_card_number: yup.string().required('El número de tarjeta sanitaria es requerido'),
+      phone: yup.string().matches(/^\d{9}$/, 'El teléfono debe tener 9 dígitos').required('El teléfono es requerido'),
+      email: yup.string().email('Introduce un email válido').required('El email es requerido'),
+      zone_id: yup.string().required('La zona es requerida'),
+    });
+
     return {
       patient: {},
-      isEditing: false
+      isEditing: false,
+      schema
     }
   },
   methods: {
-    ...mapActions(useStore, ['getPatient', 'updatePatient', 'deletePatient', 'addPatient']),
+    ...mapActions(useStore, ['getPatient', 'updatePatient', 'addPatient', 'deleteContact']),
     async loadPatient() {
       const id = this.$route.params.id;
       if (id) {
         const loadedPatient = await this.getPatient(id);
-        this.patient = { ...this.patient, ...loadedPatient };
+        this.patient = { ...loadedPatient };
         this.isEditing = true;
       }
     },
     async addOrUpdatePatient() {
-        if (this.isEditing) {
-          await this.updatePatient(this.patient);
-        } else {
-          await this.addPatient(this.patient);
-        }
-        this.$router.push({ name: 'patients' });
+      if (this.isEditing) {
+        await this.updatePatient(this.patient);
+      } else {
+        await this.addPatient(this.patient);
+      }
+      this.$router.push({ name: 'patients' });
     },
-    async deletePatient() {
-      if (confirm('¿Estás seguro de que quieres eliminar este paciente?')) {
-          await this.deletePatient(this.patient.id);
-          this.$router.push({ name: 'patientList' });
+    editContact(id) {
+      this.$router.push({ name: 'contactForm', params: { id, edit: true } });
+    },
+    addContact(id) {
+      this.$router.push({ name: 'contactForm', params: { id } });
+    },
+    async removeContact(id) {
+      if (confirm('Estas seguro de eliminar el contacto?')) {
+        await this.deleteContact(id);
       }
     }
   },
@@ -43,79 +70,129 @@ export default {
 }
 </script>
 
+
 <template>
   <div class="content">
     <h2>{{ isEditing ? 'Editar Paciente' : 'Nuevo Paciente' }}</h2>
-    <form @submit.prevent="addOrUpdatePatient">
+    <Form @submit="addOrUpdatePatient" :validation-schema="schema">
       <div class="form-group">
         <label for="name">Nombre</label>
-        <input type="text" class="form-control" id="name" v-model="patient.name">
+        <Field name="name" type="text" class="form-control" id="name" v-model="patient.name" />
+        <ErrorMessage name="name" class="error-message" />
       </div>
       <div class="form-group">
         <label for="last_name">Apellido</label>
-        <input type="text" class="form-control" id="last_name" v-model="patient.last_name">
+        <Field name="last_name" type="text" class="form-control" id="last_name" v-model="patient.last_name" />
+        <ErrorMessage name="last_name" class="error-message" />
       </div>
       <div class="form-group">
         <label for="birth_date">Fecha de Nacimiento</label>
-        <input type="date" class="form-control" id="birth_date" v-model="patient.birth_date">
+        <Field name="birth_date" type="date" class="form-control" id="birth_date" v-model="patient.birth_date" />
+        <ErrorMessage name="birth_date" class="error-message" />
       </div>
       <div class="form-group">
         <label for="address">Dirección</label>
-        <input type="text" class="form-control" id="address" v-model="patient.address">
+        <Field name="address" type="text" class="form-control" id="address" v-model="patient.address" />
+        <ErrorMessage name="address" class="error-message" />
       </div>
       <div class="form-group">
         <label for="city">Ciudad</label>
-        <input type="text" class="form-control" id="city" v-model="patient.city">
+        <Field name="city" type="text" class="form-control" id="city" v-model="patient.city" />
+        <ErrorMessage name="city" class="error-message" />
       </div>
       <div class="form-group">
         <label for="postal_code">Código Postal</label>
-        <input type="text" class="form-control" id="postal_code" v-model="patient.postal_code">
+        <Field name="postal_code" type="text" class="form-control" id="postal_code" v-model="patient.postal_code" />
+        <ErrorMessage name="postal_code" class="error-message" />
       </div>
       <div class="form-group">
         <label for="dni">DNI</label>
-        <input type="text" class="form-control" id="dni" v-model="patient.dni">
+        <Field name="dni" type="text" class="form-control" id="dni" v-model="patient.dni" />
+        <ErrorMessage name="dni" class="error-message" />
       </div>
       <div class="form-group">
         <label for="health_card_number">Número tarjeta sanitaria</label>
-        <input type="text" class="form-control" id="health_card_number" v-model="patient.health_card_number">
+        <Field name="health_card_number" type="text" class="form-control" id="health_card_number"
+          v-model="patient.health_card_number" />
+        <ErrorMessage name="health_card_number" class="error-message" />
       </div>
       <div class="form-group">
         <label for="phone">Teléfono</label>
-        <input type="tel" class="form-control" id="phone" v-model="patient.phone">
+        <Field name="phone" type="tel" class="form-control" id="phone" v-model="patient.phone" />
+        <ErrorMessage name="phone" class="error-message" />
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" v-model="patient.email">
+        <Field name="email" type="email" class="form-control" id="email" v-model="patient.email" />
+        <ErrorMessage name="email" class="error-message" />
       </div>
       <div class="form-group">
         <label for="zone_id">Zona</label>
-        <input type="text" class="form-control" id="zone_id" v-model="patient.zone_id">
+        <Field name="zone_id" as="select" class="form-control" id="zone_id" v-model="patient.zone_id">
+          <option value="">Selecciona una zona</option>
+          <option v-for="zone in zones" :key="zone.id" :value="zone.id">
+            {{ zone.name }}
+          </option>
+        </Field>
+        <ErrorMessage name="zone_id" class="error-message" />
       </div>
       <div class="form-group">
+        <label for="user_id">Operador Asignado</label>
+        <Field name="user_id" as="select" class="form-control" id="user_id" v-model="patient.user_id">
+          <option value="">Sin Asignar</option>
+          <option v-for="user in users" :key="user.id" :value="user.id">
+            {{ user.first_name + ' ' + user.last_name }}
+          </option>
+        </Field>
+        <ErrorMessage name="user_id" class="error-message" />
+      </div>
+      <div class="form-group" v-if="isEditing">
+        <label v-if="contactNames(patient.id).length" for="">Contactos</label>
+        <ul>
+          <li v-for="contact in contactNames(patient.id)" :key="contact.id">
+            {{ contact.name }}
+            <button @click="editContact(contact.id)" class="btn btn-primary">Editar</button>
+            <button @click="removeContact(contact.id)" class="btn btn-danger">Eliminar</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="form-group">
         <label for="personal_situation">Situación personal</label>
-        <textarea class="form-control" id="personal_situation" v-model="patient.personal_situation"></textarea>
+        <Field name="personal_situation" as="textarea" class="form-control" id="personal_situation"
+          v-model="patient.personal_situation" />
+        <ErrorMessage name="personal_situation" class="error-message" />
       </div>
       <div class="form-group">
         <label for="health_situation">Estado de salud</label>
-        <textarea class="form-control" id="health_situation" v-model="patient.health_situation"></textarea>
+        <Field name="health_situation" as="textarea" class="form-control" id="health_situation"
+          v-model="patient.health_situation" />
+        <ErrorMessage name="health_situation" class="error-message" />
       </div>
       <div class="form-group">
         <label for="housing_situation">Situación Vivienda</label>
-        <textarea class="form-control" id="housing_situation" v-model="patient.housing_situation"></textarea>
+        <Field name="housing_situation" as="textarea" class="form-control" id="housing_situation"
+          v-model="patient.housing_situation" />
+        <ErrorMessage name="housing_situation" class="error-message" />
       </div>
       <div class="form-group">
         <label for="personal_autonomy">Autonomía</label>
-        <textarea class="form-control" id="personal_autonomy" v-model="patient.personal_autonomy"></textarea>
+        <Field name="personal_autonomy" as="textarea" class="form-control" id="personal_autonomy"
+          v-model="patient.personal_autonomy" />
+        <ErrorMessage name="personal_autonomy" class="error-message" />
       </div>
       <div class="form-group">
         <label for="economic_situation">Situación económica</label>
-        <textarea class="form-control" id="economic_situation" v-model="patient.economic_situation"></textarea>
+        <Field name="economic_situation" as="textarea" class="form-control" id="economic_situation"
+          v-model="patient.economic_situation" />
+        <ErrorMessage name="economic_situation" class="error-message" />
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Guardar</button>
         <button type="button" @click="$router.push({ name: 'patients' })" class="btn btn-secondary">Volver</button>
+        <button @click="addContact(patient.id)" class="btn btn-primary" v-if="isEditing">Añadir Contacto</button>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 
@@ -123,5 +200,8 @@ export default {
 .form-group {
   margin-bottom: 1rem;
 }
-</style>
 
+.error-message {
+  color: red;
+}
+</style>

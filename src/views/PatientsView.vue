@@ -7,37 +7,21 @@ export default {
         ...mapState(useStore, ['userNames', 'contactNames'])
     },
     methods: {
-        ...mapActions(useStore,['getPatients', 'createPatient', 'getContactsByPatientId']),
-        async loadContacts() {
-            for (const patient of this.patients) {
-                const contacts = await this.getContactsByPatientId(patient.id);
-                this.patientContacts[patient.id] = contacts;
-            }
-        },
+        ...mapActions(useStore, ['getPatients', 'createPatient', 'getContactsByPatientId']),
         viewPatient(id) {
             this.$router.push({ name: 'patient', params: { id } });
         },
         createPatient() {
             this.$router.push({ name: 'patientForm' });
-        },
-        getContactName(patientId) {
-            const contacts = this.patientContacts[patientId];
-            if (contacts && contacts.length > 0) {
-                const contact = contacts[0];
-                return `${contact.first_name} ${contact.last_name}`;
-            }
-            return 'Desconocido';
         }
     },
     data() {
         return {
             patients: [],
-            patientContacts: {}
         }
     },
     async mounted() {
         this.patients = await this.getPatients();
-        await this.loadContacts();
     }
 }
 </script>
@@ -51,7 +35,7 @@ export default {
                 <tr>
                     <th>Nombre</th>
                     <th>Teléfono</th>
-                    <th>Operador Asignado</th>
+                    <th>Operador</th>
                     <th>Contacto</th>
                     <th>Acciones</th>
                 </tr>
@@ -59,9 +43,13 @@ export default {
             <tbody>
                 <tr v-for="patient in patients" :key="patient.id">
                     <td>{{ patient.name + ' ' + patient.last_name }}</td>
-                    <td>{{ patient.phone }}</td>
-                    <td>{{ userNames(patient.user_id) }}</td>
-                    <td>{{ getContactName(patient.id) }}</td>
+                    <td>{{ "+34 " + patient.phone }}</td>
+                    <td>{{ userNames(patient.user_id) || 'Sin asignar' }}</td>
+                    <td>
+                        {{ contactNames(patient.id).length > 0
+                            ? contactNames(patient.id).map(contact => contact.name).join(', ')
+                        : 'Sin contacto' }}
+                    </td>
                     <td>
                         <button class="btn btn-danger btn-sm" @click="viewPatient(patient.id)">Detalles</button>
                     </td>
@@ -71,4 +59,3 @@ export default {
         <button class="btn btn-primary" @click="createPatient">Añadir Paciente</button>
     </div>
 </template>
-
