@@ -1,5 +1,7 @@
 import InformeList from '@/components/InformeList.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import PatientsView from '../views/PatientsView.vue'
+import Patient from '../components/Patient.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import InformeView from '@/views/InformeView.vue'
@@ -8,10 +10,27 @@ import OutgoingCallsView from '@/views/OutgoingCallsView.vue'
 import IncomingCallForm from '@/views/IncomingCallForm.vue'
 import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 
+import PatientForm from '@/components/PatientForm.vue'
+import ContactForm from '@/components/ContactForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/patients',
+      name: 'patients',
+      component: PatientsView,
+    },
+    {
+      path: '/patient/:id',
+      name: 'patient',
+      component: Patient
+    },
+    {
+      path: '/patientForm/:id?',
+      name: 'patientForm',
+      component: PatientForm
+    },
     {
       path: '/',
       name: 'home',
@@ -52,6 +71,11 @@ const router = createRouter({
       path: '/outgoingForm/:id?',
       name: 'outgoingForm',
       component: OutgoingCallForm
+    },
+      {
+        path: '/contactForm/:id?/:edit?',
+      name: 'contactForm',
+      component: ContactForm
     }
   ],
 })
