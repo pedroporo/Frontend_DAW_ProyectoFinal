@@ -11,7 +11,7 @@
             <tbody>
                <tr>
                 <td>Emergencias</td>
-                <td><button @click="verInformes('alarms')">Ver</button></td>
+                <td><button @click="verInformes('incoming_calls')">Ver</button></td>
                </tr>
                <tr>
                 <td>Pacientes</td>
