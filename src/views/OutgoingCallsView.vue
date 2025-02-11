@@ -21,7 +21,7 @@ export default {
                     this.getUserNameSaliente(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||
                     call.description.toLowerCase().includes(searchLower) ||
-                    (call.type ? 'Planificada' : 'No planificada').toLowerCase().includes(searchLower)
+                    this.getType(call.type).toLowerCase().includes(searchLower)
                 );
             });
         }
@@ -45,6 +45,8 @@ export default {
 
             return { fecha, hora };
         },
+
+        getType: call => call ? 'Planificada' : 'No planificada',
 
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
@@ -82,7 +84,7 @@ export default {
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
                     <td>{{ getPatientNameSaliente(call.patient_id) }}</td>
                     <td>{{ getUserNameSaliente(call.user_id) }}</td>
-                    <td>{{ call.type ? 'Planificada' : 'No planificada' }}</td>
+                    <td>{{ getType(call.type) }}</td>
                     <td>{{ call.description }}</td>
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
                     <td>
