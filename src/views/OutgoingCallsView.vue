@@ -62,7 +62,7 @@ export default {
     <div>
         <h2>Historial de Llamadas Salientes</h2>
         <div class="search-wrapper panel-heading col-sm-12"> 
-            <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
+            <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar llamadas...">
         </div>
         <button @click="$router.push('/outgoingForm')">+ Llamada Saliente</button>
         <table>
