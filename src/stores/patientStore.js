@@ -7,6 +7,7 @@ export const usePatientsStore = defineStore('patients', {
   state: () => ({
   }),
   getters: {
+ 
   },
   actions: {
     async getPatients() {
@@ -15,6 +16,14 @@ export const usePatientsStore = defineStore('patients', {
         return data;
       } catch (error) {
         alert("Error al obtener pacientes:", error);
+      }
+    },
+    async getPatientName(id) {
+      try {
+        const { data } = await axios.get(`${urlPacientes}/${id}`);
+        return data;
+      } catch (error) {
+        alert("Error al obtener paciente:", error);
       }
     },
     async getPatient(id) {

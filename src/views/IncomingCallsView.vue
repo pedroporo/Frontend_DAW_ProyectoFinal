@@ -9,7 +9,6 @@ export default {
         return {
             llamadasEntrantes: [],
             search: '',
-            patients: [],
         };
     },
     computed: {
@@ -20,9 +19,9 @@ export default {
                 const searchLower = this.search.toLowerCase();
                 // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora y descripción
                 return (
-                    this.getPatientNameEntrante(call.patient_id).toLowerCase().includes(searchLower) ||
+                    this.getPatientName(call.patient_id).name.toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
-                    this.getUserNameEntrante(call.user_id).includes(searchLower) ||
+                    this.userNames(call.user_id).includes(searchLower) ||
                     this.translateTipoLlamada(call.type).toLowerCase().includes(searchLower) ||
                     call.description.toLowerCase().includes(searchLower)
                 );
@@ -31,7 +30,7 @@ export default {
     },
     methods: {
         ...mapActions(useIncomingCallsStore, ["getLlamadasEntrantes", 'removeIncomingCall']),
-        ...mapActions(usePatientsStore, ['getPatients']),
+        ...mapState(usePatientsStore, ['getPatientName']),
         translateTipoLlamada(type) {
             for (let categoria in this.tiposLlamada) {
                 if (type in this.tiposLlamada[categoria]) {
@@ -40,7 +39,6 @@ export default {
             }
             return type;
         },
-
         deleteCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
                 if (this.removeIncomingCall(id)) {
@@ -61,15 +59,10 @@ export default {
         edit(id) {
             this.$router.push(`/incomingForm/${id}`);
         },
-        getPatientName(id) {
-            const patient = this.patients.find(patient => patient.id == id);
-            return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
-        }
     },
 
     async mounted() {
         this.llamadasEntrantes = await this.getLlamadasEntrantes();
-        this.patients = await this.getPatients();
     }
 };
 </script>
@@ -97,7 +90,7 @@ export default {
                 <tr v-for="call in filteredIncomingCalls" :key="call.id">
                     <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientName(call.patient_id) }}</td>
+                    <td>{{ getPatientName(call.patient_id)?.name }}</td>
                     <td>{{ userNames(call.user_id) }}</td>
                     <td>{{ translateTipoLlamada(call.type) }}</td>
                     <td>{{ call.description }}</td>

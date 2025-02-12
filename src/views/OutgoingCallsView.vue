@@ -13,7 +13,6 @@ export default {
         };
     },
     computed: {
-        ...mapState(useDataStore, ['getAlarmName', "getUserNameSaliente", "getPatientNameSaliente"]),
         ...mapState(useUsersStore, ['userNames']),
         ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
@@ -21,9 +20,9 @@ export default {
                 const searchLower = this.search.toLowerCase();
                 // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora, descripción y alarma
                 return (
-                    this.getPatientNameSaliente(call.patient_id).toLowerCase().includes(searchLower) ||
+                    this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
-                    this.getUserNameSaliente(call.user_id).includes(searchLower) ||
+                    this.userNames(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||
                     call.description.toLowerCase().includes(searchLower) ||
                     this.getType(call.type).toLowerCase().includes(searchLower)
@@ -91,8 +90,8 @@ export default {
                 <tr v-for="call in filteredOutgoingCalls" :key="call.id">
                     <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientNameSaliente(call.patient_id) }}</td>
-                    <td>{{ getUserNameSaliente(call.user_id) }}</td>
+                    <td>{{ getPatientName(call.patient_id) }}</td>
+                    <td>{{ userNames(call.user_id) }}</td>
                     <td>{{ getType(call.type) }}</td>
                     <td>{{ call.description }}</td>
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
