@@ -20,9 +20,9 @@ export default {
                 const searchLower = this.search.toLowerCase();
                 // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora y descripción
                 return (
-                    this.getPatientNameEntrante(call.patient_id).toLowerCase().includes(searchLower) ||
+                    this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
-                    this.getUserNameEntrante(call.user_id).includes(searchLower) ||
+                    this.userNames(call.user_id).includes(searchLower) ||
                     this.translateTipoLlamada(call.type).toLowerCase().includes(searchLower) ||
                     call.description.toLowerCase().includes(searchLower)
                 );
@@ -40,7 +40,6 @@ export default {
             }
             return type;
         },
-
         deleteCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
                 if (this.removeIncomingCall(id)) {
@@ -57,7 +56,6 @@ export default {
 
             return { fecha, hora };
         },
-
         edit(id) {
             this.$router.push(`/incomingForm/${id}`);
         },
