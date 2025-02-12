@@ -21,7 +21,7 @@ export default {
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
         ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada','removeIncomingCall']),
-        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId']),
+        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -41,6 +41,16 @@ export default {
         deleteIncomingCall(id) {
             if (confirm('Estas seguro de eliminar la llamada?')) {
                 this.removeIncomingCall(id);
+                this.callsPatient = this.callsPatient.filter(call => call.id != id);
+            }
+        },
+        editOutgoingCall(id) {
+            this.$router.push(`/outgoingForm/${id}`);
+        },
+        deleteOutgoingCall(id) {
+            if (confirm('Estas seguro de eliminar la llamada?')) {
+                this.deleteCall(id);
+                this.outgoingCallsPatient = this.outgoingCallsPatient.filter(call => call.id != id);
             }
         }
     },
@@ -125,6 +135,7 @@ export default {
                         <th>Hora</th>
                         <th>Tipo</th>
                         <th>Descripción</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,6 +144,10 @@ export default {
                         <td>{{ formatDateTime(call.timestamp).hora }}</td>
                         <td>{{ getType(call.type) }}</td>
                         <td>{{ call.description }}</td>
+                        <td>
+                            <button @click="editOutgoingCall(call.id)">Editar</button>
+                            <button @click="deleteOutgoingCall(call.id)">Eliminar</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
