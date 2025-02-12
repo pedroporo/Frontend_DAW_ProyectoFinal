@@ -3,18 +3,22 @@ import { mapActions, mapState } from 'pinia';
 import { usePatientsStore } from '@/stores/patientStore';
 import { useContactsStore } from '@/stores/contactStore';
 import { useZonesStore } from '@/stores/zonesStore';
+import { useIncomingCallsStore } from '@/stores/incomingCallsStore';
 export default {
     computed: {
         ...mapState(useContactsStore, ['contactNames']),
         ...mapState(useZonesStore, ['zonesNames']),
+        ...mapState(useIncomingCallsStore, ['tiposLlamada']),
     },
     data() {
         return {
             patient: [],
+            callsPatient: [],
         }
     },
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
+        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -26,12 +30,13 @@ export default {
                 await this.removePatient(id);
                 this.$router.push({ name: 'patients' });
             }
-        }
+        },
     },
     async mounted() {
         const id = this.$route.params.id;
         if (id) {
             this.patient = await this.getPatient(id);
+            this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
         }
     }
 }
@@ -71,6 +76,29 @@ export default {
                 <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
             </div>
         </div>
+        <div class="patient-calls">
+    <h3>📞 Llamadas Entrantes</h3>
+    <table v-if="callsPatient.length">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="call in callsPatient" :key="call.id">
+                <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                <td>{{ translateTipoLlamada(call.type) }}</td>
+                <td>{{ call.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p v-else>No hay llamadas registradas para este paciente.</p>
+</div>
+
     </div>
 </template>
 

@@ -30,31 +30,14 @@ export default {
         }
     },
     methods: {
-        ...mapActions(useIncomingCallsStore, ["getLlamadasEntrantes", 'removeIncomingCall']),
+        ...mapActions(useIncomingCallsStore, ["getLlamadasEntrantes", 'removeIncomingCall', 'formatDateTime', 'translateTipoLlamada']),
         ...mapActions(usePatientsStore, ['getPatients']),
-        translateTipoLlamada(type) {
-            for (let categoria in this.tiposLlamada) {
-                if (type in this.tiposLlamada[categoria]) {
-                    return this.tiposLlamada[categoria][type];
-                }
-            }
-            return type;
-        },
         deleteCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
                 if (this.removeIncomingCall(id)) {
                     this.llamadasEntrantes = this.llamadasEntrantes.filter(llamada => llamada.id != id);
                 }
             }
-        },
-
-        formatDateTime(timestamp) {
-            if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
-
-            const fecha = timestamp.split("T")[0];
-            const hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
-
-            return { fecha, hora };
         },
         edit(id) {
             this.$router.push(`/incomingForm/${id}`);

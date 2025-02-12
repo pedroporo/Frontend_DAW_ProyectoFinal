@@ -69,6 +69,7 @@ export default {
             this.fecha = timestamp.split("T")[0];
             this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
         },
+        
 
         findCategoryByType(type) {
             for (let categoria in this.tiposLlamada) {
