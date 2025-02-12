@@ -7,7 +7,6 @@ export const useDataStore = defineStore('data', {
         return {
             users: [],
             pacientes: [],
-            alarmas: [],
             tiposLlamada: {
                 emergencia: {
                     social_emergency: "Emergencias sociales",

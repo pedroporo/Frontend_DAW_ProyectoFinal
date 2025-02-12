@@ -32,7 +32,7 @@
       "postal_code": "28001",
       "dni": "12345678A",
       "health_card_number": 123456789,
-      "phone": "+34 612345678",
+      "phone": "612345678",
       "email": "juan.garcia@email.com",
       "zone_id": 1,
       "user_id": 1,
@@ -52,7 +52,7 @@
       "postal_code": "08001",
       "dni": "87654321B",
       "health_card_number": 987654321,
-      "phone": "+34 623456789",
+      "phone": "623456789",
       "email": "maria.lopez@email.com",
       "zone_id": 2,
       "user_id": 2,
@@ -79,6 +79,14 @@
       "last_name": "López",
       "phone": "+34 645678901",
       "relationship": "Hijo"
+    },
+    {
+      "id": "9186",
+      "patient_id": "1",
+      "first_name": "Ivana",
+      "last_name": "pla",
+      "phone": "658258741",
+      "relationship": "hija"
     }
   ],
   "users": [

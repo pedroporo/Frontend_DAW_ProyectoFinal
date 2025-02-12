@@ -32,11 +32,11 @@ export default {
 
         async addOrUpdateContact() {
             if (this.isEditing) {
-                await this.updateContact(this.contact); 
+                await this.updateContact(this.contact);
             } else {
                 await this.addContact(this.contact);
             }
-            this.$router.push({ name: 'patients' }); 
+            this.$router.push({ name: 'patients' });
         },
 
     },
@@ -47,35 +47,134 @@ export default {
 </script>
 
 <template>
-    <form @submit.prevent="addOrUpdateContact">
+    <div class="content">
         <h2>{{ isEditing ? 'Editar Contacto' : 'Nuevo Contacto' }}</h2>
-        <div class="mb-3">
-            <label for="first_name" class="form-label">Nombre</label>
-            <input type="text" id="first_name" v-model="contact.first_name" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="last_name" class="form-label">Apellidos</label>
-            <input type="text" id="last_name" v-model="contact.last_name" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="phone" class="form-label">Teléfono</label>
-            <input type="tel" id="phone" v-model="contact.phone" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="relationship" class="form-label">Relación</label>
-            <input type="text" id="relationship" v-model="contact.relationship" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">{{ isEditing ? 'Actualizar Contacto' : 'Añadir Contacto'
-            }}</button>
-    </form>
+        <form @submit.prevent="addOrUpdateContact">
+            <div class="form-group">
+                <label for="first_name">Nombre</label>
+                <input type="text" id="first_name" v-model="contact.first_name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="last_name">Apellidos</label>
+                <input type="text" id="last_name" v-model="contact.last_name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" v-model="contact.phone" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="relationship">Relación</label>
+                <input type="text" id="relationship" v-model="contact.relationship" class="form-control" />
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">
+                    {{ isEditing ? 'Actualizar Contacto' : 'Añadir Contacto' }}
+                </button>
+                <button type="button" @click="$router.back()" class="btn btn-secondary">
+                    Volver
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <style scoped>
-.mb-3 {
+.content {
+    padding: 20px;
+    max-width: 900px;
+    margin: 85px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.form-buttons {
+    display: flex;
+    /* Cambiar a display flex para alinear los botones horizontalmente */
+    gap: 10px;
+    /* Añadir un espacio de 10px entre los botones */
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input,
+button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+/* Aseguramos que las casillas de entrada tengan el mismo margen a ambos lados */
+.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    /* Asegura que el padding no afecte el ancho total */
+}
+
+.btn-primary,
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e2e2;
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
 }
 </style>

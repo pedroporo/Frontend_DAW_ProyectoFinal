@@ -35,61 +35,139 @@ export default {
 </script>
 
 <template>
-    <div class="content">
-        <h2>Paciente </h2>
-        <input type="text" class="form-control mb-3" placeholder="Buscar paciente...">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Fecha de Nacimiento</th>
-                    <th>Dirección</th>
-                    <th>Ciudad</th>
-                    <th>Coódigo Postal</th>
-                    <th>DNI</th>
-                    <th>Número tarjeta sanitaria</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Contacto</th>
-                    <th>Zona</th>
-                    <th>Situación personal</th>
-                    <th>Estado de salud</th>
-                    <th>Situacion Vivienda</th>
-                    <th>Autonomía</th>
-                    <th>Situacion económica</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ patient.name + " " + patient.last_name }}</td>
-                    <td>{{ patient.birth_date }}</td>
-                    <td>{{ patient.address }}</td>
-                    <td>{{ patient.city }}</td>
-                    <td>{{ patient.postal_code }}</td>
-                    <td>{{ patient.dni }}</td>
-                    <td>{{ patient.health_card_number }}</td>
-                    <td>{{ patient.phone }}</td>
-                    <td>{{ patient.email }}</td>
-                    <td>
-                        {{ contactNames(patient.id).length > 0
-                            ? contactNames(patient.id).map(contact => contact.name).join(', ')
-                            : 'Sin contacto' }}
-                    </td>
-                    <td>{{ patient.zone_id }}</td>
-                    <td>{{ patient.personal_situation }}</td>
-                    <td>{{ patient.health_situation }}</td>
-                    <td>{{ patient.housing_situation }}</td>
-                    <td>{{ patient.personal_autonomy }}</td>
-                    <td>{{ patient.economic_situation }}</td>
-                    <td>
-                        <button @click="deletePatient(patient.id)">Eliminar</button>
-                        <button @click="editPatient(patient.id)">Editar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-primary" @click="addPatient">Añadir Paciente</button>
-        <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
+    <div class="main-content">
+        <div class="patient-container">
+            <h2>📋 Información del Paciente</h2>
+            <div class="patient-details">
+                <div class="detail"><strong>Nombre:</strong> {{ patient.name + " " + patient.last_name }}</div>
+                <div class="detail"><strong>Fecha de Nacimiento:</strong> {{ patient.birth_date }}</div>
+                <div class="detail"><strong>Dirección:</strong> {{ patient.address }}</div>
+                <div class="detail"><strong>Ciudad:</strong> {{ patient.city }}</div>
+                <div class="detail"><strong>Código Postal:</strong> {{ patient.postal_code }}</div>
+                <div class="detail"><strong>DNI:</strong> {{ patient.dni }}</div>
+                <div class="detail"><strong>Número tarjeta sanitaria:</strong> {{ patient.health_card_number }}</div>
+                <div class="detail"><strong>Teléfono:</strong> {{ patient.phone }}</div>
+                <div class="detail"><strong>Email:</strong> {{ patient.email }}</div>
+                <div class="detail">
+                    <strong>Contacto:</strong>
+                    {{ contactNames(patient.id).length > 0
+                        ? contactNames(patient.id).map(contact => contact.name).join(', ')
+                        : 'Sin contacto' }}
+                </div>
+                <div class="detail"><strong>Zona:</strong> {{ patient.zone_id }}</div>
+                <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation }}</div>
+                <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}</div>
+                <div class="detail"><strong>Situación Vivienda:</strong> {{ patient.housing_situation }}</div>
+                <div class="detail"><strong>Autonomía:</strong> {{ patient.personal_autonomy }}</div>
+                <div class="detail"><strong>Situación económica:</strong> {{ patient.economic_situation }}</div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-primary" @click="editPatient(patient.id)">Editar</button>
+                <button class="btn btn-danger" @click="deletePatient(patient.id)">Eliminar</button>
+                <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
+            </div>
+        </div>
     </div>
 </template>
+
+<style scoped>
+/* Ajuste del contenido para que encaje con el sidebar */
+.main-content {
+    margin-left: 250px;
+    /* Ajuste según el ancho del sidebar */
+    padding: 20px;
+}
+
+/* Contenedor principal */
+.patient-container {
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Título */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Información del paciente */
+.patient-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.detail {
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsividad */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        /* En pantallas pequeñas, sin margen */
+    }
+
+    .patient-container {
+        width: 100%;
+        padding: 15px;
+    }
+}
+</style>

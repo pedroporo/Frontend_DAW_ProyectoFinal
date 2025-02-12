@@ -189,7 +189,7 @@ export default {
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" @click="$router.push({ name: 'patients' })" class="btn btn-secondary">Volver</button>
+        <button type="button" @click="$router.back()" class="btn btn-secondary">Volver</button>
         <button @click="addContact(patient.id)" class="btn btn-primary" v-if="isEditing">Añadir Contacto</button>
       </div>
     </Form>
@@ -197,11 +197,162 @@ export default {
 </template>
 
 <style scoped>
+.error-message {
+  color: red;
+}
+
+.content {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
 .form-group {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+input,
+textarea,
+select,
+button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #007bff;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+.form-control {
+  width: 100%;
 }
 
 .error-message {
-  color: red;
+  color: #d9534f;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  border: none;
+  margin-top: 15px;
+  /* Espaciado adicional entre los botones */
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e2e2;
+}
+
+.form-group button {
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+
+  /* A partir de tablet en adelante */
+  .form-group {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .form-group label {
+    width: 150px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group button {
+    flex: 1;
+  }
+
+  /* Separación de botones en pantallas más grandes */
+  .form-group button+button {
+    margin-left: 15px;
+    /* Espacio entre los botones */
+  }
+}
+
+@media (max-width: 576px) {
+
+  /* Pantallas pequeñas (móviles) */
+  .form-group {
+    flex-direction: column;
+  }
+
+  .form-group label {
+    width: 100%;
+  }
+
+  .form-group button {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* Para dispositivos más pequeños (tabletas) */
+  .content {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    /* Botones de ancho completo en dispositivos móviles y tablets */
+  }
 }
 </style>
