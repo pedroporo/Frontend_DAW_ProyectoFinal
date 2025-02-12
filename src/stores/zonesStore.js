@@ -7,6 +7,15 @@ export const useZonesStore = defineStore('zones', {
   state: () => ({
     zones: [],
   }),
+  getters: {
+    zonesNames: (state) => (id) => {
+      const zone = state.zones.find(zone => zone.id == id);
+      if (zone) {
+        return zone.name;
+      }
+      return 'Zona desconocida';
+    }
+  },
   actions: {
     async getZones() {
       try {

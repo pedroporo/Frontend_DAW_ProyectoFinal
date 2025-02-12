@@ -2,9 +2,11 @@
 import { mapActions, mapState } from 'pinia';
 import { usePatientsStore } from '@/stores/patientStore';
 import { useContactsStore } from '@/stores/contactStore';
+import { useZonesStore } from '@/stores/zonesStore';
 export default {
     computed: {
-        ...mapState(useContactsStore, ['contactNames'])
+        ...mapState(useContactsStore, ['contactNames']),
+        ...mapState(useZonesStore, ['zonesNames']),
     },
     data() {
         return {
@@ -55,7 +57,7 @@ export default {
                         ? contactNames(patient.id).map(contact => contact.name).join(', ')
                         : 'Sin contacto' }}
                 </div>
-                <div class="detail"><strong>Zona:</strong> {{ patient.zone_id }}</div>
+                <div class="detail"><strong>Zona:</strong> {{ zonesNames(patient.zone_id) }}</div>
                 <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation }}</div>
                 <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}</div>
                 <div class="detail"><strong>Situación Vivienda:</strong> {{ patient.housing_situation }}</div>

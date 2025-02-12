@@ -73,12 +73,12 @@
       "relationship": "Hija"
     },
     {
-      "id": "8f29",
-      "patient_id": "2",
-      "first_name": "dwadwa",
-      "last_name": "García",
-      "phone": "+34 634567890",
-      "relationship": "Hija"
+      "id": "2",
+      "patient_id": 2,
+      "first_name": "Carlos",
+      "last_name": "López",
+      "phone": "+34 645678901",
+      "relationship": "Hijo"
     }
   ],
   "users": [
@@ -139,7 +139,7 @@
       "patient_id": 2,
       "user_id": 2,
       "type": "loneliness_crisis",
-      "description": "La paciente se siente sola y necesita hablaraaaa"
+      "description": "La paciente se siente sola y necesita hablar"
     }
   ],
   "outgoing_calls": [
