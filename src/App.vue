@@ -35,7 +35,7 @@ export default {
 
 <template>
   <header>
-    <div class="top-bar" v-if="route.path !== '/login'">
+    <div class="sidebar" v-if="route.path !== '/login'">
       <h1>Teleasistencia</h1>
       <nav class="nav">
         <RouterLink to="/">Mi Cuenta</RouterLink>
@@ -48,33 +48,59 @@ export default {
       </nav>
     </div>
   </header>
-  <RouterView />
+  <div class="main-content">
+    <RouterView />
+  </div>
 </template>
 
 
 <style scoped>
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css");
+/* Estilos generales del sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #007bff;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-  font-weight: bold;
+h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
 }
-.nav{
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
+
+/* Navegación */
+nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
-.nav a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
+
+nav a {
+    text-decoration: none;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Contenido principal con margen para que no se solape con el sidebar */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
 }
 </style>
