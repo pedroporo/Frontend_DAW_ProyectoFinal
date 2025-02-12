@@ -60,7 +60,7 @@ export default {
             } else {
                 await this.addIncomingCall(this.llamada);
             }
-            this.$router.push('/incoming_calls');
+            this.$router.back();
         },
 
         formatDateTime(timestamp) {
@@ -170,7 +170,7 @@ export default {
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.push('/incoming_calls')">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.back()">Cancelar</button>
         </div>
     </Form>
 </template>

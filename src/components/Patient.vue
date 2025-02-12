@@ -20,7 +20,7 @@ export default {
     },
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
-        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada']),
+        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada','removeIncomingCall']),
         ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
@@ -35,7 +35,14 @@ export default {
             }
         },
         getType: call => call ? 'Planificada' : 'No planificada',
-
+        editIncomingCall(id) {
+            this.$router.push(`/incomingForm/${id}`);
+        },
+        deleteIncomingCall(id) {
+            if (confirm('Estas seguro de eliminar la llamada?')) {
+                this.removeIncomingCall(id);
+            }
+        }
     },
     async mounted() {
         const id = this.$route.params.id;
@@ -91,6 +98,7 @@ export default {
                         <th>Hora</th>
                         <th>Tipo</th>
                         <th>Descripción</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,6 +107,10 @@ export default {
                         <td>{{ formatDateTime(call.timestamp).hora }}</td>
                         <td>{{ translateTipoLlamada(call.type) }}</td>
                         <td>{{ call.description }}</td>
+                        <td>
+                            <button @click="editIncomingCall(call.id)">Editar</button>
+                            <button @click="deleteIncomingCall(call.id)">Eliminar</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
