@@ -1,3 +1,16 @@
+<script>
+import axios from 'axios';
+export default {
+    methods: {
+        //Dependiendo del tipo de informe que nos manden
+        //Pediremos unos informes u otros
+        verInformes(tipoInforme) {
+            this.$router.push(`/informe/${tipoInforme}`);
+        },
+    },
+};
+</script>
+
 <template>
     <div class="container">
         <h1>📊 Informes Disponibles</h1>
@@ -9,95 +22,84 @@
                 </tr>
             </thead>
             <tbody>
-               <tr>
-                <td>Emergencias</td>
-                <td><button @click="verInformes('alarms')">Ver</button></td>
-               </tr>
-               <tr>
-                <td>Pacientes</td>
-                <td><button @click="verInformes('patients')">Ver</button></td>
-               </tr>
-                <td>Llamadas Previstas</td>
-                <td><button @click="verInformes('incoming_calls')">Ver</button></td>
                 <tr>
-                <td>Llamadas Realizadas</td>
-                <td><button @click="verInformes('outgoing_calls')">Ver</button></td>
-               </tr>
+                    <td>Emergencias</td>
+                    <td><button @click="verInformes('alarms')">Ver</button></td>
+                </tr>
                 <tr>
-                <td>Histórico Paciente</td>
-                <td><button @click="verInformes('patient_history')">Ver</button></td>
-               </tr>
+                    <td>Pacientes</td>
+                    <td><button @click="verInformes('patients')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Llamadas Previstas</td>
+                    <td><button @click="verInformes('incoming_calls')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Llamadas Realizadas</td>
+                    <td><button @click="verInformes('outgoing_calls')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Histórico Paciente</td>
+                    <td><button @click="verInformes('patient_history')">Ver</button></td>
+                </tr>
             </tbody>
         </table>
     </div>
 </template>
 
-<script>
-import axios from 'axios';
-export default {
-    methods: {
-        //Dependiendo del tipo de informe que nos manden
-        //Pediremos unos informes u otros
-     verInformes(tipoInforme) {
-        this.$router.push(`/informe/${tipoInforme}`);
-     },  
-    },
-};
-</script>
-
 <style scoped>
-/* Estilos generales de la tabla */
+.container {
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
 }
 
-/* Encabezado de la tabla */
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
 th {
     background-color: #007bff;
     color: white;
-    padding: 12px;
-    text-align: left;
-    font-size: 20px;
 }
 
-/* Celdas de la tabla */
-td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    font-size: 19px;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-/* Filas alternas */
-tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+tr:hover {
+    background-color: #f1f1f1;
 }
 
-/* Efecto hover en filas */
-tbody tr:hover {
-    background-color: #e2e6ea;
-}
-
-/* Estilo del botón */
 button {
     padding: 8px 12px;
-    border: none;
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
-    cursor: pointer;
+    border: none;
     border-radius: 5px;
-    font-size: 20px;
-    transition: background 0.3s ease;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #0056b3;
 }
-
 </style>
-

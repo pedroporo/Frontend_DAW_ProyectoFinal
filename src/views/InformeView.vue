@@ -63,13 +63,13 @@ export default {
 
     const mostrarFiltroFecha = computed(() => props.tipo !== 'patients');
 
-    return { 
-      informesFiltrados, 
-      error, 
-      fechaFiltro, 
-      filtrarPorFecha, 
-      resetearFiltro, 
-      columnas, 
+    return {
+      informesFiltrados,
+      error,
+      fechaFiltro,
+      filtrarPorFecha,
+      resetearFiltro,
+      columnas,
       tipo: props.tipo,
       loading,
       mostrarFiltroFecha
@@ -86,8 +86,8 @@ export default {
     <div v-else>
       <div v-if="mostrarFiltroFecha" class="filtro">
         <input type="date" v-model="fechaFiltro" />
-        <button @click="filtrarPorFecha" class="filtrar">Filtrar por fecha</button>
-        <button @click="resetearFiltro" class="resetear">Resetear filtro</button>
+        <button @click="filtrarPorFecha" class="btn btn-primary">Filtrar por fecha</button>
+        <button @click="resetearFiltro" class="btn btn-secondary">Resetear filtro</button>
       </div>
       <table v-if="informesFiltrados.length > 0">
         <thead>
@@ -109,57 +109,75 @@ export default {
 </template>
 
 <style scoped>
+/* Contenedor principal */
+div {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+/* Título */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Estilo de la tabla */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th {
-    background-color: #007bff;
-    color: white;
-    padding: 12px;
-    text-align: left;
-    font-size: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
 }
 
 td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    font-size: 20px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+  background-color: #fafafa;
 }
 
 tbody tr:hover {
-    background-color: #e2e6ea;
+  background-color: #f1f1f1;
 }
 
+/* Estilo para los botones */
 button {
-    padding: 8px 12px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 19px;
-    transition: background 0.3s ease;
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-    background-color: #218838;
+  background-color: #0056b3;
 }
 
 .filtro {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
+  justify-content: flex-start;
 }
 
 input[type="date"] {
@@ -169,33 +187,34 @@ input[type="date"] {
   font-size: 16px;
 }
 
-.filtrar, .resetear {
+/* Botones del filtro */
+.btn {
   padding: 8px 12px;
   border: none;
-  color: white;
-  cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
   transition: background 0.3s ease;
 }
 
-.filtrar {
+.btn-primary {
   background-color: #007bff;
 }
 
-.resetear {
-  background-color: #6c757d;
-}
-
-.filtrar:hover {
+.btn-primary:hover {
   background-color: #0056b3;
 }
 
-.resetear:hover {
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-secondary:hover {
   background-color: #5a6268;
 }
 
-.loading, .error {
+/* Estilos de carga y error */
+.loading,
+.error {
   text-align: center;
   padding: 20px;
   font-size: 18px;
@@ -207,5 +226,25 @@ input[type="date"] {
 
 .error {
   color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  th,
+  td {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  button,
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .filtro {
+    flex-direction: column;
+  }
 }
 </style>

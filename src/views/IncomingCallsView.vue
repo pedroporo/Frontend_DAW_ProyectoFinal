@@ -75,13 +75,10 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="calls-history">
         <h2>Historial de Llamadas Entrantes</h2>
-        <div class="search-wrapper panel-heading col-sm-12">
-            <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar llamadas...">
-        </div>
-        <button @click="$router.push('/incomingForm')">+ Llamada Entrante</button>
-        <table>
+        <button @click="$router.push('/incomingForm')" class="btn btn-primary">+ Llamada Entrante</button>
+        <table class="calls-table">
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -101,14 +98,115 @@ export default {
                     <td>{{ userNames(call.user_id) }}</td>
                     <td>{{ translateTipoLlamada(call.type) }}</td>
                     <td>{{ call.description }}</td>
-                <tr>
                     <td>
-                        <button @click="edit(call.id)">Editar</button>
-                        <button @click="deleteCall(call.id)">Eliminar</button>
+                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm">Editar</button>
+                        <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
-                </tr>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
+
+<style scoped>
+/* Contenedor principal */
+.calls-history {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+/* Título */
+.calls-history h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Botón principal */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Tabla */
+.calls-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.calls-table th,
+.calls-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 16px;
+}
+
+.calls-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.calls-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.calls-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Botones de acción en la tabla */
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.btn-secondary {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #ec971f;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .calls-table th,
+    .calls-table td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+</style>
