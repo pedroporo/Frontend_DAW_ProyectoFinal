@@ -10,15 +10,27 @@ export default {
             llamadasSalientes: [],
             search: '',
             patients: [],
+            sortKey: '',
+            sortOrder: 1,
+            sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description", "alarm"],
+            columnNames: {
+                fecha: "Fecha",
+                hora: "Hora",
+                patient: "Paciente",
+                operator: "Operador",
+                type: "Tipo",
+                description: "Descripción",
+                alarm: "Alarmas"
+            }
+
         };
     },
     computed: {
         ...mapState(useUsersStore, ['userNames']),
         ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
-            return this.llamadasSalientes.filter(call => {
+            let filtered = this.llamadasSalientes.filter(call => {
                 const searchLower = this.search.toLowerCase();
-                // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora, descripción y alarma
                 return (
                     this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
@@ -28,7 +40,52 @@ export default {
                     this.getType(call.type).toLowerCase().includes(searchLower)
                 );
             });
-        }        },
+
+            if (this.sortKey) {
+                filtered.sort((a, b) => {
+                    let valueA, valueB;
+
+                    switch (this.sortKey) {
+                        case "fecha":
+                            valueA = a.timestamp.split("T")[0];
+                            valueB = b.timestamp.split("T")[0];
+                            break;
+                        case "hora":
+                            valueA = a.timestamp.split("T")[1];
+                            valueB = b.timestamp.split("T")[1];
+                            break;
+                        case "patient":
+                            valueA = this.getPatientNameSaliente(a.patient_id).toLowerCase();
+                            valueB = this.getPatientNameSaliente(b.patient_id).toLowerCase();
+                            break;
+                        case "operator":
+                            valueA = this.getUserNameSaliente(a.user_id).toLowerCase();
+                            valueB = this.getUserNameSaliente(b.user_id).toLowerCase();
+                            break;
+                        case "type":
+                            valueA = this.getType(a.type).toLowerCase();
+                            valueB = this.getType(b.type).toLowerCase();
+                            break;
+                        case "description":
+                            valueA = a.description.toLowerCase();
+                            valueB = b.description.toLowerCase();
+                            break;
+                        case "alarm":
+                            valueA = this.getAlarmName(a.alarm_id).toLowerCase();
+                            valueB = this.getAlarmName(b.alarm_id).toLowerCase();
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    return valueA.localeCompare(valueB) * this.sortOrder;
+                });
+            }
+
+            return filtered;
+        }
+
+    },
     methods: {
         ...mapActions(useOutgoingCallsStore, ['fetchCalls', 'deleteCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
@@ -54,10 +111,28 @@ export default {
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
         },
+        
+        sortBy(key) {
+            if (this.sortKey === key) {
+                if (this.sortOrder === 1) {
+                    this.sortOrder = -1;
+                } else if (this.sortOrder === -1) {
+                    this.sortKey = '';
+                    this.sortOrder = 1;
+                }
+            } else {
+                this.sortKey = key;
+                this.sortOrder = 1;
+            }
+        },
+
+        changeIconSortOrder(){
+            return (this.sortOrder === 1 ? '🔼' : (this.sortOrder === -1 ? '🔽' : ''));
         getPatientName(id) {
             const patient = this.patients.find(patient => patient.id == id);
             return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
         }
+
     },
     async mounted() {
         this.llamadasSalientes = await this.fetchCalls();
@@ -76,13 +151,10 @@ export default {
         <table>
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Paciente</th>
-                    <th>Operador</th>
-                    <th>Tipo</th>
-                    <th>Descripción</th>
-                    <th>Alarmas</th>
+                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                        {{ columnNames[key] }}
+                        <span v-if="sortKey === key">{{ changeIconSortOrder() }}</span>
+                    </th>
                     <th>Acciones</th>
                 </tr>
             </thead>
