@@ -241,6 +241,10 @@ export default {
     font-weight: bold;
 }
 
+.click-order{
+    cursor: pointer;
+}
+
 .calls-table tr:nth-child(even) {
     background-color: #fafafa;
 }
