@@ -1,10 +1,13 @@
 <script>
 import { mapActions, mapState } from 'pinia';
-import { useStore } from '@/stores/patientStore';
-
+import { usePatientsStore } from '@/stores/patientStore';
+import { useContactsStore } from '@/stores/contactStore';
+import { useUsersStore } from '@/stores/usersStore';
 export default {
     computed: {
-        ...mapState(useStore, ['userNames', 'contactNames']),
+        ...mapState(usePatientsStore, ['userNames']),
+        ...mapState(useContactsStore, ['contactNames']),
+        ...mapState(useUsersStore, ['userNames']),
         filteredPatients() {
             return this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
@@ -28,9 +31,10 @@ export default {
                 );
             });
         }
+
     },
     methods: {
-        ...mapActions(useStore, ['getPatients', 'createPatient', 'getContactsByPatientId']),
+        ...mapActions(usePatientsStore, ['getPatients', 'createPatient', 'getContactsByPatientId']),
         viewPatient(id) {
             this.$router.push({ name: 'patient', params: { id } });
         },

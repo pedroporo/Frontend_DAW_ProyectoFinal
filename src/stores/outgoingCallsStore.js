@@ -1,6 +1,6 @@
 import axios from "axios";
 import { defineStore, mapActions } from "pinia";
-
+import { useMessagesStore } from "./messagesStore";
 const SERVER = "http://localhost:3000";
 const CALLS = "/outgoing_calls/";
 
@@ -8,6 +8,7 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
   state: () => ({
     outgoingCalls: [],
   }),
+
   actions: {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async fetchCalls() {
@@ -41,22 +42,25 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         console.error("Error al eliminar la llamada:", error);
       }
     },
-    async saveCall(call) {
+    async addCall(call) {
       try {
-        if (call.id) {
-          // Actualizar llamada existente
-          const response = await axios.put(SERVER + CALLS + call.id, call);
-          this.addMessage("Llamada actualizada correctamente", "success");
-          return response.data;
-        } else {
-          // Guardar nueva llamada
-          const response = await axios.post(SERVER + CALLS, call);
-          this.addMessage("Llamada guardada correctamente", "success");
-          return response.data;
-        }
+        const response = await axios.post(SERVER + CALLS, call);
+        this.addMessage("Llamada guardada correctamente", "success");
+        return response.data;
       } catch (error) {
         this.addMessage("Error al guardar la llamada", "error");
         console.error("Error al guardar la llamada:", error);
+      }
+    },
+
+    async updateCall(call) {
+      try {
+        const response = await axios.put(SERVER + CALLS + call.id, call);
+        this.addMessage("Llamada actualizada correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al actualizar la llamada", "error");
+        console.error("Error al actualizar la llamada:", error);
       }
     },
     async getCallById(id) {
