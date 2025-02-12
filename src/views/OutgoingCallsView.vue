@@ -30,10 +30,10 @@ export default {
         ...mapState(useUsersStore, ['userNames']),
         ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
-            let filtered = this.llamadasSalientes.filter(call => async () => {
+            let filtered = this.llamadasSalientes.filter(call => {
                 const searchLower = this.search.toLowerCase();
                 return (
-                    await this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
+                    this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
                     this.userNames(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||

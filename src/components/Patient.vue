@@ -4,6 +4,7 @@ import { usePatientsStore } from '@/stores/patientStore';
 import { useContactsStore } from '@/stores/contactStore';
 import { useZonesStore } from '@/stores/zonesStore';
 import { useIncomingCallsStore } from '@/stores/incomingCallsStore';
+import { useOutgoingCallsStore } from '@/stores/outgoingCallsStore';
 export default {
     computed: {
         ...mapState(useContactsStore, ['contactNames']),
@@ -14,11 +15,13 @@ export default {
         return {
             patient: [],
             callsPatient: [],
+            outgoingCallsPatient: []
         }
     },
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
         ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada']),
+        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -31,12 +34,15 @@ export default {
                 this.$router.push({ name: 'patients' });
             }
         },
+        getType: call => call ? 'Planificada' : 'No planificada',
+
     },
     async mounted() {
         const id = this.$route.params.id;
         if (id) {
             this.patient = await this.getPatient(id);
             this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
+            this.outgoingCallsPatient = await this.fetchCallsByPatientId(id);
         }
     }
 }
@@ -77,27 +83,49 @@ export default {
             </div>
         </div>
         <div class="patient-calls">
-    <h3>📞 Llamadas Entrantes</h3>
-    <table v-if="callsPatient.length">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="call in callsPatient" :key="call.id">
-                <td>{{ formatDateTime(call.timestamp).fecha }}</td>
-                <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                <td>{{ translateTipoLlamada(call.type) }}</td>
-                <td>{{ call.description }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <p v-else>No hay llamadas registradas para este paciente.</p>
-</div>
+            <h3>📞 Llamadas Entrantes</h3>
+            <table v-if="callsPatient.length">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in callsPatient" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ translateTipoLlamada(call.type) }}</td>
+                        <td>{{ call.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p v-else>No hay llamadas registradas para este paciente.</p>
+        </div>
+        <div class="patient-calls">
+            <h3>📞 Llamadas Salientes</h3>
+            <table v-if="outgoingCallsPatient.length">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in outgoingCallsPatient" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ getType(call.type) }}</td>
+                        <td>{{ call.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p v-else>No hay llamadas registradas para este paciente.</p>
+        </div>
 
     </div>
 </template>
