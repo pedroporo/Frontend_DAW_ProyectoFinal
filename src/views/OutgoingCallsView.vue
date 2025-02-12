@@ -8,8 +8,8 @@ export default {
     data() {
         return {
             llamadasSalientes: [],
-            search: '',
             patients: [],
+            search: '',
             sortKey: '',
             sortOrder: 1,
             sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description", "alarm"],
@@ -29,10 +29,10 @@ export default {
         ...mapState(useUsersStore, ['userNames']),
         ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
-            let filtered = this.llamadasSalientes.filter(call => {
+            let filtered = this.llamadasSalientes.filter(call => async () => {
                 const searchLower = this.search.toLowerCase();
                 return (
-                    this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
+                    await this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
                     this.userNames(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||
@@ -55,12 +55,12 @@ export default {
                             valueB = b.timestamp.split("T")[1];
                             break;
                         case "patient":
-                            valueA = this.getPatientNameSaliente(a.patient_id).toLowerCase();
-                            valueB = this.getPatientNameSaliente(b.patient_id).toLowerCase();
+                            valueA = this.getPatientName(a.patient_id).toLowerCase();
+                            valueB = this.getPatientName(b.patient_id).toLowerCase();
                             break;
                         case "operator":
-                            valueA = this.getUserNameSaliente(a.user_id).toLowerCase();
-                            valueB = this.getUserNameSaliente(b.user_id).toLowerCase();
+                            valueA = this.userNames(a.user_id).toLowerCase();
+                            valueB = this.userNames(b.user_id).toLowerCase();
                             break;
                         case "type":
                             valueA = this.getType(a.type).toLowerCase();
@@ -125,14 +125,13 @@ export default {
                 this.sortOrder = 1;
             }
         },
-
         changeIconSortOrder(){
             return (this.sortOrder === 1 ? '🔼' : (this.sortOrder === -1 ? '🔽' : ''));
+        },
         getPatientName(id) {
             const patient = this.patients.find(patient => patient.id == id);
             return patient ? patient.name + " " + patient.last_name : "Paciente no encontrado";
         }
-
     },
     async mounted() {
         this.llamadasSalientes = await this.fetchCalls();

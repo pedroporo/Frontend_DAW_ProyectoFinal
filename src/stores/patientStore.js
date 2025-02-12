@@ -21,7 +21,7 @@ export const usePatientsStore = defineStore('patients', {
     async getPatientName(id) {
       try {
         const { data } = await axios.get(`${urlPacientes}/${id}`);
-        return data;
+        return data.name;
       } catch (error) {
         alert("Error al obtener paciente:", error);
       }
