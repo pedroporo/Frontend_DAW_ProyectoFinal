@@ -141,6 +141,7 @@ export default {
 <template>
     <div class="calls-history">
         <h2>Historial de Llamadas Entrantes</h2>
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/incomingForm')" class="btn btn-primary">+ Llamada Entrante</button>
         <table class="calls-table">
             <thead>
@@ -207,6 +208,17 @@ export default {
 
 .btn-primary:hover {
     background-color: #0056b3;
+}
+
+/* Input de búsqueda */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
 }
 
 /* Tabla */

@@ -107,7 +107,7 @@ export default {
 <template>
     <div class="content">
         <h2>Lista de Pacientes</h2>
-        <input type="text" class="form-control mb-3" placeholder="Buscar paciente...">
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button class="btn btn-primary" @click="createPatient">Añadir Paciente</button>
         <table class="table">
             <thead>
