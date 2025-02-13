@@ -168,8 +168,8 @@ export default {
                     <td>{{ call.description }}</td>
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
                     <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm">Editar</button>
-                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
