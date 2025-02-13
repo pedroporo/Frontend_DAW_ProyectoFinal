@@ -29,10 +29,10 @@ export default {
         ...mapState(useUsersStore, ['userNames']),
         ...mapState(useAlarmsStore, ['getAlarmName']),
         filteredOutgoingCalls() {
-            let filtered = this.llamadasSalientes.filter(call => async () => {
+            let filtered = this.llamadasSalientes.filter(call => {
                 const searchLower = this.search.toLowerCase();
                 return (
-                    await this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
+                    this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
                     this.userNames(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||
@@ -143,6 +143,7 @@ export default {
 <template>
     <div class="calls-history">
         <h2>Historial de Llamadas Salientes</h2>
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/outgoingForm')" class="btn btn-primary">+ Llamada Saliente</button>
         <table class="calls-table">
             <thead>
@@ -212,6 +213,17 @@ export default {
     background-color: #0056b3;
 }
 
+/* Input de búsqueda */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
 /* Tabla */
 .calls-table {
     width: 100%;
@@ -230,6 +242,10 @@ export default {
 .calls-table th {
     background-color: #f1f1f1;
     font-weight: bold;
+}
+
+.click-order{
+    cursor: pointer;
 }
 
 .calls-table tr:nth-child(even) {

@@ -162,7 +162,7 @@
       "user_id": 2,
       "type": "unplanned",
       "description": "Seguimiento de la emergencia médica del 01/05",
-      "alarm_id": 1
+      "alarm_id": "2"
     },
     {
       "id": "2",
