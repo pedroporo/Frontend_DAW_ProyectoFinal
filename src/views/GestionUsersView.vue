@@ -88,8 +88,8 @@ export default {
                     <td>{{ user.userZones }}</td>
                     <td>{{ user.hire_date }}</td>
                     <td>
-                        <button @click="edit(user.id)" class="btn btn-secondary btn-sm">Editar</button>
-                        <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                        <button @click="edit(user.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                        <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>

@@ -81,7 +81,7 @@ export default {
             }
         },
         changeIconSortOrder(){
-            return (this.sortOrder === 1 ? '🔼' : (this.sortOrder === -1 ? '🔽' : ''));
+            return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
     },
     data() {
@@ -114,7 +114,10 @@ export default {
                 <tr>
                     <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
                         {{ columnNames[key] }}
-                        <span v-if="sortKey === key">{{ changeIconSortOrder() }}</span>
+                        <span v-if="sortKey === key">
+                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                        </span>
                     </th>
                     <th>Contactos</th>
                     <th>Acciones</th>
