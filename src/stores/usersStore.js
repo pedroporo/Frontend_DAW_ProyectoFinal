@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia';
+import { defineStore, mapActions } from 'pinia';
 import axios from 'axios';
+import { useMessagesStore } from './messagesStore';
 
 const urlUsers = "http://localhost:3000/users";
 
@@ -17,12 +18,54 @@ export const useUsersStore = defineStore('users', {
     },
   },
   actions: {
+    ...mapActions(useMessagesStore, ["addMessage"]),
     async getUsers() {
       try {
         const { data } = await axios.get(urlUsers);
         this.users = data;
       } catch (error) {
-        alert("Error al obtener zonas:", error);
+        this.addMessage("Error al obtener los usuarios", "error");
+      }
+    },
+
+    async getUsersById(id) {
+      try {
+        const response = await axios.get(urlUsers + '/' + id);
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al obtener el usuario", "error");
+      }
+    },
+
+    async removeUser(id) {
+      try {
+        await axios.delete(urlUsers + '/' + id);
+        this.addMessage("Usuario eliminado correctamente", "success");
+        return true;
+      } catch (error) {
+        this.addMessage("Error al eliminar el usuario", "error");
+      }
+
+    },
+
+    async addUser(user) {
+      try {
+        const response = await axios.post(urlUsers + '/', user);
+        this.addMessage("Usuario creado correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al crear el usuario", "error");
+      }
+
+    },
+
+    async updateUser(user) {
+      try {
+        const response = await axios.put(urlUsers + '/' + user.id, user);
+        this.addMessage("Usuario actualizado correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al actualizar el usuario", "error");
       }
     }
   }

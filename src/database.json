@@ -73,12 +73,12 @@
       "relationship": "Hija"
     },
     {
-      "id": "8f29",
-      "patient_id": "2",
-      "first_name": "dwadwa",
-      "last_name": "García",
-      "phone": "+34 634567890",
-      "relationship": "Hija"
+      "id": "2",
+      "patient_id": 2,
+      "first_name": "Carlos",
+      "last_name": "López",
+      "phone": "+34 645678901",
+      "relationship": "Hijo"
     }
   ],
   "users": [
@@ -105,6 +105,18 @@
       "password_hash": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
       "hire_date": "2021-03-15",
       "termination_date": null
+    },
+    {
+      "id": "11b6",
+      "first_name": "Ivana",
+      "last_name": "Plamenova",
+      "email": "ivana@gmail.com",
+      "phone": "654789243",
+      "role": "operator",
+      "username": "ivanaaa",
+      "password": "Ivanasasa",
+      "hire_date": "2025-02-15",
+      "zone_id": "5"
     }
   ],
   "users_zones": [
@@ -139,7 +151,7 @@
       "patient_id": 2,
       "user_id": 2,
       "type": "loneliness_crisis",
-      "description": "La paciente se siente sola y necesita hablaraaaa"
+      "description": "La paciente se siente sola y necesita hablar"
     }
   ],
   "outgoing_calls": [
@@ -159,7 +171,7 @@
       "user_id": 2,
       "type": "planned",
       "description": "Llamada de seguimiento semanal",
-      "alarm_id": "1"
+      "alarm_id": 2
     }
   ],
   "alarm_types": [

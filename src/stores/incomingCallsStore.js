@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia'
+import { defineStore, mapActions } from 'pinia'
 import axios from 'axios'
+import { useMessagesStore } from './messagesStore';
 const urlIncomingCalls = "http://localhost:3000/incoming_calls";
 export const useIncomingCallsStore = defineStore('data', {
     state() {
@@ -26,33 +27,52 @@ export const useIncomingCallsStore = defineStore('data', {
     },
 
     actions: {
+        ...mapActions(useMessagesStore, ["addMessage"]),
         async getLlamadasEntrantes() {
-            const response = await axios.get(urlIncomingCalls);
-            return response.data;
+            try {
+                const response = await axios.get(urlIncomingCalls);
+                return response.data;
+            } catch (error) {
+                this.addMessage("Error al obtener las llamadas entrantes", "error");
+            }
         },
 
         async getLlamadasEntrantesId(id) {
-            const response = await axios.get(urlIncomingCalls + '/' + id);
-            return response.data;
+            try {
+                const response = await axios.get(urlIncomingCalls + '/' + id);
+                return response.data;
+            } catch (error) {
+                this.addMessage("Error al obtener la llamada", "error");
+            }
         },
 
         async removeIncomingCall(id) {
-            await axios.delete(urlIncomingCalls + '/' + id);
-            localStorage
-            return true;
+            try {
+                await axios.delete(urlIncomingCalls + '/' + id);
+                this.addMessage("Llamada eliminada correctamente", "success");
+                return true;
+            } catch (error) {
+                this.addMessage("Error al eliminar la llamada", "error");
+            }
         },
 
         async addIncomingCall(call) {
-            const response = await axios.post(urlIncomingCalls + '/', call);
-            return response.data;
+            try {
+                const response = await axios.post(urlIncomingCalls + '/', call);
+                this.addMessage("Llamada guardada correctamente", "success");
+                return response.data;
+            } catch (error) {
+                this.addMessage("Error al guardar la llamada", "error");
+            }
         },
 
         async updateIncomingCall(call) {
             try {
                 const response = await axios.put(urlIncomingCalls + '/' + call.id, call);
+                this.addMessage("Llamada actualizada correctamente", "success");
                 return response.data;
             } catch (error) {
-                console.error(error);
+                this.addMessage("Error al actualizar la llamada", "error");
             }
         }
     }

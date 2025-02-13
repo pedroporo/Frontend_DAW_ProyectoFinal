@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia';
+import { defineStore, mapActions } from 'pinia';
 import axios from 'axios';
+import { useMessagesStore } from './messagesStore';
 
 const urlContacts = "http://localhost:3000/contacts";
 
@@ -18,12 +19,14 @@ export const useContactsStore = defineStore('contacts', {
     }
   },
   actions: {
+    ...mapActions(useMessagesStore, ["addMessage"]),
     async getContacts() {
       try {
         const { data } = await axios.get(urlContacts);
         this.contacts = data;
+        return data;
       } catch (error) {
-        alert("Error al obtener contactos:", error);
+        this.addMessage("Error al obtener contactos", "error");
       }
     },
     async getContact(id) {
@@ -31,31 +34,34 @@ export const useContactsStore = defineStore('contacts', {
         const { data } = await axios.get(`${urlContacts}/${id}`);
         return data;
       } catch (error) {
-        alert("Error al obtener contacto:", error);
+        this.addMessage("Error al obtener contacto", "error");
       }
     },
     async addContact(contact) {
       try {
         const { data } = await axios.post(urlContacts, contact);
         this.contacts.push(data);
+        this.addMessage("Contacto creado correctamente", "success");
       } catch (error) {
-        alert("Error al crear contacto:", error);
+        this.addMessage("Error al crear contacto", "error");
       }
     },
     async updateContact(contact) {
       try {
         const { data } = await axios.put(`${urlContacts}/${contact.id}`, contact);
         this.contacts = this.contacts.map(c => c.id === data.id ? data : c);
+        this.addMessage("Contacto actualizado correctamente", "success");
       } catch (error) {
-        alert("Error al actualizar contacto:", error);
+        this.addMessage("Error al actualizar contacto", "error");
       }
     },
     async deleteContact(id) {
       try {
         await axios.delete(`${urlContacts}/${id}`);
         this.contacts = this.contacts.filter(contact => contact.id !== id);
+        this.addMessage("Contacto eliminado correctamente", "success");
       } catch (error) {
-        alert("Error al eliminar contacto:", error);
+        this.addMessage("Error al eliminar contacto", "error");
       }
     }
   }

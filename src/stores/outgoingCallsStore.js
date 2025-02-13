@@ -18,7 +18,6 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener llamadas", "error");
-        console.error("Error al obtener llamadas:", error);
       }
     },
     async fetchCallsByPatientId(patientId) {
@@ -29,7 +28,6 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener llamadas del paciente", "error");
-        console.error("Error al obtener llamadas del paciente:", error);
       }
     },
     async deleteCall(id) {
@@ -39,7 +37,6 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         return response.data;
       } catch (error) {
         this.addMessage("Error al eliminar la llamada", "error");
-        console.error("Error al eliminar la llamada:", error);
       }
     },
     async addCall(call) {
@@ -49,7 +46,6 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         return response.data;
       } catch (error) {
         this.addMessage("Error al guardar la llamada", "error");
-        console.error("Error al guardar la llamada:", error);
       }
     },
 
@@ -60,7 +56,6 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         return response.data;
       } catch (error) {
         this.addMessage("Error al actualizar la llamada", "error");
-        console.error("Error al actualizar la llamada:", error);
       }
     },
     async getCallById(id) {
@@ -68,7 +63,7 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         const response = await axios.get(SERVER + CALLS + id);
         return response.data;
       } catch (error) {
-        console.error("Error al obtener la llamada:", error);
+        this.addMessage("Error al obtener la llamada", "error");
       }
     },
   },
