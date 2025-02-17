@@ -13,7 +13,6 @@ import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 import PatientForm from '@/components/PatientForm.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import GestionUsersView from '@/views/GestionUsersView.vue'
-import GestionUsersForm from '@/views/GestionUsersForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,11 +83,6 @@ const router = createRouter({
       name: 'gestionUsers',
       component: GestionUsersView
     },
-    {
-      path: '/gestionUsersForm/:id?',
-      name: 'gestionUsersForm',
-      component: GestionUsersForm
-    }
   ],
 })
 

@@ -18,6 +18,6 @@ export const useUserZonesStore = defineStore('usersZones', {
       } catch (error) {
         this.addMessage("Error al obtener zonas", "error");
       }
-    }
+    },
   }
 });

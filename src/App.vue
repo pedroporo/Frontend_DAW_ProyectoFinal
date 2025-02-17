@@ -43,7 +43,7 @@ export default {
         <RouterLink to="/incoming_calls">Llamadas Entrantes</RouterLink>
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink>
         <RouterLink to="/informes">Informes</RouterLink>
-        <RouterLink to="/gestionUsers">Gestión de Operadores</RouterLink>
+        <RouterLink to="/gestionUsers">Listado de Operadores</RouterLink>
         <RouterLink to="/">Cerrar Sesion</RouterLink>
       </nav>
     </div>

@@ -18,7 +18,7 @@ export default {
             return this.users
                 .filter(user => user.role !== "admin")
                 .map(user => {
-                    const userZoneIds = (this.usersZone || [])
+                    const userZoneIds = this.usersZone
                         .filter(uz => Number(uz.user_id) === Number(user.id))
                         .map(uz => Number(uz.zone_id));
 
@@ -28,7 +28,8 @@ export default {
 
                     return {
                         ...user,
-                        userZones: userZones.join(", ") || "Sin zona"
+                        userZones: userZones.length ? userZones.join(", ") : "Sin zona",
+                        zoneIds: userZoneIds 
                     };
                 });
         }
@@ -41,16 +42,6 @@ export default {
         ...mapActions(useZonesStore, ['getZones']),
         ...mapActions(useUserZonesStore, ['getUsersZones']),
 
-        async deleteUser(id) {
-            if (confirm("¿Seguro que quieres borrar este usuario?")) {
-                await this.removeUser(id);
-                this.loadData();
-            }
-        },
-
-        edit(id) {
-            this.$router.push(`/gestionUsersForm/${id}`);
-        },
 
         async loadData() {
             await this.getUsers();
@@ -67,8 +58,7 @@ export default {
 
 <template>
     <div class="calls-history">
-        <h2>Listado de Operadores</h2>
-        <button @click="$router.push('/gestionUsersForm')" class="btn btn-primary">Añadir Usuario</button>
+        <h2>Operadores</h2>
         <table class="calls-table">
             <thead>
                 <tr>
@@ -77,7 +67,6 @@ export default {
                     <th>Telefono</th>
                     <th>Zonas</th>
                     <th>Fecha contratación</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,10 +76,6 @@ export default {
                     <td>{{ user.phone }}</td>
                     <td>{{ user.userZones }}</td>
                     <td>{{ user.hire_date }}</td>
-                    <td>
-                        <button @click="edit(user.id)" class="btn btn-secondary btn-sm">Editar</button>
-                        <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Eliminar</button>
-                    </td>
                 </tr>
             </tbody>
         </table>
