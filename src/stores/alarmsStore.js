@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { defineStore, mapActions } from 'pinia'
 import { useMessagesStore } from './messagesStore'
-const urlAlarms = 'http://localhost:3000/alarms'
+const urlAlarms = 'http://localhost:3000/alarms/'
 export const useAlarmsStore = defineStore('alarms', {
   state: () => ({
     alarmas: [
@@ -40,11 +40,19 @@ export const useAlarmsStore = defineStore('alarms', {
     async getAlarmas() {
       try {
         const response = await axios.get(urlAlarms);
-        this.alarmas = response.data;
+        //this.alarmas = response.data;
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener las alarmas", "error");
       }
-    }
+    },
+    async getAlarmById(id) {
+      try {
+        const response = await axios.get(urlAlarms + id);
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al obtener la alarma", "error");
+      }
+    },
   }
 })
