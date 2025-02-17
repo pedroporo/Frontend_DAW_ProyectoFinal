@@ -40,7 +40,7 @@
       "health_situation": "Hipertensión, diabetes tipo 2",
       "housing_situation": "Apartamento en primer piso, sin ascensor",
       "personal_autonomy": "Independiente para actividades básicas",
-      "economic_situation": "Pensión de jubilaciónn"
+      "economic_situation": "Pensión de jubilación"
     },
     {
       "name": "Aaron",
@@ -79,8 +79,7 @@
       "health_situation": "adwadaw",
       "housing_situation": "dwadawd",
       "personal_autonomy": "awdaw",
-      "economic_situation": "dwadwa",
-      "user_id": "1"
+      "economic_situation": "dwadwa"
     },
     {
       "id": "9fe9",
@@ -167,6 +166,14 @@
       "relationship": "awdawdawdw"
     },
     {
+      "id": "3707",
+      "patient_id": "ee7b",
+      "first_name": "dwadwa",
+      "last_name": "García",
+      "phone": "+34 623456789",
+      "relationship": "Hija"
+    },
+    {
       "id": "258a",
       "patient_id": "9fe9",
       "first_name": "Juan",
@@ -199,12 +206,12 @@
       "relationship": "Hija"
     },
     {
-      "id": "3eb0",
-      "patient_id": "1",
-      "first_name": "dwadwa",
-      "last_name": "García",
-      "phone": "+34 623456789",
-      "relationship": "Hijaaaa"
+      "id": "5838",
+      "patient_id": "9fe9",
+      "first_name": "Ivana",
+      "last_name": "Banana",
+      "phone": "666",
+      "relationship": "Sentimantal"
     }
   ],
   "users": [
@@ -253,39 +260,183 @@
   "incoming_calls": [
     {
       "id": "1",
-      "timestamp": "2023-05-01T10:30:00",
+      "timestamp": "2025-02-01T10:30:00",
       "patient_id": 1,
       "user_id": 2,
       "type": "medical_emergency",
-      "description": "El paciente reporta dolor en el pechoeeeedwee"
+      "description": "El paciente reporta dolor en el pecho"
     },
     {
-      "id": "9aae",
-      "user_id": "1",
-      "patient_id": "e03b",
+      "id": "2",
+      "timestamp": "2025-02-02T14:45:00",
+      "patient_id": 2,
+      "user_id": 2,
       "type": "loneliness_crisis",
-      "description": "dwadadwa",
-      "timestamp": "2025-02-11T19:56:00"
+      "description": "La paciente se siente sola y necesita hablar"
     }
   ],
   "outgoing_calls": [
     {
       "id": "1",
-      "timestamp": "2023-05-03T09:15:00",
+      "timestamp": "2025-02-03T09:15:00",
       "patient_id": 1,
       "user_id": 2,
       "type": "alarm_followup",
-      "description": "Seguimiento de la emergencia médica del 01/05",
+      "description": "Seguimiento de la emergencia médica del 01/02",
       "alarm_id": 1
     },
     {
-      "id": "d948",
+      "id": "2",
+      "timestamp": "2025-02-04T11:00:00",
+      "patient_id": 2,
+      "user_id": 2,
+      "type": "planned",
+      "description": "Llamada de seguimiento semanal",
+      "alarm_id": 2
+    },
+    {
+      "id": "3",
+      "timestamp": "2025-02-02T10:30:00",
+      "patient_id": 3,
+      "user_id": 3,
+      "type": "alarm_followup",
+      "description": "Seguimiento de la emergencia médica del 03/02",
+      "alarm_id": 3
+    },
+    {
+      "id": "4",
+      "timestamp": "2025-02-06T14:45:00",
+      "patient_id": 4,
+      "user_id": 1,
+      "type": "planned",
+      "description": "Llamada de seguimiento de tratamiento",
+      "alarm_id": 4
+    },
+    {
+      "id": "40",
+      "timestamp": "2025-02-06T14:45:00",
+      "patient_id": 4,
+      "user_id": 1,
+      "type": "planned",
+      "description": "Llamada de seguimiento de tratamiento",
+      "alarm_id": 40
+    },
+    {
+      "id": "5",
+      "timestamp": "2025-02-07T09:00:00",
+      "patient_id": 5,
+      "user_id": 4,
+      "type": "alarm_followup",
+      "description": "Seguimiento de la emergencia médica del 06/02",
+      "alarm_id": 5
+    },
+    {
+      "id": "6",
+      "timestamp": "2025-02-08T16:30:00",
+      "patient_id": 6,
+      "user_id": 2,
+      "type": "planned",
+      "description": "Revisión de tratamiento mensual",
+      "alarm_id": 6
+    },
+    {
+      "id": "7",
+      "timestamp": "2025-02-09T10:00:00",
+      "patient_id": 7,
+      "user_id": 3,
+      "type": "alarm_followup",
+      "description": "Revisión de alarma médica",
+      "alarm_id": 3
+    },
+    {
+      "id": "8",
+      "timestamp": "2025-02-10T15:00:00",
+      "patient_id": 8,
+      "user_id": 1,
+      "type": "planned",
+      "description": "Seguimiento de consulta médica",
+      "alarm_id": 4
+    },
+    {
+      "id": "9",
+      "timestamp": "2025-02-11T12:30:00",
+      "patient_id": 9,
+      "user_id": 2,
+      "type": "alarm_followup",
+      "description": "Verificación de cumplimiento de medicación",
+      "alarm_id": 5
+    },
+    {
+      "id": "10",
+      "timestamp": "2025-02-12T09:45:00",
+      "patient_id": 10,
+      "user_id": 4,
+      "type": "planned",
+      "description": "Llamada para ajuste de dosis",
+      "alarm_id": 6
+    },
+    {
+      "id": "11",
+      "timestamp": "2025-02-13T17:00:00",
+      "patient_id": 11,
+      "user_id": 3,
+      "type": "alarm_followup",
+      "description": "Seguimiento de emergencia",
+      "alarm_id": 7
+    },
+    {
+      "id": "12",
+      "timestamp": "2025-02-14T14:20:00",
+      "patient_id": 12,
+      "user_id": 2,
+      "type": "planned",
+      "description": "Consulta programada con el paciente",
+      "alarm_id": 8
+    },
+    {
+      "id": "e50f",
+      "description": "dasdsa",
+      "type": "planned",
+      "patient_id": "e03b",
+      "alarm_id": 7,
       "user_id": "1",
-      "patient_id": "ee7b",
+      "timestamp": "2025-02-17T17:08:00"
+    },
+    {
+      "id": "901f",
+      "type": "planned",
+      "description": "dasd",
+      "alarm_id": 7,
+      "user_id": "1",
+      "patient_id": "e03b",
+      "timestamp": "2025-02-17T17:26:00"
+    },
+    {
+      "id": "7972",
+      "user_id": "2",
+      "patient_id": "9fe9",
+      "type": "planned",
+      "description": "dasdas",
+      "alarm_id": 1,
+      "timestamp": "2025-02-17T17:28:00"
+    },
+    {
+      "id": "940f",
       "type": "unplanned",
-      "description": "dwadwadaw",
-      "alarm_id": "1",
-      "timestamp": "2025-02-11T19:42:00"
+      "description": "dasd",
+      "alarm_id": 4,
+      "user_id": "1",
+      "patient_id": "1",
+      "timestamp": "2025-02-17T17:42:00"
+    },
+    {
+      "id": "964a",
+      "description": "dasda",
+      "alarm_id": 6,
+      "user_id": "1",
+      "type": "planned",
+      "patient_id": "ee7b",
+      "timestamp": "2025-02-17T17:44:00"
     }
   ],
   "alarm_types": [
@@ -311,8 +462,8 @@
       "patient_id": 1,
       "alarm_type_id": 1,
       "type": "medication",
-      "start_date": "2023-05-01",
-      "end_date": null,
+      "start_date": "2025-02-01",
+      "end_date": "2025-02-22",
       "weekday": "monday"
     },
     {
@@ -320,9 +471,72 @@
       "patient_id": 2,
       "alarm_type_id": 3,
       "type": "special_alert",
-      "start_date": "2023-05-02",
-      "end_date": "2023-06-02",
+      "start_date": "2025-02-02",
+      "end_date": "2025-02-20",
       "weekday": "wednesday"
+    },
+    {
+      "id": "3",
+      "patient_id": 3,
+      "alarm_type_id": 2,
+      "type": "appointment",
+      "start_date": "2025-02-10",
+      "end_date": null,
+      "weekday": null
+    },
+    {
+      "id": "4",
+      "patient_id": 4,
+      "alarm_type_id": 4,
+      "type": "checkup",
+      "start_date": "2025-02-22",
+      "end_date": "2025-03-30",
+      "weekday": "friday"
+    },
+    {
+      "id": "40",
+      "patient_id": 4,
+      "alarm_type_id": 4,
+      "type": "checkup",
+      "start_date": "2025-03-01",
+      "end_date": "2025-04-05",
+      "weekday": "friday"
+    },
+    {
+      "id": "5",
+      "patient_id": 5,
+      "alarm_type_id": 5,
+      "type": "reminder",
+      "start_date": "2025-04-05",
+      "end_date": "2025-04-25",
+      "weekday": null
+    },
+    {
+      "id": "6",
+      "patient_id": 6,
+      "alarm_type_id": 6,
+      "type": "medication",
+      "start_date": "2025-05-10",
+      "end_date": null,
+      "weekday": null
+    },
+    {
+      "id": "7",
+      "patient_id": 7,
+      "alarm_type_id": 7,
+      "type": "special_alert",
+      "start_date": "2025-06-01",
+      "end_date": "2025-06-15",
+      "weekday": "tuesday"
+    },
+    {
+      "id": "8",
+      "patient_id": 8,
+      "alarm_type_id": 8,
+      "type": "checkup",
+      "start_date": "2025-07-20",
+      "end_date": "2025-07-30",
+      "weekday": null
     }
   ],
   "preventive_alarms": [
@@ -330,15 +544,15 @@
       "id": "1",
       "zone_id": 1,
       "alarm_type_id": 2,
-      "start_date": "2023-06-01",
-      "end_date": "2023-06-30",
+      "start_date": "2025-06-01",
+      "end_date": "2025-06-30",
       "description": "Campaña de vacunación contra la gripe"
     },
     {
       "id": "2",
       "zone_id": 2,
       "alarm_type_id": 3,
-      "start_date": "2023-07-01",
+      "start_date": "2025-07-01",
       "end_date": null,
       "description": "Programa de seguimiento para pacientes con diabetes"
     }
@@ -347,14 +561,14 @@
     {
       "id": "1",
       "patient_id": 1,
-      "timestamp": "2023-05-01T10:30:00",
+      "timestamp": "2025-05-01T10:30:00",
       "type": "emergency",
       "description": "Atendido por dolor en el pecho, derivado a urgencias"
     },
     {
       "id": "2",
       "patient_id": 2,
-      "timestamp": "2023-05-02T14:45:00",
+      "timestamp": "2025-05-02T14:45:00",
       "type": "followup",
       "description": "Llamada de seguimiento por crisis de soledad, se programa visita del trabajador social"
     }
