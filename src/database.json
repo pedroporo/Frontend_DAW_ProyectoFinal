@@ -99,7 +99,7 @@
       "first_name": "Regular",
       "last_name": "User",
       "email": "user@example.com",
-      "phone": "+34 689012345",
+      "phone": "689012345",
       "role": "user",
       "username": "regular_user",
       "password_hash": "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
@@ -107,16 +107,26 @@
       "termination_date": null
     },
     {
-      "id": "11b6",
+      "id": "4101",
       "first_name": "Ivana",
-      "last_name": "Plamenova",
+      "last_name": "Pla",
       "email": "ivana@gmail.com",
-      "phone": "654789243",
-      "role": "operator",
-      "username": "ivanaaa",
-      "password": "Ivanasasa",
-      "hire_date": "2025-02-15",
-      "zone_id": "5"
+      "phone": "639852741",
+      "role": "user",
+      "username": "ivana",
+      "password": "159987452632",
+      "hire_date": "2025-02-20"
+    },
+    {
+      "id": "13e4",
+      "first_name": "hola",
+      "last_name": "hola",
+      "email": "hola@gmial.com",
+      "phone": "698521485",
+      "role": "user",
+      "username": "iloi",
+      "password": "234235454",
+      "hire_date": "2025-02-20"
     }
   ],
   "users_zones": [
@@ -134,6 +144,26 @@
       "id": "3",
       "user_id": 2,
       "zone_id": 3
+    },
+    {
+      "id": "ae99",
+      "user_id": "2",
+      "zone_id": "3"
+    },
+    {
+      "id": "c21b",
+      "user_id": "4101",
+      "zone_id": "4"
+    },
+    {
+      "id": "dc66",
+      "user_id": "4101",
+      "zone_id": "3"
+    },
+    {
+      "id": "6fce",
+      "user_id": "13e4",
+      "zone_id": "5"
     }
   ],
   "incoming_calls": [
