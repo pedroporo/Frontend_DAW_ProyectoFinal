@@ -13,6 +13,13 @@ export default {
         Form,
         ErrorMessage
     },
+    props: {
+        id: {
+            type: String,
+            required: false
+        }
+    },
+    emits: ['cancel'],
     data() {
         return {
             patients: [],
@@ -36,7 +43,7 @@ export default {
         ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
         async loadForm() {
-            const llamadaId = this.$route.params.id
+            const llamadaId = this.id;
             if (llamadaId) {
                 this.isEdit = true
                 this.llamada = await this.getCallById(llamadaId);
@@ -56,7 +63,7 @@ export default {
             } else {
                 await this.addCall(this.llamada);
             }
-            this.$router.back();
+            this.redirectAfterAction();
         },
 
         formatDateTime(timestamp) {
@@ -66,6 +73,19 @@ export default {
             this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
         },
 
+        handleCancel() {
+            this.redirectAfterAction();
+        },
+
+        redirectAfterAction() {
+            const currentRoute = this.$route.path;
+            if (currentRoute.startsWith('/patient/')) {
+                this.$router.push(currentRoute);
+                this.$emit('cancel')
+            } else {
+                this.$router.push('/outgoing_calls');
+            }
+        }
     },
 
     async mounted() {
@@ -153,7 +173,7 @@ export default {
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.back()">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
         </div>
     </Form>
 </template>
