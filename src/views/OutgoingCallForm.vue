@@ -13,6 +13,12 @@ export default {
         Form,
         ErrorMessage
     },
+    props: {
+        id: {
+            type: String,
+            required: false
+        }
+    },
     data() {
         return {
             patients: [],
@@ -36,7 +42,7 @@ export default {
         ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
         async loadForm() {
-            const llamadaId = this.$route.params.id
+            const llamadaId = this.id;
             if (llamadaId) {
                 this.isEdit = true
                 this.llamada = await this.getCallById(llamadaId);
