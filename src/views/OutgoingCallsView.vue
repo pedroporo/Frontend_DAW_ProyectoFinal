@@ -4,6 +4,7 @@ import { useAlarmsStore } from "@/stores/alarmsStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { usePatientsStore } from "@/stores/patientStore";
 import { useOutgoingCallsStore } from "@/stores/outgoingCallsStore";
+import { useIncomingCallsStore } from "@/stores/incomingCallsStore";
 export default {
     data() {
         return {
@@ -88,6 +89,7 @@ export default {
     },
     methods: {
         ...mapActions(useOutgoingCallsStore, ['fetchCalls', 'deleteCall']),
+        ...mapActions(useIncomingCallsStore, ['formatDateTime']),
         ...mapActions(usePatientsStore, ['getPatients']),
         deleteOutgoingCall(id) {
             if (confirm("¿Seguro que quieres borrar esta llamada?")) {
@@ -95,15 +97,6 @@ export default {
                     this.llamadasSalientes = this.llamadasSalientes.filter(llamada => llamada.id != id);
                 }
             }
-        },
-
-        formatDateTime(timestamp) {
-            if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
-
-            const fecha = timestamp.split("T")[0];
-            const hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
-
-            return { fecha, hora };
         },
 
         getType: call => call ? 'Planificada' : 'No planificada',

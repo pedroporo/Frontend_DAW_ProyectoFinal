@@ -173,7 +173,7 @@ export default {
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="handleCancel">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
         </div>
     </Form>
 </template>
