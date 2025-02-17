@@ -66,6 +66,17 @@ const router = createRouter({
       component: OutgoingCallsView
     },
     {
+      path: '/outgoingForm',
+      name: 'outgoingFormAdd',
+      component: OutgoingCallForm,
+    },
+    {
+      path: '/outgoingForm/:id',
+      name: 'outgoingFormEdit',
+      component: OutgoingCallForm,
+      props: true
+    },
+    {
       path: '/incomingForm/:id?',
       name: 'incomingForm',
       component: IncomingCallForm
