@@ -19,6 +19,7 @@ export default {
             required: false
         }
     },
+    emits: ['cancel'],
     data() {
         return {
             patients: [],
@@ -62,7 +63,7 @@ export default {
             } else {
                 await this.addCall(this.llamada);
             }
-            this.$router.push('/outgoing_calls');
+            this.redirectAfterAction();
         },
 
         formatDateTime(timestamp) {
@@ -72,6 +73,19 @@ export default {
             this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
         },
 
+        handleCancel() {
+            this.redirectAfterAction();
+        },
+
+        redirectAfterAction() {
+            const currentRoute = this.$route.path;
+            if (currentRoute.startsWith('/patient/')) {
+                this.$router.push(currentRoute);
+                this.$emit('cancel')
+            } else {
+                this.$router.push('/outgoing_calls');
+            }
+        }
     },
 
     async mounted() {
@@ -159,7 +173,7 @@ export default {
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="handleCancel">Cancelar</button>
         </div>
     </Form>
 </template>
