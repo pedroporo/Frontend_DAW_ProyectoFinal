@@ -5,7 +5,12 @@ import { useContactsStore } from '@/stores/contactStore';
 import { useZonesStore } from '@/stores/zonesStore';
 import { useIncomingCallsStore } from '@/stores/incomingCallsStore';
 import { useOutgoingCallsStore } from '@/stores/outgoingCallsStore';
+import Calendar from './Calendar.vue';
+
 export default {
+    components: {
+        Calendar
+    },
     computed: {
         ...mapState(useContactsStore, ['contactNames']),
         ...mapState(useZonesStore, ['zonesNames']),
@@ -153,7 +158,7 @@ export default {
             </table>
             <p v-else>No hay llamadas registradas para este paciente.</p>
         </div>
-
+        <calendar :id="this.$route.params.id"/>
     </div>
 </template>
 
