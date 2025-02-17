@@ -67,6 +67,9 @@ export default {
       if (confirm('Estas seguro de eliminar el contacto?')) {
         await this.deleteContact(id);
       }
+    },
+    viewContact(id) {
+      this.$router.push(`/contact/${id}`);
     }
   },
   async mounted() {
@@ -158,6 +161,7 @@ export default {
             {{ contact.name }}
             <button @click="editContact(contact.id)" class="btn btn-primary">Editar</button>
             <button @click="removeContact(contact.id)" class="btn btn-danger">Eliminar</button>
+            <button @click="viewContact(contact.id)">Info</button>
           </li>
         </ul>
       </div>

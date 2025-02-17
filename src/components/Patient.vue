@@ -2,17 +2,26 @@
 import { mapActions, mapState } from 'pinia';
 import { usePatientsStore } from '@/stores/patientStore';
 import { useContactsStore } from '@/stores/contactStore';
+import { useZonesStore } from '@/stores/zonesStore';
+import { useIncomingCallsStore } from '@/stores/incomingCallsStore';
+import { useOutgoingCallsStore } from '@/stores/outgoingCallsStore';
 export default {
     computed: {
-        ...mapState(useContactsStore, ['contactNames'])
+        ...mapState(useContactsStore, ['contactNames']),
+        ...mapState(useZonesStore, ['zonesNames']),
+        ...mapState(useIncomingCallsStore, ['tiposLlamada']),
     },
     data() {
         return {
             patient: [],
+            callsPatient: [],
+            outgoingCallsPatient: []
         }
     },
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
+        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada','removeIncomingCall']),
+        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -24,12 +33,33 @@ export default {
                 await this.removePatient(id);
                 this.$router.push({ name: 'patients' });
             }
+        },
+        getType: call => call ? 'Planificada' : 'No planificada',
+        editIncomingCall(id) {
+            this.$router.push(`/incomingForm/${id}`);
+        },
+        deleteIncomingCall(id) {
+            if (confirm('Estas seguro de eliminar la llamada?')) {
+                this.removeIncomingCall(id);
+                this.callsPatient = this.callsPatient.filter(call => call.id != id);
+            }
+        },
+        editOutgoingCall(id) {
+            this.$router.push(`/outgoingForm/${id}`);
+        },
+        deleteOutgoingCall(id) {
+            if (confirm('Estas seguro de eliminar la llamada?')) {
+                this.deleteCall(id);
+                this.outgoingCallsPatient = this.outgoingCallsPatient.filter(call => call.id != id);
+            }
         }
     },
     async mounted() {
         const id = this.$route.params.id;
         if (id) {
             this.patient = await this.getPatient(id);
+            this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
+            this.outgoingCallsPatient = await this.fetchCallsByPatientId(id);
         }
     }
 }
@@ -55,7 +85,7 @@ export default {
                         ? contactNames(patient.id).map(contact => contact.name).join(', ')
                         : 'Sin contacto' }}
                 </div>
-                <div class="detail"><strong>Zona:</strong> {{ patient.zone_id }}</div>
+                <div class="detail"><strong>Zona:</strong> {{ zonesNames(patient.zone_id) }}</div>
                 <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation }}</div>
                 <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}</div>
                 <div class="detail"><strong>Situación Vivienda:</strong> {{ patient.housing_situation }}</div>
@@ -69,6 +99,61 @@ export default {
                 <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
             </div>
         </div>
+        <div class="patient-calls">
+            <h3>📞 Llamadas Entrantes</h3>
+            <table v-if="callsPatient.length">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in callsPatient" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ translateTipoLlamada(call.type) }}</td>
+                        <td>{{ call.description }}</td>
+                        <td>
+                            <button @click="editIncomingCall(call.id)">Editar</button>
+                            <button @click="deleteIncomingCall(call.id)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p v-else>No hay llamadas registradas para este paciente.</p>
+        </div>
+        <div class="patient-calls">
+            <h3>📞 Llamadas Salientes</h3>
+            <table v-if="outgoingCallsPatient.length">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in outgoingCallsPatient" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ getType(call.type) }}</td>
+                        <td>{{ call.description }}</td>
+                        <td>
+                            <button @click="editOutgoingCall(call.id)">Editar</button>
+                            <button @click="deleteOutgoingCall(call.id)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p v-else>No hay llamadas registradas para este paciente.</p>
+        </div>
+
     </div>
 </template>
 
