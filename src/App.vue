@@ -17,12 +17,19 @@ export default {
       return useRoute();
     }
   },
-
+  data() {
+    return {
+      isNavVisible: false
+    };
+  },
   methods: {
     ...mapActions(useAlarmsStore, ['getAlarmas']),
     ...mapActions(useContactsStore, ['getContacts']),
     ...mapActions(useZonesStore, ['getZones']),
-    ...mapActions(useUsersStore, ['getUsers'])
+    ...mapActions(useUsersStore, ['getUsers']),
+    toggleNav() {
+      this.isNavVisible = !this.isNavVisible;
+    }
   },
   async mounted() {
     await this.getUsers();
@@ -37,7 +44,8 @@ export default {
   <header>
     <div class="sidebar" v-if="route.path !== '/login'">
       <h1>Teleasistencia</h1>
-      <nav class="nav">
+      <button @click="toggleNav" class="toggle-nav-btn"><i class="bi bi-list"></i></button>
+      <nav class="nav" :class="{ 'nav-visible': isNavVisible }">
         <RouterLink to="/">Mi Cuenta</RouterLink>
         <RouterLink to="/patients">Lista de Pacientes</RouterLink>
         <RouterLink to="/incoming_calls">Llamadas Entrantes</RouterLink>
@@ -48,12 +56,11 @@ export default {
       </nav>
     </div>
   </header>
-  <div class="main-content">
+  <div class="main-content-app">
     <AppMessages />
     <RouterView />
   </div>
 </template>
-
 
 <style scoped>
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css");
@@ -78,6 +85,16 @@ h1 {
     margin-bottom: 20px;
 }
 
+.toggle-nav-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px; /* Increased font size */
+  cursor: pointer;
+  padding: 0;
+  display: none; /* Ocultar por defecto */
+}
+
 /* Navegación */
 nav {
     display: flex;
@@ -100,8 +117,43 @@ nav a:hover {
 }
 
 /* Contenido principal con margen para que no se solape con el sidebar */
-.main-content {
+.main-content-app {
     margin-left: 250px;
     padding: 20px;
+}
+
+/* Estilos para vista móvil */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        box-shadow: none;
+    }
+
+    .toggle-nav-btn {
+        display: block; /* Mostrar botón en pantallas pequeñas */
+    }
+
+    nav {
+        display: none; /* Ocultar navegación por defecto en pantallas pequeñas */
+    }
+
+    nav.nav-visible {
+        display: flex; /* Mostrar navegación cuando isNavVisible es true */
+        flex-direction: column;
+        width: 100%;
+    }
+
+    nav a {
+        margin: 5px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .main-content-app {
+        margin-left: 0;
+        padding: 10px;
+    }
 }
 </style>
