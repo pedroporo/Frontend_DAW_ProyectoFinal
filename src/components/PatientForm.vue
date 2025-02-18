@@ -34,7 +34,6 @@ export default {
       personal_situation: yup.string().required('La situación personal es requerida'),
       health_situation: yup.string().required('La situación de salud es requerida'),
       housing_situation: yup.string().required('La situación de vivienda es requerida'),
-      housing_type: yup.string().required('El tipo de vivienda es requerido'),
       personal_autonomy: yup.string().required('La autonomía personal es requerida'),
       economic_situation: yup.string().required('La situación económica es requerida')
     });

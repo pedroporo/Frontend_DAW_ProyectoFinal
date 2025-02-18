@@ -40,7 +40,7 @@
       "health_situation": "Hipertensión, diabetes tipo 2",
       "housing_situation": "Apartamento en primer piso, sin ascensor",
       "personal_autonomy": "Independiente para actividades básicas",
-      "economic_situation": "Pensión de jubilaciónn"
+      "economic_situation": "Pensión de jubilación"
     },
     {
       "name": "Aaron",
@@ -205,6 +205,14 @@
       "last_name": "García",
       "phone": "+34 623456789",
       "relationship": "Hijaaaa"
+    },
+    {
+      "id": "5188",
+      "patient_id": "1",
+      "first_name": "dwadwa",
+      "last_name": "García",
+      "phone": "689012345",
+      "relationship": "123"
     }
   ],
   "users": [
@@ -266,6 +274,14 @@
       "type": "loneliness_crisis",
       "description": "dwadadwa",
       "timestamp": "2025-02-11T19:56:00"
+    },
+    {
+      "id": "d448",
+      "patient_id": "e03b",
+      "user_id": "2",
+      "type": "accidental",
+      "description": "dwadwadwa",
+      "timestamp": "2025-02-18T15:13:00"
     }
   ],
   "outgoing_calls": [
@@ -274,7 +290,7 @@
       "timestamp": "2023-05-03T09:15:00",
       "patient_id": 1,
       "user_id": 2,
-      "type": "alarm_followup",
+      "type": "planned",
       "description": "Seguimiento de la emergencia médica del 01/05",
       "alarm_id": 1
     },
@@ -286,6 +302,15 @@
       "description": "dwadwadaw",
       "alarm_id": "1",
       "timestamp": "2025-02-11T19:42:00"
+    },
+    {
+      "id": "6dc6",
+      "user_id": "2",
+      "patient_id": "e03b",
+      "type": "planned",
+      "description": "dwadawdaw",
+      "alarm_id": "2",
+      "timestamp": "2025-02-18T15:13:00"
     }
   ],
   "alarm_types": [
