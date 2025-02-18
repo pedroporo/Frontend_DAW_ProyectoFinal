@@ -119,7 +119,7 @@ export default {
             }
         },
         changeIconSortOrder(){
-            return (this.sortOrder === 1 ? '🔼' : (this.sortOrder === -1 ? '🔽' : ''));
+            return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
         getPatientName(id) {
             const patient = this.patients.find(patient => patient.id == id);
@@ -136,13 +136,17 @@ export default {
 <template>
     <div class="calls-history">
         <h2>Historial de Llamadas Salientes</h2>
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/outgoingForm')" class="btn btn-primary">+ Llamada Saliente</button>
         <table class="calls-table">
             <thead>
                 <tr>
                     <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
                         {{ columnNames[key] }}
-                        <span v-if="sortKey === key">{{ changeIconSortOrder() }}</span>
+                        <span v-if="sortKey === key">
+                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                        </span>
                     </th>
                     <th>Acciones</th>
                 </tr>
@@ -157,8 +161,8 @@ export default {
                     <td>{{ call.description }}</td>
                     <td>{{ getAlarmName(call.alarm_id) }}</td>
                     <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm">Editar</button>
-                        <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -205,6 +209,17 @@ export default {
     background-color: #0056b3;
 }
 
+/* Input de búsqueda */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
 /* Tabla */
 .calls-table {
     width: 100%;
@@ -223,6 +238,10 @@ export default {
 .calls-table th {
     background-color: #f1f1f1;
     font-weight: bold;
+}
+
+.click-order{
+    cursor: pointer;
 }
 
 .calls-table tr:nth-child(even) {

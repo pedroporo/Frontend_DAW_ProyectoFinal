@@ -205,7 +205,7 @@ export default {
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" @click="$router.back()" class="btn btn-secondary">Volver</button>
+        <button type="button" @click="$router.back()" class="btn btn-danger">Cancelar</button>
         <button @click="addContact(patient.id)" class="btn btn-primary" v-if="isEditing">Añadir Contacto</button>
       </div>
     </Form>
@@ -213,6 +213,11 @@ export default {
 </template>
 
 <style scoped>
+button[type="button"].btn-danger {
+  background-color: #f44336;
+  color: white;
+}
+
 .error-message {
   color: red;
 }
@@ -277,7 +282,7 @@ textarea {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-danger {
   padding: 12px 20px;
   border-radius: 5px;
   font-size: 16px;

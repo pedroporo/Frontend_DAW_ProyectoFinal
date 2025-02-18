@@ -10,13 +10,24 @@ export default {
             llamadasEntrantes: [],
             search: '',
             patients: [],
+            sortKey: '',
+            sortOrder: 1,
+            sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description"],
+            columnNames: {
+                fecha: "Fecha",
+                hora: "Hora",
+                patient: "Paciente",
+                operator: "Operador",
+                type: "Tipo",
+                description: "Descripción",
+            }
         };
     },
     computed: {
         ...mapState(useIncomingCallsStore, ['tiposLlamada']),
         ...mapState(useUsersStore, ['userNames']),
         filteredIncomingCalls() {
-            return this.llamadasEntrantes.filter(call => {
+            let filtered = this.llamadasEntrantes.filter(call => {
                 const searchLower = this.search.toLowerCase();
                 // Filtra por Nombre del paciente, teleoperador, tipo de llamada, fecha, hora y descripción
                 return (
@@ -27,6 +38,45 @@ export default {
                     call.description.toLowerCase().includes(searchLower)
                 );
             });
+        
+            if (this.sortKey) {
+                filtered.sort((a, b) => {
+                    let valueA, valueB;
+
+                    switch (this.sortKey) {
+                        case "fecha":
+                            valueA = a.timestamp.split("T")[0];
+                            valueB = b.timestamp.split("T")[0];
+                            break;
+                        case "hora":
+                            valueA = a.timestamp.split("T")[1];
+                            valueB = b.timestamp.split("T")[1];
+                            break;
+                        case "patient":
+                            valueA = this.getPatientName(a.patient_id).toLowerCase();
+                            valueB = this.getPatientName(b.patient_id).toLowerCase();
+                            break;
+                        case "operator":
+                            valueA = this.userNames(a.user_id).toLowerCase();
+                            valueB = this.userNames(b.user_id).toLowerCase();
+                            break;
+                        case "type":
+                            valueA = this.translateTipoLlamada(a.type).toLowerCase();
+                            valueB = this.translateTipoLlamada(b.type).toLowerCase();
+                            break;
+                        case "description":
+                            valueA = a.description.toLowerCase();
+                            valueB = b.description.toLowerCase();
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    return valueA.localeCompare(valueB) * this.sortOrder;
+                });
+            }
+
+            return filtered;
         }
     },
     methods: {
@@ -41,6 +91,22 @@ export default {
         },
         edit(id) {
             this.$router.push(`/incomingForm/${id}`);
+        },
+        sortBy(key) {
+            if (this.sortKey === key) {
+                if (this.sortOrder === 1) {
+                    this.sortOrder = -1;
+                } else if (this.sortOrder === -1) {
+                    this.sortKey = '';
+                    this.sortOrder = 1;
+                }
+            } else {
+                this.sortKey = key;
+                this.sortOrder = 1;
+            }
+        },
+        changeIconSortOrder(){
+            return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
         getPatientName(id) {
             const patient = this.patients.find(patient => patient.id == id);
@@ -58,16 +124,18 @@ export default {
 <template>
     <div class="calls-history">
         <h2>Historial de Llamadas Entrantes</h2>
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/incomingForm')" class="btn btn-primary">+ Llamada Entrante</button>
         <table class="calls-table">
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Paciente</th>
-                    <th>Operador</th>
-                    <th>Tipo</th>
-                    <th>Descripción</th>
+                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                        {{ columnNames[key] }}
+                        <span v-if="sortKey === key">
+                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                        </span>
+                    </th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -80,8 +148,8 @@ export default {
                     <td>{{ translateTipoLlamada(call.type) }}</td>
                     <td>{{ call.description }}</td>
                     <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm">Editar</button>
-                        <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                        <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -128,6 +196,17 @@ export default {
     background-color: #0056b3;
 }
 
+/* Input de búsqueda */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
 /* Tabla */
 .calls-table {
     width: 100%;
@@ -146,6 +225,10 @@ export default {
 .calls-table th {
     background-color: #f1f1f1;
     font-weight: bold;
+}
+
+.click-order{
+    cursor: pointer;
 }
 
 .calls-table tr:nth-child(even) {

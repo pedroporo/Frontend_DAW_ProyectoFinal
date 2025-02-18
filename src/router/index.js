@@ -13,6 +13,8 @@ import Contact from '@/components/Contact.vue'
 
 import PatientForm from '@/components/PatientForm.vue'
 import ContactForm from '@/components/ContactForm.vue'
+import GestionUsersView from '@/views/GestionUsersView.vue'
+import GestionUsersForm from '@/views/GestionUsersForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,10 +75,20 @@ const router = createRouter({
       name: 'outgoingForm',
       component: OutgoingCallForm
     },
-      {
-        path: '/contactForm/:id?/:edit?',
+    {
+      path: '/contactForm/:id?/:edit?',
       name: 'contactForm',
       component: ContactForm
+    },
+    {
+      path: '/gestionUsers',
+      name: 'gestionUsers',
+      component: GestionUsersView
+    },
+    {
+      path: '/gestionUsersForm/:id?',
+      name: 'gestionUsersForm',
+      component: GestionUsersForm
     },
     {
       path: '/contact/:id?',

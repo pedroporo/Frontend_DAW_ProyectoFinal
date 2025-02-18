@@ -9,7 +9,7 @@ export default {
         ...mapState(useContactsStore, ['contactNames']),
         ...mapState(useUsersStore, ['userNames']),
         filteredPatients() {
-            return this.patients.filter(p => {
+            let filtered = this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
                 //Filtra por nombre completo, cumpleaños, ubicación, dni, tarjeta sanitaria, telefono, e-mail y sus situaciones
                 return (
@@ -30,6 +30,32 @@ export default {
                     p.economic_situation.toLowerCase().includes(searchLower)
                 );
             });
+            if (this.sortKey) {
+                filtered.sort((a, b) => {
+                    let valueA, valueB;
+
+                    switch (this.sortKey) {
+                        case "name":
+                            valueA = (a.name).toLowerCase();
+                            valueB = (b.name).toLowerCase();
+                            break;
+                        case "operator":
+                            valueA = this.userNames(a.user_id).toLowerCase();
+                            valueB = this.userNames(b.user_id).toLowerCase();
+                            break;
+                        case "phone":
+                            valueA = a.phone.toLowerCase();
+                            valueB = b.phone.toLowerCase();
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    return valueA.localeCompare(valueB) * this.sortOrder;
+                });
+            }
+
+            return filtered;
         }
 
     },
@@ -40,12 +66,36 @@ export default {
         },
         createPatient() {
             this.$router.push({ name: 'patientForm' });
-        }
+        },
+        sortBy(key) {
+            if (this.sortKey === key) {
+                if (this.sortOrder === 1) {
+                    this.sortOrder = -1;
+                } else if (this.sortOrder === -1) {
+                    this.sortKey = '';
+                    this.sortOrder = 1;
+                }
+            } else {
+                this.sortKey = key;
+                this.sortOrder = 1;
+            }
+        },
+        changeIconSortOrder(){
+            return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
+        },
     },
     data() {
         return {
             patients: [],
             search: '',
+            sortKey: '',
+            sortOrder: 1,
+            sortableColumns: ["name", "phone", "operator"],
+            columnNames: {
+                name: "Nombre",
+                phone: "Teléfono",
+                operator: "Operador",
+            }
         }
     },
     async mounted() {
@@ -57,15 +107,19 @@ export default {
 <template>
     <div class="content">
         <h2>Lista de Pacientes</h2>
-        <input type="text" class="form-control mb-3" placeholder="Buscar paciente...">
+        <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button class="btn btn-primary" @click="createPatient">Añadir Paciente</button>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Operador</th>
-                    <th>Contacto</th>
+                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                        {{ columnNames[key] }}
+                        <span v-if="sortKey === key">
+                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                        </span>
+                    </th>
+                    <th>Contactos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -139,6 +193,10 @@ export default {
 .table th {
     background-color: #f1f1f1;
     font-weight: bold;
+}
+
+.click-order{
+    cursor: pointer; 
 }
 
 .table tr:nth-child(even) {

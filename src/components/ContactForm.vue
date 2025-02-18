@@ -87,8 +87,8 @@ export default {
                 <button type="submit" class="btn btn-primary">
                     {{ isEditing ? 'Actualizar Contacto' : 'Añadir Contacto' }}
                 </button>
-                <button type="button" @click="$router.back()" class="btn btn-secondary">
-                    Volver
+                <button type="button" @click="$router.back()" class="btn btn-danger">
+                    Cancelar
                 </button>
             </div>
         </form>
@@ -153,7 +153,7 @@ input:focus {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-danger {
     width: 100%;
     padding: 12px;
     border: none;
@@ -162,6 +162,15 @@ input:focus {
     cursor: pointer;
     transition: background 0.3s ease-in-out;
     margin-top: 10px;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f;
 }
 
 .btn-primary {

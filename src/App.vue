@@ -43,12 +43,13 @@ export default {
         <RouterLink to="/incoming_calls">Llamadas Entrantes</RouterLink>
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink>
         <RouterLink to="/informes">Informes</RouterLink>
-        <RouterLink to="/">Gestión de Operadores</RouterLink>
+        <RouterLink to="/gestionUsers">Gestión de Operadores</RouterLink>
         <RouterLink to="/">Cerrar Sesion</RouterLink>
       </nav>
     </div>
   </header>
   <div class="main-content">
+    <AppMessages />
     <RouterView />
   </div>
 </template>
