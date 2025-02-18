@@ -17,6 +17,10 @@ export default {
         id: {
             type: String,
             required: false
+        },
+        currentDate: {
+            type: String,
+            required: false
         }
     },
     emits: ['cancel'],
@@ -69,7 +73,7 @@ export default {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = timestamp.split("T")[0];
+            this.fecha = this.currentDate || timestamp.split("T")[0];
             this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
         },
 
