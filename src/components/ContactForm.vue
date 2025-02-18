@@ -1,16 +1,29 @@
 <script>
 import { mapActions, mapState } from 'pinia';
 import { useContactsStore } from '@/stores/contactStore';
-
+import * as yup from 'yup';
+import { ErrorMessage, Field, Form } from 'vee-validate';
 export default {
+    components: {
+        Field,
+        ErrorMessage,
+        Form
+    },
     name: 'ContactForm',
     computed: {
     },
     data() {
+        const schema = yup.object({
+            first_name: yup.string().required('El nombre es requerido'),
+            last_name: yup.string().required('Los apellidos son requeridos'),
+            phone: yup.string().matches(/^\d{9}$/, 'El teléfono debe tener 9 dígitos').required('El teléfono es requerido'),
+            relationship: yup.string().required('La relación es requerida')
+        })
         return {
             contact: {
             },
-            isEditing: false
+            isEditing: false,
+            schema
         };
     },
     methods: {
@@ -49,22 +62,26 @@ export default {
 <template>
     <div class="content">
         <h2>{{ isEditing ? 'Editar Contacto' : 'Nuevo Contacto' }}</h2>
-        <form @submit.prevent="addOrUpdateContact">
+        <Form @submit="addOrUpdateContact" :validation-schema="schema">
             <div class="form-group">
                 <label for="first_name">Nombre</label>
-                <input type="text" id="first_name" v-model="contact.first_name" class="form-control" />
+                <Field type="text" id="first_name" name="first_name" v-model="contact.first_name" class="form-control" />
+                <ErrorMessage name="first_name" class="error-message" />
             </div>
             <div class="form-group">
                 <label for="last_name">Apellidos</label>
-                <input type="text" id="last_name" v-model="contact.last_name" class="form-control" />
+                <Field type="text" id="last_name" name="last_name" v-model="contact.last_name" class="form-control" />
+                <ErrorMessage name="last_name" class="error-message" />
             </div>
             <div class="form-group">
                 <label for="phone">Teléfono</label>
-                <input type="tel" id="phone" v-model="contact.phone" class="form-control" />
+                <Field type="tel" id="phone" name="phone" v-model="contact.phone" class="form-control" />
+                <ErrorMessage name="phone" class="error-message" />
             </div>
             <div class="form-group">
                 <label for="relationship">Relación</label>
-                <input type="text" id="relationship" v-model="contact.relationship" class="form-control" />
+                <Field type="text" id="relationship" name="relationship" v-model="contact.relationship" class="form-control" />
+                <ErrorMessage name="relationship" class="error-message" />
             </div>
             <div class="form-buttons">
                 <button type="submit" class="btn btn-primary">
@@ -164,6 +181,10 @@ input:focus {
 
 .btn-secondary:hover {
     background-color: #e2e2e2;
+}
+
+.error-message {
+  color: red;
 }
 
 @media (max-width: 768px) {
