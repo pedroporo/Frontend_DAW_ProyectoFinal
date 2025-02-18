@@ -75,11 +75,11 @@ jobs:
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.ADMIN }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          cd /var/www/front
+          sudo chown deployer:www-data /var/www/front -R
 
     
 
