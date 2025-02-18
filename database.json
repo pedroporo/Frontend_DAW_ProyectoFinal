@@ -43,65 +43,24 @@
       "economic_situation": "Pensión de jubilación"
     },
     {
+      "id": "a32a",
       "name": "Aaron",
-      "last_name": "López",
-      "birth_date": "2024-12-02",
-      "address": "Avenida de la Constitución 45",
-      "city": "Barcelona",
-      "postal_code": "08001",
-      "dni": "23912111T",
-      "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
-      "zone_id": "2",
-      "personal_situation": "dwadwa",
-      "health_situation": "dwadwaddwadwa",
-      "housing_situation": "awdwadaw",
-      "personal_autonomy": "dwadawdwad",
-      "economic_situation": "awdwadaw",
-      "id": "e03b",
-      "user_id": "2"
-    },
-    {
-      "id": "ee7b",
-      "name": "xd",
-      "last_name": "dwadaw",
-      "birth_date": "2025-01-15",
-      "address": "Avenida de la Constitución 45",
-      "city": "Barcelona",
-      "postal_code": "08001",
-      "dni": "23912111T",
-      "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
-      "zone_id": "2",
-      "personal_situation": "dwad",
-      "health_situation": "adwadaw",
-      "housing_situation": "dwadawd",
-      "personal_autonomy": "awdaw",
-      "economic_situation": "dwadwa",
-      "user_id": "1"
-    },
-    {
-      "id": "9fe9",
-      "name": "María",
       "last_name": "García",
-      "birth_date": "2024-12-31",
+      "birth_date": "2025-02-05",
       "address": "Avenida de la Constitución 45",
       "city": "Barcelona",
       "postal_code": "08001",
-      "dni": "23912111T",
+      "dni": "87654321B",
       "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
+      "phone": "666666666",
+      "email": "Cormier-Cole@manager.com",
       "zone_id": "2",
-      "user_id": "2",
-      "personal_situation": "dwadwa",
-      "health_situation": "dwadawd",
-      "housing_situation": "awdawdawd",
-      "personal_autonomy": "wadwadwad",
-      "economic_situation": "wadawdwa",
-      "contact_id": "2"
+      "user_id": "1",
+      "personal_situation": "dwa",
+      "health_situation": "dwa",
+      "housing_situation": "dwa",
+      "personal_autonomy": "dwa",
+      "economic_situation": "dwa"
     }
   ],
   "contacts": [
@@ -213,6 +172,46 @@
       "last_name": "García",
       "phone": "689012345",
       "relationship": "123"
+    },
+    {
+      "id": "ad20",
+      "patient_id": "ee7b",
+      "first_name": "Pepe",
+      "last_name": "dwadaw",
+      "phone": "689012345",
+      "relationship": "Hija"
+    },
+    {
+      "id": "67a7",
+      "patient_id": "c138",
+      "first_name": "Pepe",
+      "phone": "666666666",
+      "last_name": "López",
+      "relationship": "Hija"
+    },
+    {
+      "id": "1ab2",
+      "patient_id": "c138",
+      "first_name": "Ana",
+      "last_name": "García Calvo",
+      "phone": "666666666",
+      "relationship": "Hija"
+    },
+    {
+      "id": "a278",
+      "patient_id": "a32a",
+      "first_name": "Pepe",
+      "last_name": "López",
+      "phone": "666666666",
+      "relationship": "dddd"
+    },
+    {
+      "id": "8f7e",
+      "patient_id": "a32a",
+      "last_name": "García Calvo",
+      "phone": "666666666",
+      "first_name": "Regular",
+      "relationship": "Hija"
     }
   ],
   "users": [
@@ -270,14 +269,14 @@
     {
       "id": "9aae",
       "user_id": "1",
-      "patient_id": "e03b",
+      "patient_id": "a32a",
       "type": "loneliness_crisis",
       "description": "dwadadwa",
       "timestamp": "2025-02-11T19:56:00"
     },
     {
       "id": "d448",
-      "patient_id": "e03b",
+      "patient_id": "a32a",
       "user_id": "2",
       "type": "accidental",
       "description": "dwadwadwa",
@@ -286,31 +285,22 @@
   ],
   "outgoing_calls": [
     {
-      "id": "1",
-      "timestamp": "2023-05-03T09:15:00",
-      "patient_id": 1,
-      "user_id": 2,
-      "type": "planned",
-      "description": "Seguimiento de la emergencia médica del 01/05",
-      "alarm_id": 1
-    },
-    {
-      "id": "d948",
+      "id": "8b93",
       "user_id": "1",
-      "patient_id": "ee7b",
-      "type": "unplanned",
-      "description": "dwadwadaw",
+      "patient_id": "a32a",
+      "type": "planned",
+      "description": "dwa",
       "alarm_id": "1",
-      "timestamp": "2025-02-11T19:42:00"
+      "timestamp": "2025-02-18T15:55:00"
     },
     {
-      "id": "6dc6",
-      "user_id": "2",
-      "patient_id": "e03b",
+      "id": "5d56",
+      "user_id": "1",
+      "patient_id": "1",
       "type": "planned",
-      "description": "dwadawdaw",
+      "description": "dwadwa",
       "alarm_id": "2",
-      "timestamp": "2025-02-18T15:13:00"
+      "timestamp": "2025-02-18T16:31:00"
     }
   ],
   "alarm_types": [

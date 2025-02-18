@@ -20,8 +20,9 @@ export default {
     },
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
-        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada','removeIncomingCall']),
-        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall']),
+        ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada','removeIncomingCall', 'removeIncomingCallByPatientId']),
+        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall', 'removeCallByPatientId']),
+        ...mapActions(useContactsStore, ['deleteContactByPatientId']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -29,7 +30,11 @@ export default {
             this.$router.push({ name: 'patientForm', params: { id } });
         },
         async deletePatient(id) {
+            console.log("Intentando eliminar paciente con ID:", id);
             if (confirm('Estas seguro de eliminar el paciente?')) {
+                await this.removeCallByPatientId(id);
+                await this.removeIncomingCallByPatientId(id);
+                await this.deleteContactByPatientId(id);
                 await this.removePatient(id);
                 this.$router.push({ name: 'patients' });
             }
