@@ -1,10 +1,70 @@
 <script>
-import '../assets/main.css';
+import { useLoginStore } from "@/stores/loginStore";
+import { mapActions, mapState } from "pinia";
+import { ErrorMessage, Field, Form } from "vee-validate";
+import * as yup from "yup";
+import { GoogleLogin } from 'vue3-google-login'
+import axios from 'axios'
+
+export default {
+  name: 'Login',
+  components: {
+    GoogleLogin
+  },
+  methods: {
+    ...mapActions(useLoginStore, []),
+    async handleLogin() {
+      try {
+        const response = await this.login()
+        const token = response.credential
+
+        // Enviar token a Laravel
+        const { data } = await axios.post('https://backend.worldmemistic.duckdns.org/api/login/google', {
+          token
+        })
+
+        console.log('Usuario autenticado:', data)
+        // Aquí puedes almacenar el token en Vuex, Pinia o localStorage
+      } catch (error) {
+        console.error('Error en la autenticación:', error)
+      }
+    }
+
+
+  },
+  async mounted() {
+    /* if (!localStorage.getItem("token")) {
+      this.loginWithGoogle();
+    } else {
+      this.checkLoginResponse();
+    } */
+    //await this.autoLogin()
+    //await this.loginWithGoogle()
+    this.login = GoogleLogin({
+      onSuccess: this.handleLogin,
+      onError: () => console.error('Error al iniciar sesión con Google')
+    })
+
+    // Ejecutar el login automáticamente
+    this.handleLogin()
+
+  },
+  data() {
+    return {
+      clientId: "372335971957-co69tfn66v1fgq3p1a15alj46mglf6f0.apps.googleusercontent.com",
+      login: null
+
+    }
+  },
+
+}
+
+
 
 </script>
 
 <template>
-  <div class="login-page">
+  <!--   <div class="login-page">
     <div class="login-container">
       <form class="login-form">
         <h2>Login</h2>
@@ -13,12 +73,27 @@ import '../assets/main.css';
         <button type="submit">Iniciar Sesión</button>
       </form>
     </div>
+  </div> -->
+  <div class="login-page">
+    <div class="login-container">
+      <h2>Redirigiendo a Google...</h2>
+    </div>
+  </div>
+  <div>
+    <google-login 
+      :client-id="this.clientId"
+      @success="handleLogin"
+      @error="handleError"
+    >
+      Iniciar sesión con Google
+    </google-login>
   </div>
 </template>
 
 <style scoped>
 /* Asegurar que la página ocupe toda la pantalla y centrar el contenido */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   display: flex;
