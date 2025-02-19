@@ -6,10 +6,12 @@ import timeGridPlugin from '@fullcalendar/timegrid' // Para vista de día y hora
 import interactionPlugin from '@fullcalendar/interaction' // Para eventos interactivos
 import rrulePlugin from '@fullcalendar/rrule' // Para eventos recurrentes
 import esLocale from '@fullcalendar/core/locales/es' // Idioma español
-import { mapActions } from 'pinia'
+import bootstrapPlugin from "@fullcalendar/bootstrap5";
+import { mapActions, mapState } from 'pinia'
 import { useOutgoingCallsStore } from '../stores/outgoingCallsStore' // Store de llamadas salientes
 import { useAlarmsStore } from '../stores/alarmsStore' // Store de alarmas
-import axios from 'axios'
+import { usePatientsStore } from '@/stores/patientStore'
+import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 
 
 export default defineComponent({
@@ -21,7 +23,8 @@ export default defineComponent({
         }
     },
     components: {
-        FullCalendar
+        FullCalendar,
+        OutgoingCallForm
     },
     data() {
         return {
@@ -31,22 +34,21 @@ export default defineComponent({
             selectedId: '', // Guarda el id seleccionado
             eventsOfDay: [], // Guarda los eventos de ese día
             calendarOptions: {
-                plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin], // Plugins del calendario
+                plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin, bootstrapPlugin], // Plugins del calendario
                 initialView: 'dayGridMonth', // Vista mensual por defecto
                 //editable: true, // Permite mover eventos
                 //selectable: true, // Permite seleccionar fechas
-                locale: esLocale, // Aplicamos el idioma español
+                locale: esLocale, // Idioma español
                 headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridDay,dayGridMonth,dayGridWeek'
+                    left: 'prev today',
+                    center: 'title dayGridDay,dayGridWeek,dayGridMonth',
+                    right: 'next'
                 },
                 events: [],
                 eventClick: this.handleEventClick, // Manejo de clic en eventos
                 dateClick: this.handleDateClick, // Manejo de clic en fechas vacías
                 height: 700,
-                //contentHeight: ,
-
+                themeSystem: 'bootstrap5'
 
             },
             patient: {},
@@ -54,81 +56,82 @@ export default defineComponent({
     },
     methods: {
         ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'createCall']),
-        ...mapActions(useAlarmsStore, ['getAlarmById', 'fetchAlarms']),
+        ...mapActions(useAlarmsStore, ['getAlarmById', 'getAlarmas']),
+        ...mapActions(usePatientsStore, ['getPatient']),
 
+        translateDay(day) {
+            const days = {
+                'mo': 'Lunes',
+                'tu': 'Martes',
+                'we': 'Miércoles',
+                'th': 'Jueves',
+                'fr': 'Viernes',
+                'sa': 'Sábado',
+                'su': 'Domingo'
+            };
+            return days[day] || day;
+        },
         handleEventClick(info) {
             this.selectedDate = info.event.startStr.split('T')[0];
             this.selectedId = info.event.extendedProps.call_id;
             this.eventsOfDay = this.calendarOptions.events.filter(event => event.extendedProps.call_id == this.selectedId);
-            this.showModal = true; // Mostrar el modal
+            this.showModal = true;
         },
         handleDateClick(info) {
             this.selectedDate = info.dateStr.split('T')[0];
-            this.showModalCreate = true; // Mostrar el modal
-        },
-        createCall() {
-            // Aquí puedes implementar la lógica para crear una llamada
-            console.log("Creando llamada para:", this.selectedDate);
-
-            // Cierra el modal después de la creación
-            this.showModalCreate = false;
+            this.showModalCreate = true;
         },
         openCreateModal() {
             this.showModal = false; // Cierra el modal de detalles del día
             this.showModalCreate = true; // Abre el modal de creación de llamada
         },
+        closeModalCreate() {
+            this.showModalCreate = false;
+        },
         async loadCalls() {
-            this.outgoingCalls = await this.fetchCallsByPatientId(this.id)
+            this.outgoingCalls = await this.fetchCallsByPatientId(this.id);
 
             if (this.outgoingCalls.length > 0) {
-                this.calendarOptions.events = this.outgoingCalls.map(call => {
-                    const alarm = this.getAlarmById(call.alarm_id)
-
-                    return {
-                        title: call.description,
-                        // this.getTypeCall(call.is_planned) === 'planned' ?
-                        //     'Llamada Saliente Planeada' : 'Llamada Saliente No Planeada',
-                        start: alarm.start_date,
-                        end: alarm.end_date,
-                        day: call.timestamp.split('T')[0],
-                        //display: 'background',  // Mostrar como fondo
-                        rrule: alarm.weekday ? {
-                            freq: 'weekly',
-                            byweekday: alarm.weekday,
-                            dtstart: alarm.start_date,
-                            until: alarm.end_date
-                        } : undefined,
-                        classNames: call.is_planned, // Agregar clase CSS según tipo
-                        extendedProps: {
-                            description: call.description || 'Sin descripción',
-                            user_id: call.user_id,
-                            alarm_id: call.alarm_id,
-                            call_id: call.id,
-                            is_planned: call.is_planned,
-                        }
-                    }
-
-
-
-                })
+                const events = await Promise.all(
+                    this.outgoingCalls.map(async (call) => {
+                        const alarm = await this.getAlarmById(call.alarm_id);
+                        return {
+                            title: call.description,
+                            start: alarm?.start_date || call.timestamp,
+                            end: alarm?.end_date || null,
+                            day: call.timestamp.split('T')[0],
+                            hour: call.timestamp.split('T')[1].slice(0, 5),
+                            rrule: alarm?.weekday && alarm?.end_date !== null
+                                ? {
+                                    freq: 'weekly',
+                                    byweekday: alarm.weekday.slice(0, 2).toLowerCase(),
+                                    dtstart: alarm.start_date,
+                                    until: alarm.end_date
+                                }
+                                : undefined,
+                            classNames: call.is_planned ? "planned" : "unplanned",
+                            extendedProps: {
+                                description: call.description || 'Sin descripción',
+                                alarm_type: this.translateAlarmType(alarm.type),
+                                //user_id: call.user_id,
+                                //alarm_id: call.alarm_id,
+                                call_id: call.id,
+                                is_planned: call.is_planned,
+                            }
+                        };
+                    })
+                );
+                this.calendarOptions.events = events;
             }
         },
-        async fetchPatient() {
-            try {
-                const response = await axios.get('http://localhost:3000' + '/patients/?id=' + this.id);
-                this.patient = response.data || {};
-                //return response.data;
-            } catch (error) {
-                console.error('Error al obtener el paciente:', error);
-            }
-        },
-
+    },
+    computed: {
+        ...mapState(useAlarmsStore, ['translateAlarmType']),
     },
     async mounted() {
-        await this.fetchAlarms()
+        //await this.getAlarmas()
         await this.loadCalls()
-        await this.fetchPatient()
-
+        this.patient = await this.getPatient(this.id)
     },
     watch: {
         id: {
@@ -139,69 +142,82 @@ export default defineComponent({
         showModalCreate(newValue) {
             if (newValue && this.showModal) this.showModalCreate = false; // Si se abre el modal de creación, cerrar el de detalles
         }
-
     }
 })
 </script>
 
 <template>
     <div>
-        <FullCalendar ref="fullCalendar" :options="calendarOptions" />
+        <p v-if="calendarOptions.events <= 0">No hay ningún registro para este paciente</p>
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" class="custom-calendar" />
+        <div class="info-calendar">
+            <p class="info-color-planned">• Planeado</p>
+            <p class="info-color-unplanned">• No Planeado</p>
+        </div>
 
         <!-- Modal de detalles del día -->
-        <div v-if="showModal" class="modal-overlay" @click="showModal = false">
-            <div class="modal-content" @click.stop>
-                <button class="exit-modal" @click="showModal = false">x</button>
-                <h3>Detalles del evento</h3>
-                <p><strong>Fecha:</strong> {{ selectedDate }}</p>
-                <div v-if="eventsOfDay.length > 0">
-                    <h4>Evento:</h4>
-                    <ul v-for="(event, index) in eventsOfDay" :key="index">
-                        <!-- <li>{{ event.title }}</li> -->
-                        <li><strong>Descripción:</strong> {{ event.extendedProps.description }}</li>
-                        <li><strong>Tipo:</strong> {{ event.extendedProps.is_planned ? "Planeada" : "No Planeada" }}</li>
-                        <li><strong>Paciente:</strong> {{ this.patient[0].name }} {{ this.patient[0].last_name }}
-                            <ul><strong>Teléfono:</strong> {{ this.patient[0].phone }}</ul>
-                            <ul><strong>Email:</strong> {{ this.patient[0].email }}</ul>
-                            <ul><strong>DNI:</strong> {{ this.patient[0].dni }}</ul>
-                            <ul><strong>Fecha de nacimiento:</strong> {{ this.patient[0].birth_date }}</ul>
-                            <ul><strong>Dirección:</strong> {{ this.patient[0].address }}, {{ this.patient[0].city }}, {{
-                                this.patient[0].postal_code }}</ul>
-                            <ul><strong>Tarjeta sanitaria:</strong> {{ this.patient[0].health_card_number }}</ul>
-                            <ul><strong>Zona ID:</strong> {{ this.patient[0].zone_id }}</ul>
-                            <ul><strong>Usuario ID:</strong> {{ this.patient[0].user_id }}</ul>
-                            <ul><strong>Situación personal:</strong> {{ this.patient[0].personal_situation }}</ul>
-                            <ul><strong>Situación de salud:</strong> {{ this.patient[0].health_situation }}</ul>
-                            <ul><strong>Situación de vivienda:</strong> {{ this.patient[0].housing_situation }}</ul>
-                            <ul><strong>Autonomía personal:</strong> {{ this.patient[0].personal_autonomy }}</ul>
-                            <ul><strong>Situación económica:</strong> {{ this.patient[0].economic_situation }}</ul>
-                        </li>
-                    </ul>
+        <div v-if="showModal" class="modal fade show" tabindex="-1" @click="showModal = false">
+            <div class="modal-dialog modal-dialog-centered" @click.stop>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detalles del evento</h5>
+                        <button type="button" class="btn-close" @click="showModal = false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="eventsOfDay.length > 0">
+                            <ul v-for="(event, index) in eventsOfDay" :key="index">
+                                <p class="m-0"><strong>Fecha:</strong> {{ event.day }} <span v-if="event.end">hasta el
+                                        {{
+                                            event.end.split('T')[0] }}</span></p>
+                                <p class="m-0" v-if="event.rrule"><strong>Se repite cada:</strong> {{
+                                    translateDay(event.rrule.byweekday) }}</p>
+                                <li class="mb-1"><strong>Hora:</strong> {{ event.hour }}</li>
+
+                                <h5 class="mb-0">Evento:</h5>
+                                <li><strong>Descripción:</strong> {{ event.extendedProps.description }}</li>
+                                <li><strong>Alarma por:</strong> {{ event.extendedProps.alarm_type }}</li>
+                                <li><strong>Tipo:</strong> {{ event.extendedProps.is_planned ? "Planeada" : "No Planeada" }}</li>
+                                <li><strong>Paciente:</strong> {{ this.patient.name }} {{ this.patient.last_name }}
+                                    <ul><strong>Teléfono:</strong> {{ this.patient.phone }}</ul>
+                                    <ul><strong>Email:</strong> {{ this.patient.email }}</ul>
+                                    <ul><strong>DNI:</strong> {{ this.patient.dni }}</ul>
+                                    <ul><strong>Fecha de nacimiento:</strong> {{ this.patient.birth_date }}</ul>
+                                    <ul><strong>Dirección:</strong> {{ this.patient.address }}, {{ this.patient.city }},
+                                        {{
+                                            this.patient.postal_code }}</ul>
+                                    <ul><strong>Tarjeta sanitaria:</strong> {{ this.patient.health_card_number }}</ul>
+                                    <ul><strong>Zona ID:</strong> {{ this.patient.zone_id }}</ul>
+                                    <ul><strong>Usuario ID:</strong> {{ this.patient.user_id }}</ul>
+                                    <ul><strong>Situación personal:</strong> {{ this.patient.personal_situation }}</ul>
+                                    <ul><strong>Situación de salud:</strong> {{ this.patient.health_situation }}</ul>
+                                    <ul><strong>Situación de vivienda:</strong> {{ this.patient.housing_situation }}
+                                    </ul>
+                                    <ul><strong>Autonomía personal:</strong> {{ this.patient.personal_autonomy }}</ul>
+                                    <ul><strong>Situación económica:</strong> {{ this.patient.economic_situation }}</ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <p v-else>No hay eventos en este día.</p>
+                    </div>
+                    <div class="modal-footer pb-0 d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" @click="openCreateModal">Crear nuevo evento</button>
+                    </div>
                 </div>
-                <p v-else>No hay eventos en este día.</p>
-                <button @click="openCreateModal">Crear</button>
             </div>
         </div>
 
         <!-- Modal de creación de llamada -->
-        <div v-if="showModalCreate" class="modal-overlay" @click="showModalCreate = false">
-            <div class="modal-content" @click.stop>
-                <button class="exit-modal" @click="showModalCreate = false">x</button>
-                <h3>Crear Nueva Llamada</h3>
-                <p><strong>Paciente:</strong> {{ this.patient[0].name }} {{ this.patient[0].last_name }}</p>
-                <p><strong>Fecha:</strong> {{ selectedDate }}</p>
-
-                <!--  <label for="callType">Tipo de Llamada:</label> Al crearse desde la agenda siempre será planeada
-                <select id="callType">
-                    <option value="planned">Planeada</option>
-                    <option value="unplanned">No Planeada</option>
-                </select> -->
-
-                <label for="description">Descripción:</label>
-                <textarea id="description" placeholder="Ingrese una descripción"></textarea>
-
-                <button @click="createCall">Guardar</button>
-                <button @click="showModalCreate = false">Cancelar</button>
+        <div v-if="showModalCreate" class="modal fade show" tabindex="-1" @click="closeModalCreate">
+            <div class="modal-dialog modal-dialog-centered" @click.stop>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear Llamada</h5>
+                        <button type="button" class="btn-close" @click="closeModalCreate"></button>
+                    </div>
+                    <div class="modal-body">
+                        <OutgoingCallForm :id="null" @cancel="closeModalCreate" :currentDate="selectedDate"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -231,6 +247,27 @@ export default defineComponent({
     border-color: rgb(35, 179, 236);
 }
 
+.info-calendar {
+    display: flex;
+    gap: 10px;
+}
+
+.info-color-planned {
+    color: rgb(73, 219, 60);
+}
+
+.info-color-unplanned {
+    color: rgb(35, 179, 236);
+}
+
+.modal {
+    display: block;
+}
+
+.modal.fade.show {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .exit-modal {
     font-weight: bolder;
     position: absolute;
@@ -244,34 +281,21 @@ export default defineComponent({
 }
 
 .modal-content {
-    position: relative;
-    background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     min-width: 300px;
-    /* text-align: center; */
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
-
-li, ul{
+li,
+ul {
     list-style: none;
     padding: 0;
 }
 
-li ul{
+li ul {
     padding-left: 20px;
 }
 </style>

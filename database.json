@@ -24,7 +24,7 @@
   "patients": [
     {
       "id": "1",
-      "name": "Juanaabanana",
+      "name": "Juanaabananaaa",
       "last_name": "García",
       "birth_date": "1950-05-15",
       "address": "Calle Mayor 123",
@@ -168,7 +168,7 @@
     {
       "id": "5188",
       "patient_id": "1",
-      "first_name": "dwadwa",
+      "first_name": "dwadwaa",
       "last_name": "García",
       "phone": "689012345",
       "relationship": "123"
@@ -211,6 +211,14 @@
       "last_name": "García Calvo",
       "phone": "666666666",
       "first_name": "Regular",
+      "relationship": "Hija"
+    },
+    {
+      "id": "7a30",
+      "patient_id": "abe0",
+      "first_name": "Ivana",
+      "last_name": "García",
+      "phone": "666666666",
       "relationship": "Hija"
     }
   ],
@@ -276,7 +284,7 @@
     },
     {
       "id": "d448",
-      "patient_id": "a32a",
+      "patient_id": "abe0",
       "user_id": "2",
       "type": "accidental",
       "description": "dwadwadwa",
@@ -285,22 +293,50 @@
   ],
   "outgoing_calls": [
     {
-      "id": "8b93",
-      "user_id": "1",
-      "patient_id": "a32a",
+      "id": "b174",
+      "user_id": "2",
+      "patient_id": "1",
       "type": "planned",
-      "description": "dwa",
-      "alarm_id": "1",
-      "timestamp": "2025-02-18T15:55:00"
+      "description": "dwadaw",
+      "alarm_id": 1,
+      "timestamp": "2023-05-02T15:02:00"
     },
     {
-      "id": "5d56",
+      "id": "6c7e",
+      "alarm_id": "1",
       "user_id": "1",
       "patient_id": "1",
       "type": "planned",
-      "description": "dwadwa",
-      "alarm_id": "2",
-      "timestamp": "2025-02-18T16:31:00"
+      "description": "dwadaw",
+      "timestamp": "2025-02-04T15:31:00"
+    },
+    {
+      "id": "b66f",
+      "alarm_id": "1",
+      "user_id": "1",
+      "patient_id": "1",
+      "type": "planned",
+      "description": "dwa",
+      "timestamp": "2025-02-03T15:32:00"
+    },
+    {
+      "id": "bb72",
+      "alarm_id": 1,
+      "patient_id": "a32a",
+      "user_id": "1",
+      "type": "planned",
+      "description": "dwa",
+      "timestamp": "2025-02-21T16:30:00"
+    },
+    {
+      "id": "349b",
+      "alarm_id": "689a",
+      "user_id": "1",
+      "patient_id": "a32a",
+      "type": "unplanned",
+      "description": "aaa",
+      "alarm_type_id": 5,
+      "timestamp": "2025-02-19T17:52:00"
     }
   ],
   "alarm_types": [
@@ -331,13 +367,20 @@
       "weekday": "monday"
     },
     {
-      "id": "2",
-      "patient_id": 2,
-      "alarm_type_id": 3,
+      "id": "217a",
+      "patient_id": "a32a",
       "type": "special_alert",
-      "start_date": "2023-05-02",
-      "end_date": "2023-06-02",
-      "weekday": "wednesday"
+      "start_date": "2025-02-19",
+      "end_date": "2025-02-21",
+      "weekday": "Monday"
+    },
+    {
+      "id": "689a",
+      "patient_id": "a32a",
+      "type": "emergency_followup",
+      "start_date": "2025-02-17",
+      "end_date": "2025-02-30",
+      "weekday": "Monday"
     }
   ],
   "preventive_alarms": [

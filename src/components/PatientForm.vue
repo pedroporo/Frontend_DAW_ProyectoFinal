@@ -60,8 +60,14 @@ export default {
         await this.updatePatient(this.patient);
       } else {
         await this.addPatient(this.patient);
+        console.log(this.patient.id);
       }
-      this.$router.push({ name: 'patients' });
+
+      if (confirm('¿Deseas añadir una alarma?')) {
+        this.$router.push({ name: 'alarmForm', params: { id: this.patient.id } });
+      } else {
+        this.$router.push({ name: 'patients' });
+      }
     },
     editContact(id) {
       this.$router.push({ name: 'contactForm', params: { id, edit: true } });

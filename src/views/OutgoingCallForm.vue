@@ -13,14 +13,27 @@ export default {
         Form,
         ErrorMessage
     },
+    props: {
+        id: {
+            type: String,
+            required: false
+        },
+        currentDate: {
+            type: String,
+            required: false
+        }
+    },
+    emits: ['cancel'],
     data() {
         return {
             patients: [],
             isEdit: false,
             llamada: {},
+            alarmas: [],
             fecha: "",
             hora: "",
             mySchema: yup.object({
+                alarma: yup.string().required('Selecciona una alarma'),
                 fecha: yup.string().required('La fecha es obligatoria'),
                 hora: yup.string().required('La hora es obligatoria'),
                 user_id: yup.string().required('Selecciona un operador'),
@@ -35,8 +48,9 @@ export default {
     methods: {
         ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
+        ...mapActions(useAlarmsStore, ['getAlarmas']),
         async loadForm() {
-            const llamadaId = this.$route.params.id
+            const llamadaId = this.id;
             if (llamadaId) {
                 this.isEdit = true
                 this.llamada = await this.getCallById(llamadaId);
@@ -56,24 +70,38 @@ export default {
             } else {
                 await this.addCall(this.llamada);
             }
-            this.$router.back();
+            this.redirectAfterAction();
         },
 
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = timestamp.split("T")[0];
+            this.fecha = this.currentDate || timestamp.split("T")[0];
             this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
         },
 
+        handleCancel() {
+            this.redirectAfterAction();
+        },
+
+        redirectAfterAction() {
+            const currentRoute = this.$route.path;
+            if (currentRoute.startsWith('/patient/')) {
+                this.$router.push(currentRoute);
+                this.$emit('cancel')
+            } else {
+                this.$router.push('/outgoing_calls');
+            }
+        }
     },
 
     async mounted() {
         this.loadForm();
         this.patients = await this.getPatients();
+        this.alarmas = await this.getAlarmas();
     },
     computed: {
-        ...mapState(useAlarmsStore, ['alarmas', 'translateAlarmType']),
+        ...mapState(useAlarmsStore, ['alarmasTipo', 'translateAlarmType']),
         ...mapState(useUsersStore, ['users']),
     },
 };
@@ -85,6 +113,17 @@ export default {
         <div v-if="isEdit" class="form-group">
             <label for="id">Id: </label>
             <Field type="text" name="id" v-model="llamada.id" disabled class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="alarma">Alarma: </label>
+            <Field as="select" id="alarma" name="alarma" v-model="llamada.alarm_id" class="form-control">
+                <option value="" selected disabled>-- Selecciona alarma --</option>
+                <option v-for="alarm in alarmas" :key="alarm.id" :value="alarm.id">
+                    {{ alarm.type }}
+                </option>
+            </Field>
+            <ErrorMessage class="error" name="alarma" />
         </div>
 
         <div class="form-group">
@@ -141,19 +180,20 @@ export default {
         </div>
 
         <div class="form-group">
-            <label for="alarm_id">Alarmas: </label>
-            <Field as="select" name="alarm_id" v-model="llamada.alarm_id" class="form-control">
-                <option value="" selected disabled>-- Selecciona alarma --</option>
-                <option v-for="alarma in alarmas" :key="alarma.id" :value="alarma.id">
+            <label for="alarm_id">Tipo alarma: </label>
+            <Field as="select" name="alarm_id" v-model="llamada.alarm_type_id" class="form-control">
+                <option value="" selected disabled>-- Selecciona tipo de alarma --</option>
+                <option v-for="alarma in alarmasTipo" :key="alarma.type_id" :value="alarma.type_id">
                     {{ translateAlarmType(alarma.type) }}
                 </option>
             </Field>
             <ErrorMessage class="error" name="alarm_id" />
         </div>
 
+
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.back()">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
         </div>
     </Form>
 </template>
@@ -196,11 +236,13 @@ label {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    height: 40px; /* Altura fija para inputs y selects */
+    height: 40px;
+    /* Altura fija para inputs y selects */
 }
 
 textarea.form-control {
-    height: auto; /* Para textarea permitimos auto altura */
+    height: auto;
+    /* Para textarea permitimos auto altura */
     min-height: 100px;
 }
 
@@ -267,9 +309,11 @@ button[type="button"].btn-danger:hover {
     .form-buttons {
         flex-direction: column;
     }
+
     button {
         width: 100%;
     }
+
     .radio-buttons {
         flex-direction: column;
         align-items: flex-start;
