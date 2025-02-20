@@ -58,14 +58,14 @@ export default {
     async addOrUpdatePatient() {
       if (this.isEditing) {
         await this.updatePatient(this.patient);
+        this.$router.push({ name: 'patients' }); 
       } else {
-        await this.addPatient(this.patient);
-      }
-
-      if (confirm('¿Deseas añadir una alarma?')) {
-        this.$router.push({ name: 'alarmForm', params: { id: this.patient.id } });
+        const newPatient = await this.addPatient(this.patient);
+        if (confirm('¿Deseas añadir una alarma?')) {
+        this.$router.push({ name: 'alarmForm', params: { id: newPatient.id } });
       } else {
         this.$router.push({ name: 'patients' });
+      }
       }
     },
     editContact(id) {

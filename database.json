@@ -61,6 +61,26 @@
       "housing_situation": "dwa",
       "personal_autonomy": "dwa",
       "economic_situation": "dwa"
+    },
+    {
+      "id": "39b4",
+      "name": "Aaron",
+      "last_name": "García Calvo",
+      "birth_date": "2025-02-19",
+      "address": "Avenida de la Constitución 45",
+      "postal_code": "08001",
+      "city": "Barcelona",
+      "dni": "12345678A",
+      "health_card_number": "987654321",
+      "phone": "666666666",
+      "email": "juan.garcia@email.com",
+      "zone_id": "2",
+      "user_id": "1",
+      "personal_situation": "dwa",
+      "health_situation": "dwa",
+      "housing_situation": "dwa",
+      "personal_autonomy": "dwa",
+      "economic_situation": "dwa"
     }
   ],
   "contacts": [
@@ -373,6 +393,22 @@
       "start_date": "2025-02-19",
       "end_date": "2025-02-21",
       "weekday": "thursday"
+    },
+    {
+      "id": "74b1",
+      "patient_id": null,
+      "type": "bereavement",
+      "start_date": "2025-02-24",
+      "end_date": "2025-03-08",
+      "weekday": "thursday"
+    },
+    {
+      "id": "9c2c",
+      "patient_id": "dc43",
+      "type": "hospital_discharge",
+      "start_date": "2025-03-03",
+      "end_date": "2025-03-05",
+      "weekday": "tuesday"
     }
   ],
   "preventive_alarms": [
