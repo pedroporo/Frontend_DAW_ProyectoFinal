@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { defineStore, mapActions } from 'pinia'
 import { useMessagesStore } from './messagesStore'
-const urlAlarms = 'http://localhost:3000/alarms/'
+const urlAlarms = import.meta.env.VITE_API_BASE_URL + "alarms/";
 export const useAlarmsStore = defineStore('alarms', {
   state: () => ({
     alarmasTipo: [
