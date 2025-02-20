@@ -80,7 +80,17 @@ export const useIncomingCallsStore = defineStore('data', {
                 this.addMessage("Error al eliminar la llamada", "error");
             }
         },
-
+        async removeIncomingCallByPatientId(patientId) {
+            try {
+                const response = await axios.delete(
+                    `${urlIncomingCalls}?patient_id=${patientId}`
+                );
+                this.addMessage("Llamadas eliminadas correctamente", "success");
+                return response.data;
+            } catch (error) {
+                this.addMessage("Error al eliminar las llamadas", "error");
+            }
+        },
         async addIncomingCall(call) {
             try {
                 const response = await axios.post(urlIncomingCalls + '/', call);

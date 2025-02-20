@@ -23,7 +23,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useAlarmsStore, ['getAlarmas']),
     ...mapActions(useContactsStore, ['getContacts']),
     ...mapActions(useZonesStore, ['getZones']),
     ...mapActions(useUsersStore, ['getUsers']),
@@ -33,7 +32,6 @@ export default {
   },
   async mounted() {
     await this.getUsers();
-    await this.getAlarmas();
     await this.getZones(),
     await this.getContacts()
   }

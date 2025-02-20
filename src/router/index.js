@@ -10,6 +10,7 @@ import OutgoingCallsView from '@/views/OutgoingCallsView.vue'
 import IncomingCallForm from '@/views/IncomingCallForm.vue'
 import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 import Contact from '@/components/Contact.vue'
+import AlarmForm from '@/components/AlarmForm.vue'
 
 import PatientForm from '@/components/PatientForm.vue'
 import ContactForm from '@/components/ContactForm.vue'
@@ -99,6 +100,11 @@ const router = createRouter({
       path: '/contact/:id?',
       name: 'contact',
       component: Contact
+    },
+    {
+      path: '/alarmForm/:id?',
+      name: 'alarmForm',
+      component: AlarmForm
     }
   ],
 })

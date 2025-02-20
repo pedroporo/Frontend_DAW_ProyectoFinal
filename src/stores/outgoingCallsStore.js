@@ -39,6 +39,17 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         this.addMessage("Error al eliminar la llamada", "error");
       }
     },
+    async removeCallByPatientId(patientId) {
+      try {
+        const response = await axios.delete(
+          `${SERVER + CALLS}?patient_id=${patientId}`
+        );
+        this.addMessage("Llamadas eliminadas correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al eliminar las llamadas", "error");
+      }
+    },
     async addCall(call) {
       try {
         const response = await axios.post(SERVER + CALLS, call);

@@ -6,7 +6,6 @@ import { useZonesStore } from '@/stores/zonesStore';
 import { useIncomingCallsStore } from '@/stores/incomingCallsStore';
 import { useOutgoingCallsStore } from '@/stores/outgoingCallsStore';
 import Calendar from './Calendar.vue';
-
 export default {
     components: {
         Calendar
@@ -26,7 +25,7 @@ export default {
     methods: {
         ...mapActions(usePatientsStore, ['getPatient', 'removePatient']),
         ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesPorPaciente', 'formatDateTime', 'translateTipoLlamada', 'removeIncomingCall']),
-        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall']),
+        ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'deleteCall', '']),
         addPatient() {
             this.$router.push({ name: 'patientForm' });
         },
@@ -39,7 +38,7 @@ export default {
                 this.$router.push({ name: 'patients' });
             }
         },
-        getType: call => call ? 'Planificada' : 'No planificada',
+        getType: callType => callType === 'planned' ? 'Planificada' : 'No planificada',
         editIncomingCall(id) {
             this.$router.push(`/incomingForm/${id}`);
         },
@@ -56,7 +55,11 @@ export default {
             if (confirm('Estas seguro de eliminar la llamada?')) {
                 this.deleteCall(id);
                 this.outgoingCallsPatient = this.outgoingCallsPatient.filter(call => call.id != id);
+                this.$emit('callDeleted');
             }
+        },
+        añadirAlarma(id) {
+            this.$router.push({ name: 'alarmForm', params: { id } });
         }
     },
     async mounted() {
@@ -66,7 +69,7 @@ export default {
             this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
             this.outgoingCallsPatient = await this.fetchCallsByPatientId(id);
         }
-    }
+    },
 }
 </script>
 
@@ -80,7 +83,7 @@ export default {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="detail"><strong>Nombre:</strong> {{ patient.name + " " + patient.last_name
-                                    }}</div>
+                                }}</div>
                                 <div class="detail"><strong>Fecha de Nacimiento:</strong> {{ patient.birth_date }}</div>
                                 <div class="detail"><strong>Dirección:</strong> {{ patient.address }}</div>
                                 <div class="detail"><strong>Ciudad:</strong> {{ patient.city }}</div>
@@ -100,14 +103,14 @@ export default {
                                 </div>
                                 <div class="detail"><strong>Zona:</strong> {{ zonesNames(patient.zone_id) }}</div>
                                 <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation
-                                    }}</div>
+                                }}</div>
                                 <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}
                                 </div>
                                 <div class="detail"><strong>Situación Vivienda:</strong> {{ patient.housing_situation }}
                                 </div>
                                 <div class="detail"><strong>Autonomía:</strong> {{ patient.personal_autonomy }}</div>
                                 <div class="detail"><strong>Situación económica:</strong> {{ patient.economic_situation
-                                    }}</div>
+                                }}</div>
                             </div>
                         </div>
                     </div>
@@ -115,6 +118,7 @@ export default {
                     <div class="buttons">
                         <button class="btn btn-primary" @click="editPatient(patient.id)">Editar</button>
                         <button class="btn btn-danger" @click="deletePatient(patient.id)">Eliminar</button>
+                        <button class="btn btn-danger" @click="añadirAlarma(patient.id)">Añadir alarma</button>
                         <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
                     </div>
                 </div>
@@ -169,7 +173,7 @@ export default {
                             <tr v-for="call in outgoingCallsPatient" :key="call.id">
                                 <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                                 <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                                <td>{{ getType(call.type) }}</td>
+                                <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
                                 <td>{{ call.description }}</td>
                                 <td>
                                     <button @click="editOutgoingCall(call.id)">Editar</button>
@@ -232,7 +236,8 @@ h2 {
     border-collapse: collapse;
 }
 
-.patient-calls th, .patient-calls td {
+.patient-calls th,
+.patient-calls td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -297,5 +302,4 @@ h2 {
 .btn-secondary:hover {
     background-color: #5a6268;
 }
-
 </style>

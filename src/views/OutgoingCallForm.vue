@@ -28,15 +28,22 @@ export default {
         return {
             patients: [],
             isEdit: false,
-            llamada: {},
+            llamada: {
+                patient_id: "",
+                user_id: "",
+                is_planned: "",
+                description: ""
+            },
+            alarmas: [],
             fecha: "",
             hora: "",
             mySchema: yup.object({
+                alarma: yup.string().required('Selecciona una alarma'),
                 fecha: yup.string().required('La fecha es obligatoria'),
                 hora: yup.string().required('La hora es obligatoria'),
                 user_id: yup.string().required('Selecciona un operador'),
                 patient_id: yup.string().required('Selecciona un paciente'),
-                type: yup.string().required('Selecciona el tipo de llamada'),
+                is_planned: yup.string().required('Selecciona el tipo de llamada'),
                 description: yup.string().required('La descripción es obligatoria'),
                 alarm_id: yup.string().required('Selecciona una alarma'),
             }),
@@ -46,6 +53,7 @@ export default {
     methods: {
         ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
+        ...mapActions(useAlarmsStore, ['getAlarmas']),
         async loadForm() {
             const llamadaId = this.id;
             if (llamadaId) {
@@ -66,6 +74,7 @@ export default {
                 await this.updateCall(this.llamada);
             } else {
                 await this.addCall(this.llamada);
+                this.$emit('callCreated');
             }
             this.redirectAfterAction();
         },
@@ -95,9 +104,10 @@ export default {
     async mounted() {
         this.loadForm();
         this.patients = await this.getPatients();
+        this.alarmas = await this.getAlarmas();
     },
     computed: {
-        ...mapState(useAlarmsStore, ['alarmas', 'translateAlarmType']),
+        ...mapState(useAlarmsStore, ['alarmasTipo', 'translateAlarmType']),
         ...mapState(useUsersStore, ['users']),
     },
 };
@@ -109,6 +119,17 @@ export default {
         <div v-if="isEdit" class="form-group">
             <label for="id">Id: </label>
             <Field type="text" name="id" v-model="llamada.id" disabled class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="alarma">Alarma: </label>
+            <Field as="select" id="alarma" name="alarma" v-model="llamada.alarm_id" class="form-control">
+                <option value="" selected disabled>-- Selecciona alarma --</option>
+                <option v-for="alarm in alarmas" :key="alarm.id" :value="alarm.id">
+                    {{ alarm.type }}
+                </option>
+            </Field>
+            <ErrorMessage class="error" name="alarma" />
         </div>
 
         <div class="form-group">
@@ -149,12 +170,12 @@ export default {
             <label>Tipo: </label>
             <div class="radio-buttons">
                 <label>
-                    <Field type="radio" name="type" v-model="llamada.type" value="planned" /> Planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="true" /> Planificada
                 </label>
                 <label>
-                    <Field type="radio" name="type" v-model="llamada.type" value="unplanned" /> No planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="false" /> No planificada
                 </label>
-                <ErrorMessage class="error" name="type" />
+                <ErrorMessage class="error" name="is_planned" />
             </div>
         </div>
 
@@ -165,19 +186,20 @@ export default {
         </div>
 
         <div class="form-group">
-            <label for="alarm_id">Alarmas: </label>
-            <Field as="select" name="alarm_id" v-model="llamada.alarm_id" class="form-control">
-                <option value="" selected disabled>-- Selecciona alarma --</option>
-                <option v-for="alarma in alarmas" :key="alarma.id" :value="alarma.id">
+            <label for="alarm_id">Tipo alarma: </label>
+            <Field as="select" name="alarm_id" v-model="llamada.alarm_type_id" class="form-control">
+                <option value="" selected disabled>-- Selecciona tipo de alarma --</option>
+                <option v-for="alarma in alarmasTipo" :key="alarma.type_id" :value="alarma.type_id">
                     {{ translateAlarmType(alarma.type) }}
                 </option>
             </Field>
             <ErrorMessage class="error" name="alarm_id" />
         </div>
 
+
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.back()">Cancelar</button>
         </div>
     </Form>
 </template>
@@ -220,11 +242,13 @@ label {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    height: 40px; /* Altura fija para inputs y selects */
+    height: 40px;
+    /* Altura fija para inputs y selects */
 }
 
 textarea.form-control {
-    height: auto; /* Para textarea permitimos auto altura */
+    height: auto;
+    /* Para textarea permitimos auto altura */
     min-height: 100px;
 }
 
@@ -291,9 +315,11 @@ button[type="button"].btn-danger:hover {
     .form-buttons {
         flex-direction: column;
     }
+
     button {
         width: 100%;
     }
+
     .radio-buttons {
         flex-direction: column;
         align-items: flex-start;
