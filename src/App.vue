@@ -6,11 +6,14 @@ import { useAlarmsStore } from './stores/alarmsStore';
 import { useContactsStore } from './stores/contactStore';
 import { useZonesStore } from './stores/zonesStore';
 import { useUsersStore } from './stores/usersStore';
+import LoginView from './views/LoginView.vue';
+import { useLoginStore } from './stores/loginStore';
 
 export default {
   name: 'App',
   components: {
-    AppMessages
+    AppMessages,
+    LoginView
   },
   computed: {
     route() {
@@ -27,6 +30,7 @@ export default {
     ...mapActions(useContactsStore, ['getContacts']),
     ...mapActions(useZonesStore, ['getZones']),
     ...mapActions(useUsersStore, ['getUsers']),
+    ...mapActions(useLoginStore, ['logout']),
     toggleNav() {
       this.isNavVisible = !this.isNavVisible;
     }
@@ -52,7 +56,8 @@ export default {
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink>
         <RouterLink to="/informes">Informes</RouterLink>
         <RouterLink to="/gestionUsers">Listado de Operadores</RouterLink>
-        <RouterLink to="/">Cerrar Sesion</RouterLink>
+        <a @click="this.logout()">Cerrar Sesion</a>
+        <LoginView/>
       </nav>
     </div>
   </header>

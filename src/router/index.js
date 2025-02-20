@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PatientsView from '../views/PatientsView.vue'
 import Patient from '../components/Patient.vue'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
 import InformeView from '@/views/InformeView.vue'
 import IncomingCallsView from '@/views/IncomingCallsView.vue'
 import OutgoingCallsView from '@/views/OutgoingCallsView.vue'
@@ -37,11 +36,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
     },
     {
       path: '/informes',
