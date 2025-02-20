@@ -4,14 +4,14 @@ import { useMessagesStore } from './messagesStore'
 const urlAlarms = 'http://localhost:3000/alarms/'
 export const useAlarmsStore = defineStore('alarms', {
   state: () => ({
-    alarmas: [
-      { id: 1, type: 'medication' },
-      { id: 2, type: 'special_alert' },
-      { id: 3, type: 'emergency_followup' },
-      { id: 4, type: 'bereavement' },
-      { id: 5, type: 'hospital_discharge' },
-      { id: 6, type: 'absence_suspension' },
-      { id: 7, type: 'return_from_absence' }
+    alarmasTipo: [
+      { type_id: 1, type: 'medication' },
+      { type_id: 2, type: 'special_alert' },
+      { type_id: 3, type: 'emergency_followup' },
+      { type_id: 4, type: 'bereavement' },
+      { type_id: 5, type: 'hospital_discharge' },
+      { type_id: 6, type: 'absence_suspension' },
+      { type_id: 7, type: 'return_from_absence' }
     ],
     alarmasTraduccion: {
       medication: 'Medicación',
@@ -23,9 +23,10 @@ export const useAlarmsStore = defineStore('alarms', {
       return_from_absence: 'Regreso de Ausencia',
     }
   }),
+
   getters: {
     getAlarmName: (state) => (id) => {
-      const alarm = state.alarmas.find(alarm => alarm.id == id);
+      const alarm = state.alarmasTipo.find(alarm => alarm.type_id == id);
       if (alarm) {
         return state.alarmasTraduccion[alarm.type] || alarm.type;
       }
@@ -40,7 +41,6 @@ export const useAlarmsStore = defineStore('alarms', {
     async getAlarmas() {
       try {
         const response = await axios.get(urlAlarms);
-        //this.alarmas = response.data;
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener las alarmas", "error");
@@ -54,5 +54,23 @@ export const useAlarmsStore = defineStore('alarms', {
         this.addMessage("Error al obtener la alarma", "error");
       }
     },
+    async addAlarm(alarm) {
+      try {
+        const response = await axios.post(urlAlarms, alarm);
+        this.addMessage("Alarma guardada correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al guardar la alarma", "error");
+      }
+    },
+    async updateAlarm(alarm) {
+      try {
+        const response = await axios.put(urlAlarms + alarm.id, alarm);
+        this.addMessage("Alarma actualizada correctamente", "success");
+        return response.data;
+      } catch (error) {
+        this.addMessage("Error al actualizar la alarma", "error");
+      }
+    }
   }
 })
