@@ -304,7 +304,7 @@
     },
     {
       "id": "d448",
-      "patient_id": "a32a",
+      "patient_id": "39b4",
       "user_id": "2",
       "type": "accidental",
       "description": "dwadwadwa",
@@ -341,6 +341,16 @@
       "alarm_id": "82e6",
       "alarm_type_id": 6,
       "timestamp": "2025-02-20T15:52:00"
+    },
+    {
+      "id": "178f",
+      "user_id": "2",
+      "patient_id": "39b4",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "9c2c",
+      "alarm_type_id": 7,
+      "timestamp": "2025-02-20T17:46:00"
     }
   ],
   "alarm_types": [
@@ -395,20 +405,12 @@
       "weekday": "thursday"
     },
     {
-      "id": "74b1",
-      "patient_id": null,
-      "type": "bereavement",
-      "start_date": "2025-02-24",
-      "end_date": "2025-03-08",
-      "weekday": "thursday"
-    },
-    {
-      "id": "9c2c",
-      "patient_id": "dc43",
-      "type": "hospital_discharge",
-      "start_date": "2025-03-03",
-      "end_date": "2025-03-05",
-      "weekday": "tuesday"
+      "id": "e435",
+      "patient_id": "a32a",
+      "type": "medication",
+      "start_date": "2025-02-03",
+      "end_date": "2025-03-09",
+      "weekday": "sunday"
     }
   ],
   "preventive_alarms": [

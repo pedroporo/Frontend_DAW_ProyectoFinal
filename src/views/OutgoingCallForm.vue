@@ -98,6 +98,10 @@ export default {
             } else {
                 this.$router.push('/outgoing_calls');
             }
+        },
+        getPatientName(patientId) {
+            const patient = this.patients.find(patient => patient.id == patientId);
+            return patient ? patient.name + " " + patient.last_name : '';
         }
     },
 
@@ -126,7 +130,7 @@ export default {
             <Field as="select" id="alarma" name="alarma" v-model="llamada.alarm_id" class="form-control">
                 <option value="" selected disabled>-- Selecciona alarma --</option>
                 <option v-for="alarm in alarmas" :key="alarm.id" :value="alarm.id">
-                    {{ alarm.type }}
+                    {{ "Alarma de " + getPatientName(alarm.patient_id) }}
                 </option>
             </Field>
             <ErrorMessage class="error" name="alarma" />
