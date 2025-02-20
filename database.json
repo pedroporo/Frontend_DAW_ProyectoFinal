@@ -231,7 +231,7 @@
       "last_name": "García Calvo",
       "phone": "666666666",
       "first_name": "Regular",
-      "relationship": "Hija"
+      "relationship": "aHija"
     },
     {
       "id": "7a30",
@@ -313,44 +313,44 @@
   ],
   "outgoing_calls": [
     {
-      "id": "3251",
-      "user_id": "2",
-      "patient_id": "a32a",
-      "is_planned": true,
-      "description": "dwa",
-      "alarm_id": "82e6",
-      "alarm_type_id": 6,
-      "timestamp": "2025-02-17T19:12:00"
-    },
-    {
-      "id": "336c",
-      "user_id": "2",
-      "patient_id": "a32a",
-      "is_planned": true,
-      "description": "dwa",
-      "alarm_id": "82e6",
-      "alarm_type_id": 7,
-      "timestamp": "2025-02-20T15:50:00"
-    },
-    {
-      "id": "f811",
-      "user_id": "2",
-      "patient_id": "a32a",
-      "is_planned": true,
-      "description": "dwa",
-      "alarm_id": "82e6",
-      "alarm_type_id": 6,
-      "timestamp": "2025-02-20T15:52:00"
-    },
-    {
-      "id": "178f",
-      "user_id": "2",
+      "id": "d39a",
+      "user_id": "1",
       "patient_id": "39b4",
       "is_planned": true,
       "description": "dwa",
-      "alarm_id": "9c2c",
+      "alarm_id": "e435",
       "alarm_type_id": 7,
-      "timestamp": "2025-02-20T17:46:00"
+      "timestamp": "2025-02-20T18:31:00"
+    },
+    {
+      "id": "3545",
+      "user_id": "1",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "e435",
+      "alarm_type_id": 7,
+      "timestamp": "2025-02-20T18:46:00"
+    },
+    {
+      "id": "1534",
+      "user_id": "1",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "e435",
+      "alarm_type_id": 6,
+      "timestamp": "2025-02-20T18:54:00"
+    },
+    {
+      "id": "7839",
+      "user_id": "2",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "e435",
+      "alarm_type_id": 6,
+      "timestamp": "2025-02-20T18:54:00"
     }
   ],
   "alarm_types": [

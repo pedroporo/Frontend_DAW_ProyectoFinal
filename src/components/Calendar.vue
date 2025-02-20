@@ -58,7 +58,6 @@ export default defineComponent({
         ...mapActions(useOutgoingCallsStore, ['fetchCallsByPatientId', 'createCall']),
         ...mapActions(useAlarmsStore, ['getAlarmById', 'getAlarmas']),
         ...mapActions(usePatientsStore, ['getPatient']),
-
         translateDay(day) {
             const days = {
                 'mo': 'Lunes',
@@ -121,7 +120,7 @@ export default defineComponent({
         );
 
         // 🔴 Importante: Asigna un NUEVO array para que Vue detecte el cambio
-        this.calendarOptions.events = [...events];
+        this.calendarOptions = { ...this.calendarOptions, events };
     } else {
         this.calendarOptions.events = [];
     }
@@ -217,7 +216,7 @@ export default defineComponent({
                         <button type="button" class="btn-close" @click="closeModalCreate"></button>
                     </div>
                     <div class="modal-body">
-                        <OutgoingCallForm :id="null" @callCreated="loadCalls" @callDeleted="loadCalls" 
+                        <OutgoingCallForm :id="null" @callCreated="loadCalls" 
                         @cancel="closeModalCreate" :currentDate="selectedDate"/>
                     </div>
                 </div>

@@ -55,7 +55,7 @@ export default {
             if (confirm('Estas seguro de eliminar la llamada?')) {
                 this.deleteCall(id);
                 this.outgoingCallsPatient = this.outgoingCallsPatient.filter(call => call.id != id);
-                this.$emit('callDeleted');
+                this.$emit('update-calendar');
             }
         },
         añadirAlarma(id) {
@@ -124,7 +124,7 @@ export default {
                 </div>
             </div>
             <div class="col-md-12 col-lg-7">
-                <calendar :id="this.$route.params.id" />
+                <calendar :id="this.$route.params.id" @update-calendar="loadCalls"/>
             </div>
 
             <div class="col-md-12 col-lg-6">
