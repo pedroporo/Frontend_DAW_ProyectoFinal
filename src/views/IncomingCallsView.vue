@@ -115,6 +115,7 @@ export default {
     },
 
     async mounted() {
+        document.title = "Listado de Llamadas Entrantes";
         this.llamadasEntrantes = await this.getLlamadasEntrantes();
         this.patients = await this.getPatients();
     }

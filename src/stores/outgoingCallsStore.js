@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore, mapActions } from "pinia";
 import { useMessagesStore } from "./messagesStore";
-const SERVER = "http://localhost:3000";
+const SERVER = import.meta.env.VITE_API_BASE_URL;
 const CALLS = "/outgoing_calls/";
 
 export const useOutgoingCallsStore = defineStore("outgoingCalls", {

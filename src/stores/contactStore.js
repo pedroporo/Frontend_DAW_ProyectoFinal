@@ -2,7 +2,7 @@ import { defineStore, mapActions } from 'pinia';
 import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
 
-const urlContacts = "http://localhost:3000/contacts";
+const urlContacts = import.meta.env.VITE_API_BASE_URL + "contacts";
 
 export const useContactsStore = defineStore('contacts', {
   state: () => ({

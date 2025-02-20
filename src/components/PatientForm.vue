@@ -74,6 +74,7 @@ export default {
   },
   async mounted() {
     await this.loadPatient();
+    document.title = "Nuevo Paciente";
   }
 }
 </script>

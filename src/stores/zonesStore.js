@@ -2,7 +2,7 @@ import { defineStore, mapActions } from 'pinia';
 import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
 
-const urlZones = "http://localhost:3000/zones";
+const urlZones = import.meta.env.VITE_API_BASE_URL + "zones";
 
 export const useZonesStore = defineStore('zones', {
   state: () => ({

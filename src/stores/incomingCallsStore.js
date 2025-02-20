@@ -1,7 +1,7 @@
 import { defineStore, mapActions } from 'pinia'
 import axios from 'axios'
 import { useMessagesStore } from './messagesStore';
-const urlIncomingCalls = "http://localhost:3000/incoming_calls";
+const urlIncomingCalls = import.meta.env.VITE_API_BASE_URL + "incoming_calls";
 export const useIncomingCallsStore = defineStore('data', {
     state() {
         return {

@@ -65,6 +65,7 @@ export default {
             this.patient = await this.getPatient(id);
             this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
             this.outgoingCallsPatient = await this.fetchCallsByPatientId(id);
+            document.title = "Paciente " + this.patient.name;
         }
     }
 }
