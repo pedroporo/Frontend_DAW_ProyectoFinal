@@ -437,6 +437,15 @@
       "type": "planned",
       "patient_id": "ee7b",
       "timestamp": "2025-02-17T17:44:00"
+    },
+    {
+      "id": "d322",
+      "user_id": "1",
+      "patient_id": "1",
+      "type": "unplanned",
+      "description": "ssds",
+      "alarm_id": 7,
+      "timestamp": "2025-02-06T16:14:00"
     }
   ],
   "alarm_types": [
