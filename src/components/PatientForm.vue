@@ -60,7 +60,6 @@ export default {
         await this.updatePatient(this.patient);
       } else {
         await this.addPatient(this.patient);
-        console.log(this.patient.id);
       }
 
       if (confirm('¿Deseas añadir una alarma?')) {

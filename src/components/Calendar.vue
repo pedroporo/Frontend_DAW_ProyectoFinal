@@ -89,41 +89,44 @@ export default defineComponent({
             this.showModalCreate = false;
         },
         async loadCalls() {
-            this.outgoingCalls = await this.fetchCallsByPatientId(this.id);
+    this.outgoingCalls = await this.fetchCallsByPatientId(this.id);
 
-            if (this.outgoingCalls.length > 0) {
-                const events = await Promise.all(
-                    this.outgoingCalls.map(async (call) => {
-                        const alarm = await this.getAlarmById(call.alarm_id);
-                        return {
-                            title: call.description,
-                            start: alarm?.start_date || call.timestamp,
-                            end: alarm?.end_date || null,
-                            day: call.timestamp.split('T')[0],
-                            hour: call.timestamp.split('T')[1].slice(0, 5),
-                            rrule: alarm?.weekday && alarm?.end_date !== null
-                                ? {
-                                    freq: 'weekly',
-                                    byweekday: alarm.weekday.slice(0, 2).toLowerCase(),
-                                    dtstart: alarm.start_date,
-                                    until: alarm.end_date
-                                }
-                                : undefined,
-                            classNames: call.is_planned ? "planned" : "unplanned",
-                            extendedProps: {
-                                description: call.description || 'Sin descripción',
-                                alarm_type: this.translateAlarmType(alarm.type),
-                                //user_id: call.user_id,
-                                //alarm_id: call.alarm_id,
-                                call_id: call.id,
-                                is_planned: call.is_planned,
-                            }
-                        };
-                    })
-                );
-                this.calendarOptions.events = events;
-            }
-        },
+    if (this.outgoingCalls.length > 0) {
+        const events = await Promise.all(
+            this.outgoingCalls.map(async (call) => {
+                const alarm = await this.getAlarmById(call.alarm_id);
+                return {
+                    title: call.description,
+                    start: alarm?.start_date || call.timestamp,
+                    end: alarm?.end_date || null,
+                    day: call.timestamp.split('T')[0],
+                    hour: call.timestamp.split('T')[1].slice(0, 5),
+                    rrule: alarm?.weekday && alarm?.end_date !== null
+                        ? {
+                            freq: 'weekly',
+                            byweekday: alarm.weekday.slice(0, 2).toLowerCase(),
+                            dtstart: alarm.start_date,
+                            until: alarm.end_date
+                        }
+                        : undefined,
+                    classNames: call.is_planned ? "planned" : "unplanned",
+                    extendedProps: {
+                        description: call.description || 'Sin descripción',
+                        alarm_type: this.translateAlarmType(alarm.type),
+                        call_id: call.id,
+                        is_planned: call.is_planned,
+                    }
+                };
+            })
+        );
+
+        // 🔴 Importante: Asigna un NUEVO array para que Vue detecte el cambio
+        this.calendarOptions.events = [...events];
+    } else {
+        this.calendarOptions.events = [];
+    }
+}
+,
     },
     computed: {
         ...mapState(useAlarmsStore, ['translateAlarmType']),
@@ -183,8 +186,7 @@ export default defineComponent({
                                     <ul><strong>DNI:</strong> {{ this.patient.dni }}</ul>
                                     <ul><strong>Fecha de nacimiento:</strong> {{ this.patient.birth_date }}</ul>
                                     <ul><strong>Dirección:</strong> {{ this.patient.address }}, {{ this.patient.city }},
-                                        {{
-                                            this.patient.postal_code }}</ul>
+                                        {{ this.patient.postal_code }}</ul>
                                     <ul><strong>Tarjeta sanitaria:</strong> {{ this.patient.health_card_number }}</ul>
                                     <ul><strong>Zona ID:</strong> {{ this.patient.zone_id }}</ul>
                                     <ul><strong>Usuario ID:</strong> {{ this.patient.user_id }}</ul>
@@ -215,7 +217,8 @@ export default defineComponent({
                         <button type="button" class="btn-close" @click="closeModalCreate"></button>
                     </div>
                     <div class="modal-body">
-                        <OutgoingCallForm :id="null" @cancel="closeModalCreate" :currentDate="selectedDate"/>
+                        <OutgoingCallForm :id="null" @callCreated="loadCalls" @callDeleted="loadCalls" 
+                        @cancel="closeModalCreate" :currentDate="selectedDate"/>
                     </div>
                 </div>
             </div>

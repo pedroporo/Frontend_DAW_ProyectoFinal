@@ -69,7 +69,6 @@ export const useContactsStore = defineStore('contacts', {
         const response = await axios.delete(
           `${urlContacts}?patient_id=${patientId}`
         );
-        console.log(response.data);
         this.contacts = this.contacts.filter(contact => contact.patient_id != patientId);
         this.addMessage("Contactos eliminados correctamente", "success");
         return response.data;

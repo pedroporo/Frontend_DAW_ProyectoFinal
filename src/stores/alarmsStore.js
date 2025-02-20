@@ -26,7 +26,7 @@ export const useAlarmsStore = defineStore('alarms', {
 
   getters: {
     getAlarmName: (state) => (id) => {
-      const alarm = state.alarmasTipo.find(alarm => alarm.id == id);
+      const alarm = state.alarmasTipo.find(alarm => alarm.type_id == id);
       if (alarm) {
         return state.alarmasTraduccion[alarm.type] || alarm.type;
       }
@@ -48,7 +48,6 @@ export const useAlarmsStore = defineStore('alarms', {
     },
     async getAlarmById(id) {
       try {
-        console.log(id)
         const response = await axios.get(urlAlarms + id);
         return response.data;
       } catch (error) {

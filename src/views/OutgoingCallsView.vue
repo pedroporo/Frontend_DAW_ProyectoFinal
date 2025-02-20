@@ -99,12 +99,14 @@ export default {
             }
         },
 
-        getType: call => call ? 'Planificada' : 'No planificada',
+        getType(call) {
+            return call ? 'Planificada' : 'No planificada';
+        },
 
         edit(id) {
             this.$router.push(`/outgoingForm/${id}`);
         },
-        
+
         sortBy(key) {
             if (this.sortKey === key) {
                 if (this.sortOrder === 1) {
@@ -118,7 +120,7 @@ export default {
                 this.sortOrder = 1;
             }
         },
-        changeIconSortOrder(){
+        changeIconSortOrder() {
             return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
         getPatientName(id) {
@@ -129,7 +131,8 @@ export default {
     async mounted() {
         this.llamadasSalientes = await this.fetchCalls();
         this.patients = await this.getPatients();
-    }
+    },
+
 };
 </script>
 
@@ -157,12 +160,14 @@ export default {
                     <td>{{ formatDateTime(call.timestamp).hora }}</td>
                     <td>{{ getPatientName(call.patient_id) }}</td>
                     <td>{{ userNames(call.user_id) }}</td>
-                    <td>{{ getType(call.type) }}</td>
+                    <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
                     <td>{{ call.description }}</td>
-                    <td>{{ getAlarmName(call.alarm_id) }}</td>
+                    <td>{{ getAlarmName(call.alarm_type_id) }}</td>
                     <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
-                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i
+                                class="bi bi-pencil-square"></i></button>
+                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i
+                                class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -240,7 +245,7 @@ export default {
     font-weight: bold;
 }
 
-.click-order{
+.click-order {
     cursor: pointer;
 }
 
@@ -279,6 +284,7 @@ export default {
 
 /* Responsive */
 @media (max-width: 768px) {
+
     .calls-table th,
     .calls-table td {
         padding: 8px 10px;

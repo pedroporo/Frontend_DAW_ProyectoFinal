@@ -85,7 +85,6 @@ export const useIncomingCallsStore = defineStore('data', {
                 const response = await axios.delete(
                     `${urlIncomingCalls}?patient_id=${patientId}`
                 );
-                console.log(response.data);
                 this.addMessage("Llamadas eliminadas correctamente", "success");
                 return response.data;
             } catch (error) {

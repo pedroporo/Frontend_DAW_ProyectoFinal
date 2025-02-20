@@ -28,7 +28,12 @@ export default {
         return {
             patients: [],
             isEdit: false,
-            llamada: {},
+            llamada: {
+                patient_id: "",
+                user_id: "",
+                is_planned: "",
+                description: ""
+            },
             alarmas: [],
             fecha: "",
             hora: "",
@@ -38,7 +43,7 @@ export default {
                 hora: yup.string().required('La hora es obligatoria'),
                 user_id: yup.string().required('Selecciona un operador'),
                 patient_id: yup.string().required('Selecciona un paciente'),
-                type: yup.string().required('Selecciona el tipo de llamada'),
+                is_planned: yup.string().required('Selecciona el tipo de llamada'),
                 description: yup.string().required('La descripción es obligatoria'),
                 alarm_id: yup.string().required('Selecciona una alarma'),
             }),
@@ -69,6 +74,7 @@ export default {
                 await this.updateCall(this.llamada);
             } else {
                 await this.addCall(this.llamada);
+                this.$emit('callCreated');
             }
             this.redirectAfterAction();
         },
@@ -164,12 +170,12 @@ export default {
             <label>Tipo: </label>
             <div class="radio-buttons">
                 <label>
-                    <Field type="radio" name="type" v-model="llamada.type" value="planned" /> Planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="true" /> Planificada
                 </label>
                 <label>
-                    <Field type="radio" name="type" v-model="llamada.type" value="unplanned" /> No planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="false" /> No planificada
                 </label>
-                <ErrorMessage class="error" name="type" />
+                <ErrorMessage class="error" name="is_planned" />
             </div>
         </div>
 
@@ -193,7 +199,7 @@ export default {
 
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">{{ isEdit ? "Actualizar" : "Añadir" }}</button>
-            <button type="button" class="btn btn-danger" @click="$router.push('/outgoing_calls')">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="$router.back()">Cancelar</button>
         </div>
     </Form>
 </template>

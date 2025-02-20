@@ -3,6 +3,7 @@ import { mapActions, mapState } from 'pinia';
 import { useAlarmsStore } from '@/stores/alarmsStore';
 import * as yup from 'yup';
 import { ErrorMessage, Field, Form } from 'vee-validate';
+import { parseISO, eachDayOfInterval, format } from 'date-fns';
 
 export default {
     components: {
@@ -27,11 +28,42 @@ export default {
                 end_date: '',
                 weekday: ''
             },
-            schema
+            schema,
+            weekdays: {
+                monday: "Lunes",
+                tuesday: "Martes",
+                wednesday: "Miércoles",
+                thursday: "Jueves",
+                friday: "Viernes",
+                saturday: "Sábado",
+                sunday: "Domingo"
+            }
         };
     },
     computed: {
         ...mapState(useAlarmsStore, ['alarmasTipo', 'translateAlarmType']),
+
+        filteredWeekdays() {
+            if (!this.alarm.start_date || !this.alarm.end_date) return this.weekdays;
+
+            try {
+                const startDate = parseISO(this.alarm.start_date);
+                const endDate = parseISO(this.alarm.end_date);
+
+                if (startDate > endDate) return this.weekdays;
+
+                // Obtener los días dentro del rango de fechas
+                const daysInRange = eachDayOfInterval({ start: startDate, end: endDate })
+                    .map(date => format(date, 'EEEE').toLowerCase());
+
+                // Filtrar los días disponibles en español
+                return Object.fromEntries(
+                    Object.entries(this.weekdays).filter(([key]) => daysInRange.includes(key))
+                );
+            } catch (error) {
+                return this.weekdays;
+            }
+        }
     },
     methods: {
         ...mapActions(useAlarmsStore, ['addAlarm']),
@@ -64,21 +96,30 @@ export default {
                 </Field>
                 <ErrorMessage name="type" class="error-message" />
             </div>
+
             <div class="form-group">
                 <label for="start_date">Fecha de inicio</label>
                 <Field type="date" id="start_date" name="start_date" v-model="alarm.start_date" class="form-control" />
                 <ErrorMessage name="start_date" class="error-message" />
             </div>
+
             <div class="form-group">
                 <label for="end_date">Fecha de fin</label>
                 <Field type="date" id="end_date" name="end_date" v-model="alarm.end_date" class="form-control" />
                 <ErrorMessage name="end_date" class="error-message" />
             </div>
+
             <div class="form-group">
                 <label for="weekday">Día de la semana</label>
-                <Field type="text" id="weekday" name="weekday" v-model="alarm.weekday" class="form-control" />
+                <Field as="select" id="weekday" name="weekday" v-model="alarm.weekday" class="form-control">
+                    <option value="" selected disabled>-- Selecciona un día --</option>
+                    <option v-for="(day, key) in filteredWeekdays" :key="key" :value="key">
+                        {{ day }}
+                    </option>
+                </Field>
                 <ErrorMessage name="weekday" class="error-message" />
             </div>
+
             <div class="form-buttons">
                 <button type="submit" class="btn btn-primary">Añadir alarma</button>
                 <button type="button" @click="$router.back()" class="btn btn-danger">Cancelar</button>
