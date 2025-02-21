@@ -2,7 +2,7 @@ import { defineStore, mapActions } from 'pinia'
 import { useMessagesStore } from './messagesStore';
 import api from "./api/axiosInstance";
 
-const urlIncomingCalls = "incoming_calls";
+const urlIncomingCalls = "incoming-calls";
 
 export const useIncomingCallsStore = defineStore('data', {
     state() {

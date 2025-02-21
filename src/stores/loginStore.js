@@ -32,7 +32,7 @@ export const useLoginStore = defineStore("login", {
       }
     },
     logout() {
-      console.log(urlLoginGoogle)
+      
       this.user = {};
       this.token = {};
       localStorage.removeItem("token");      
