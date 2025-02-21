@@ -55,7 +55,7 @@ export default {
         <RouterLink to="/informes">Informes</RouterLink>
         <RouterLink to="/gestionUsers">Listado de Operadores</RouterLink>
         <a @click="this.logout()">Cerrar Sesion</a>
-        <LoginView/>
+        <LoginGoogle/>
       </nav>
     </div>
   </header>
