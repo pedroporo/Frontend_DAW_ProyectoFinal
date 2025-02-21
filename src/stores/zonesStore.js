@@ -1,8 +1,8 @@
 import { defineStore, mapActions } from 'pinia';
-import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
+import api from "./api/axiosInstance";
 
-const urlZones = import.meta.env.VITE_API_BASE_URL + "zones";
+const urlZones = "zones";
 
 export const useZonesStore = defineStore('zones', {
   state: () => ({
@@ -21,7 +21,7 @@ export const useZonesStore = defineStore('zones', {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getZones() {
       try {
-        const { data } = await axios.get(urlZones);
+        const { data } = await api.get(urlZones);
         this.zones = data;
         return data;
       } catch (error) {

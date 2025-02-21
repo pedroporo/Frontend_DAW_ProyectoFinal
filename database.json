@@ -321,6 +321,16 @@
       "alarm_id": "82e6",
       "alarm_type_id": 6,
       "timestamp": "2025-02-20T15:52:00"
+    },
+    {
+      "id": "b8dd",
+      "user_id": "2",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dasdas",
+      "alarm_type_id": 2,
+      "alarm_id": "217a",
+      "timestamp": "2025-02-21T16:55:00"
     }
   ],
   "alarm_types": [

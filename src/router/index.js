@@ -103,4 +103,15 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('authToken');
+
+  if (to.meta.requiresAuth && !token) {
+    next('/'); // Redirige al home si no tiene token
+  } else {
+    next(); // Permite la navegación
+  }
+});
+
+
 export default router

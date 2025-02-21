@@ -1,8 +1,8 @@
 import { defineStore, mapActions } from 'pinia';
-import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
+import api from "./api/axiosInstance";
 
-const urlContacts = import.meta.env.VITE_API_BASE_URL + "contacts";
+const urlContacts = "contacts";
 
 export const useContactsStore = defineStore('contacts', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useContactsStore = defineStore('contacts', {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getContacts() {
       try {
-        const { data } = await axios.get(urlContacts);
+        const { data } = await api.get(urlContacts);
         this.contacts = data;
         return data;
       } catch (error) {
@@ -31,7 +31,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async getContact(id) {
       try {
-        const { data } = await axios.get(`${urlContacts}/${id}`);
+        const { data } = await api.get(`${urlContacts}/${id}`);
         return data;
       } catch (error) {
         this.addMessage("Error al obtener contacto", "error");
@@ -39,7 +39,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async addContact(contact) {
       try {
-        const { data } = await axios.post(urlContacts, contact);
+        const { data } = await api.post(urlContacts, contact);
         this.contacts.push(data);
         this.addMessage("Contacto creado correctamente", "success");
       } catch (error) {
@@ -48,7 +48,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async updateContact(contact) {
       try {
-        const { data } = await axios.put(`${urlContacts}/${contact.id}`, contact);
+        const { data } = await api.put(`${urlContacts}/${contact.id}`, contact);
         this.contacts = this.contacts.map(c => c.id === data.id ? data : c);
         this.addMessage("Contacto actualizado correctamente", "success");
       } catch (error) {
@@ -57,7 +57,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async deleteContact(id) {
       try {
-        await axios.delete(`${urlContacts}/${id}`);
+        await api.delete(`${urlContacts}/${id}`);
         this.contacts = this.contacts.filter(contact => contact.id !== id);
         this.addMessage("Contacto eliminado correctamente", "success");
       } catch (error) {
@@ -66,7 +66,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async deleteContactByPatientId(patientId) {
       try {
-        const response = await axios.delete(
+        const response = await api.delete(
           `${urlContacts}?patient_id=${patientId}`
         );
         this.contacts = this.contacts.filter(contact => contact.patient_id != patientId);
