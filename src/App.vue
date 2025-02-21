@@ -6,14 +6,14 @@ import { useAlarmsStore } from './stores/alarmsStore';
 import { useContactsStore } from './stores/contactStore';
 import { useZonesStore } from './stores/zonesStore';
 import { useUsersStore } from './stores/usersStore';
-import LoginView from './views/LoginView.vue';
+import LoginGoogle from './components/LoginGoogle.vue';
 import { useLoginStore } from './stores/loginStore';
 
 export default {
   name: 'App',
   components: {
     AppMessages,
-    LoginView
+    LoginGoogle
   },
   computed: {
     route() {
