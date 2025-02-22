@@ -3,91 +3,38 @@ import { useLoginStore } from "@/stores/loginStore";
 import { mapActions, mapState } from "pinia";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
-import { GoogleLogin } from 'vue3-google-login'
-import axios from 'axios'
+import { ref } from "vue";
+import axios from "axios";
 
 export default {
-  name: 'Login',
-  components: {
-    GoogleLogin
-  },
-  methods: {
-    ...mapActions(useLoginStore, []),
-    async handleLogin() {
+  setup() {
+    const loginWithGoogle = async () => {
       try {
-        const response = await this.login()
-        const token = response.credential
+        const response = await axios.get("http://localhost/api/login/google", {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Access-Control-Allow-Headers":
+              "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
+          },
+        });
+        console.log(response);
 
-        // Enviar token a Laravel
-        const { data } = await axios.post('https://backend.worldmemistic.duckdns.org/api/login/google', {
-          token
-        })
-
-        console.log('Usuario autenticado:', data)
-        // Aquí puedes almacenar el token en Vuex, Pinia o localStorage
+        //localStorage.setItem('token', response);
       } catch (error) {
-        console.error('Error en la autenticación:', error)
+        console.error(error);
       }
-    }
+    };
 
-
-  },
-  async mounted() {
-    /* if (!localStorage.getItem("token")) {
-      this.loginWithGoogle();
-    } else {
-      this.checkLoginResponse();
-    } */
-    //await this.autoLogin()
-    //await this.loginWithGoogle()
-    this.login = GoogleLogin({
-      onSuccess: this.handleLogin,
-      onError: () => console.error('Error al iniciar sesión con Google')
-    })
-
-    // Ejecutar el login automáticamente
-    this.handleLogin()
-
-  },
-  data() {
     return {
-      clientId: "372335971957-co69tfn66v1fgq3p1a15alj46mglf6f0.apps.googleusercontent.com",
-      login: null
-
-    }
+      loginWithGoogle,
+    };
   },
-
-}
-
-
-
+};
 </script>
 
 <template>
-  <!--   <div class="login-page">
-    <div class="login-container">
-      <form class="login-form">
-        <h2>Login</h2>
-        <input type="text" v-model="username" placeholder="Usuario" class="input-field" required>
-        <input type="password" v-model="password" placeholder="Contraseña" class="input-field" required>
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-    </div>
-  </div> -->
-  <div class="login-page">
-    <div class="login-container">
-      <h2>Redirigiendo a Google...</h2>
-    </div>
-  </div>
-  <div>
-    <google-login 
-      :client-id="this.clientId"
-      @success="handleLogin"
-      @error="handleError"
-    >
-      Iniciar sesión con Google
-    </google-login>
-  </div>
+  <button @click="loginWithGoogle">Login with Google</button>
 </template>
 
 <style scoped>
