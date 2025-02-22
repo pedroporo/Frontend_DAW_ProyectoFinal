@@ -86,7 +86,7 @@ export default {
     },
     data() {
         return {
-            patients: [],
+            patients: {},
             search: '',
             sortKey: '',
             sortOrder: 1,
