@@ -10,10 +10,11 @@ import IncomingCallForm from '@/views/IncomingCallForm.vue'
 import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 import Contact from '@/components/Contact.vue'
 import AlarmForm from '@/components/AlarmForm.vue'
-
 import PatientForm from '@/components/PatientForm.vue'
 import ContactForm from '@/components/ContactForm.vue'
 import GestionUsersView from '@/views/GestionUsersView.vue'
+import LoginGoogle from '@/components/LoginGoogle.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +42,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: PatientsView,
+      component: LoginGoogle,
     },
     {
       path: '/informes',
