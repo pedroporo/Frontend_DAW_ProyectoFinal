@@ -38,7 +38,7 @@ export default {
                     call.description.toLowerCase().includes(searchLower)
                 );
             });
-        
+
             if (this.sortKey) {
                 filtered.sort((a, b) => {
                     let valueA, valueB;
@@ -105,7 +105,7 @@ export default {
                 this.sortOrder = 1;
             }
         },
-        changeIconSortOrder(){
+        changeIconSortOrder() {
             return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
         getPatientName(id) {
@@ -127,34 +127,43 @@ export default {
         <h2>Historial de Llamadas Entrantes</h2>
         <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/incomingForm')" class="btn btn-primary">+ Llamada Entrante</button>
-        <table class="calls-table">
-            <thead>
-                <tr>
-                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
-                        {{ columnNames[key] }}
-                        <span v-if="sortKey === key">
-                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
-                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
-                        </span>
-                    </th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="call in filteredIncomingCalls" :key="call.id">
-                    <td>{{ formatDateTime(call.timestamp).fecha }}</td>
-                    <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientName(call.patient_id) }}</td>
-                    <td>{{ userNames(call.user_id) }}</td>
-                    <td>{{ translateTipoLlamada(call.type) }}</td>
-                    <td>{{ call.description }}</td>
-                    <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></button>
-                        <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+        <div class="table-responsive">
+            <table class="calls-table">
+                <thead>
+                    <tr>
+                        <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                            {{ columnNames[key] }}
+                            <span v-if="sortKey === key">
+                                <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                                <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                            </span>
+                        </th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in filteredIncomingCalls" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ getPatientName(call.patient_id) }}</td>
+                        <td>{{ userNames(call.user_id) }}</td>
+                        <td>{{ translateTipoLlamada(call.type) }}</td>
+                        <td>{{ call.description }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button @click="edit(call.id)" class="btn btn-secondary btn-sm">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button @click="deleteCall(call.id)" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -209,10 +218,15 @@ export default {
 }
 
 /* Tabla */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* Scroll horizontal en dispositivos pequeños */
+}
+
 .calls-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    min-width: 800px; /* Evita que la tabla se reduzca demasiado */
 }
 
 .calls-table th,
@@ -228,7 +242,7 @@ export default {
     font-weight: bold;
 }
 
-.click-order{
+.click-order {
     cursor: pointer;
 }
 
@@ -241,6 +255,11 @@ export default {
 }
 
 /* Botones de acción en la tabla */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
 .btn-sm {
     padding: 5px 10px;
     font-size: 14px;
@@ -267,11 +286,14 @@ export default {
 
 /* Responsive */
 @media (max-width: 768px) {
-
     .calls-table th,
     .calls-table td {
         padding: 8px 10px;
         font-size: 14px;
+    }
+
+    .table-responsive {
+        overflow-x: auto; /* Scroll horizontal */
     }
 }
 </style>
