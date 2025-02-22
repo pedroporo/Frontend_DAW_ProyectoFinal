@@ -27,7 +27,7 @@ export const useLoginStore = defineStore("login", {
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
     
-          router.push("/"); // Usa el router importado
+          router.push("/");
         }
       } catch (error) {
         this.addMessage("Error al autenticar con Google" + error, "error");

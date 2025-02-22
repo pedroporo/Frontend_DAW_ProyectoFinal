@@ -9,7 +9,7 @@ export default {
         ...mapState(useContactsStore, ['contactNames']),
         ...mapState(useUsersStore, ['userNames']),
         filteredPatients() {
-            let filtered = this.patients.data.filter(p => {
+            let filtered = this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
                 //Filtra por nombre completo, cumpleaños, ubicación, dni, tarjeta sanitaria, telefono, e-mail y sus situaciones
                 return (
@@ -100,7 +100,7 @@ export default {
     },
     async mounted() {
         document.title = "Listado de Pacientes";
-        this.patients = await this.getPatients();
+        this.patients.data = await this.getPatients();
     }
 }
 </script>
