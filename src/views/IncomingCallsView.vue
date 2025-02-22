@@ -124,7 +124,7 @@ export default {
 
 <template>
     <div class="calls-history">
-        <h2>Historial de Llamadas Entrantes</h2>
+        <h2>Historial de Llamadas Entrantes  a a a</h2>
         <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/incomingForm')" class="btn btn-primary">+ Llamada Entrante</button>
         <table class="calls-table">
