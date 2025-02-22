@@ -18,7 +18,7 @@ export const useLoginStore = defineStore("login", {
       }
     
       try {
-        const response = await axios.get(urlLoginGoogle, { code });
+        const response = await axios.get(urlLoginGoogle);
     
         const data = response.data;
         if (data.success) {
