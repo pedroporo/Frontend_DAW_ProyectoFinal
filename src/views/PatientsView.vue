@@ -86,7 +86,7 @@ export default {
     },
     data() {
         return {
-            patients: [],
+            patients: {},
             search: '',
             sortKey: '',
             sortOrder: 1,
@@ -100,7 +100,7 @@ export default {
     },
     async mounted() {
         document.title = "Listado de Pacientes";
-        this.patients = await this.getPatients();
+        this.patients.data = await this.getPatients();
     }
 }
 </script>

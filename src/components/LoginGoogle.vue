@@ -6,18 +6,29 @@ const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 
 export default {
   methods: {
-    ...mapActions(useLoginStore, ['handleGoogleLogin']),
-    loginWithGoogle() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      
-      window.location.href = urlLoginGoogle;
+    ...mapActions(useLoginStore, ["handleGoogleLogin"]),
 
-      this.handleGoogleLogin(code);
+    loginWithGoogle() {
+      window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
+    },
+    
+    async checkForGoogleCode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code");
+      console.log(code);
+      if (code) {
+        await this.handleGoogleLogin(code);
+        window.history.replaceState({}, document.title, "/");
+      }
     },
   },
-}
+
+  mounted() {
+    this.checkForGoogleCode();
+  },
+};
 </script>
+
 
 <template>
   <div class="login-container">
@@ -26,7 +37,6 @@ export default {
 </template>
 
 <style scoped>
-
 .login-container {
   padding: 2rem;
   border-radius: 8px;

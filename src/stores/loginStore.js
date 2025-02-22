@@ -1,6 +1,7 @@
 import { defineStore, mapActions } from "pinia";
 import axios from "axios";
 import { useMessagesStore } from "./messagesStore";
+import router from "@/router"; // Importa el router
 
 const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 
@@ -12,30 +13,31 @@ export const useLoginStore = defineStore("login", {
   actions: {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async handleGoogleLogin(code) {
-
       if (!code) {
-        this.addMessage("Error al autenticar con Google", "error");
+        this.addMessage("Error al autenticar con Google !code", "error");
         return;
       }
+    
       try {
-        const response = await axios.get(urlLoginGoogle);
+        const response = await axios.get(`${urlLoginGoogle}/callback?code=${code}`);
+    
         const data = response.data;
-
         if (data.success) {
           this.user = data.data.user;
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
-          this.$router.push("/");
+    
+          router.push("/");
         }
       } catch (error) {
-        this.addMessage("Error al autenticar con Google", "error");
+        this.addMessage("Error al autenticar con Google" + error, "error");
       }
     },
+    
     logout() {
-      
       this.user = {};
-      this.token = {};
-      localStorage.removeItem("token");      
+      this.token = null;
+      localStorage.removeItem("auth_token");      
     },
   },
 });

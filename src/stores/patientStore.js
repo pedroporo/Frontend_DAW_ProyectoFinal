@@ -1,20 +1,19 @@
-import { defineStore, mapActions } from 'pinia';
-import { useMessagesStore } from './messagesStore';
+import { defineStore, mapActions } from "pinia";
+import { useMessagesStore } from "./messagesStore";
 import api from "./api/axiosInstance";
 
 const urlPacientes = "patients";
 
-export const usePatientsStore = defineStore('patients', {
-  state: () => ({
-  }),
-  getters: {
- 
-  },
+export const usePatientsStore = defineStore("patients", {
+  state: () => ({}),
+  getters: {},
   actions: {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getPatients() {
       try {
         const { data } = await api.get(urlPacientes);
+        console.log(data);
+
         return data;
       } catch (error) {
         this.addMessage("Error al obtener pacientes", "error");
@@ -46,7 +45,10 @@ export const usePatientsStore = defineStore('patients', {
     },
     async updatePatient(patient) {
       try {
-        const { data } = await api.put(`${urlPacientes}/${patient.id}`, patient);
+        const { data } = await api.put(
+          `${urlPacientes}/${patient.id}`,
+          patient
+        );
         this.addMessage("Paciente actualizado correctamente", "success");
         return data;
       } catch (error) {
@@ -60,6 +62,6 @@ export const usePatientsStore = defineStore('patients', {
       } catch (error) {
         this.addMessage("Error al eliminar paciente", "error");
       }
-    }
-  }
+    },
+  },
 });
