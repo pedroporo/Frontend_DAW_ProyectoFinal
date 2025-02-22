@@ -311,16 +311,6 @@
       "alarm_id": "82e6",
       "alarm_type_id": 7,
       "timestamp": "2025-02-20T15:50:00"
-    },
-    {
-      "id": "f811",
-      "user_id": "2",
-      "patient_id": "a32a",
-      "is_planned": true,
-      "description": "dwa",
-      "alarm_id": "82e6",
-      "alarm_type_id": 6,
-      "timestamp": "2025-02-20T15:52:00"
     }
   ],
   "alarm_types": [
