@@ -12,12 +12,12 @@ export default {
             patients: [],
             sortKey: '',
             sortOrder: 1,
-            sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description"],
+            sortableColumns: ["fecha", "hora", "patient"/* , "operator" */, "type", "description"],
             columnNames: {
                 fecha: "Fecha",
                 hora: "Hora",
                 patient: "Paciente",
-                operator: "Operador",
+                // operator: "Operador",
                 type: "Tipo",
                 description: "Descripción",
             }
@@ -45,12 +45,12 @@ export default {
 
                     switch (this.sortKey) {
                         case "fecha":
-                            valueA = a.timestamp.split("T")[0];
-                            valueB = b.timestamp.split("T")[0];
+                            valueA = a.timestamp.split(" ")[0];
+                            valueB = b.timestamp.split(" ")[0];
                             break;
                         case "hora":
-                            valueA = a.timestamp.split("T")[1];
-                            valueB = b.timestamp.split("T")[1];
+                            valueA = a.timestamp.split(" ")[1];
+                            valueB = b.timestamp.split(" ")[1];
                             break;
                         case "patient":
                             valueA = this.getPatientName(a.patient_id).toLowerCase();
@@ -147,7 +147,7 @@ export default {
                         <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                         <td>{{ formatDateTime(call.timestamp).hora }}</td>
                         <td>{{ getPatientName(call.patient_id) }}</td>
-                        <td>{{ userNames(call.user_id) }}</td>
+                        <!-- <td>{{ userNames(call.user_id) }}</td> -->
                         <td>{{ translateTipoLlamada(call.type) }}</td>
                         <td>{{ call.description }}</td>
                         <td>

@@ -102,7 +102,7 @@ export default {
                                         ? contactNames(patient.id).map(contact => contact.name).join(', ')
                                         : 'Sin contacto'}}
                                 </div>
-                                <div class="detail"><strong>Zona:</strong> {{ zonesNames(patient.zone_id) }}</div>
+                                <div class="detail"><strong>Zona:</strong> {{ patient.zone ? patient.zone.name : 'Sin zona' }}</div>
                                 <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation
                                 }}</div>
                                 <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}

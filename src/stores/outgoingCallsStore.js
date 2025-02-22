@@ -15,6 +15,7 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
       try {
         const response = await api.get(CALLS);
         this.outgoingCalls = response.data;
+        console.log(response.data);
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener llamadas", "error");
