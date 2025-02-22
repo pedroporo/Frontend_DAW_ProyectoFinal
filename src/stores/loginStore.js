@@ -1,6 +1,7 @@
 import { defineStore, mapActions } from "pinia";
 import axios from "axios";
 import { useMessagesStore } from "./messagesStore";
+import router from "@/router"; // Importa el router
 
 const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 
@@ -26,17 +27,14 @@ export const useLoginStore = defineStore("login", {
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
     
-          this.$router.push("/");
+          router.push("/"); // Usa el router importado
         }
       } catch (error) {
         this.addMessage("Error al autenticar con Google" + error, "error");
       }
-
-      
     },
     
     logout() {
-      
       this.user = {};
       this.token = null;
       localStorage.removeItem("auth_token");      
