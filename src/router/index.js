@@ -39,6 +39,11 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/login',
+      name: 'login',
+      redirect: '/'
+    },
+    {
       path: '/informes',
       name: 'informes',
       component: InformeList
