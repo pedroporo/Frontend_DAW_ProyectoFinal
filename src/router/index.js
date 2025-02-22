@@ -39,11 +39,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
-    {
+/*     {
       path: '/login',
       name: 'login',
       component: LoginGoogle,
-    },
+    }, */
     {
       path: '/informes',
       name: 'informes',
