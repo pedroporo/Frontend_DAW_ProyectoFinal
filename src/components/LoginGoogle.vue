@@ -7,15 +7,13 @@ const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 export default {
   methods: {
     ...mapActions(useLoginStore, ["handleGoogleLogin"]),
-    async loginWithGoogle() {
+    loginWithGoogle() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
 
-      if (code) {
-        await this.handleGoogleLogin(code);
-      } else {
-        window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
-      }
+      window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
+      
+      this.handleGoogleLogin(code);
     },
   },
  /*  mounted() {
