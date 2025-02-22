@@ -16,18 +16,33 @@ export default {
 <template>
   <div id="messages">
     <div v-for="(message, index) in messages" :key="index" :class="['message', message.type]">
-      <p>{{ message.text }}</p>
-      <button @click="removeMessage(index)">X</button>
+      <p class="message-text m-0 ms-2">{{ message.text }}</p>
+      <button @click="removeMessage(index)" class="remove-button me-2 p-0">
+        <i class="bi bi-x"></i>
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
 .message {
-  padding: 10px;
+  padding: 8px;
   margin: 5px 0;
   border-radius: 5px;
-  margin-left: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-text {
+  display: inline-block;
+}
+
+.remove-button {
+  display: inline-block;
+  background: none;
+  color: tomato;
+  font-size: 32px;
 }
 
 .message.success {

@@ -102,6 +102,7 @@ export default {
     },
 
     async mounted() {
+        document.title = 'Registrar Llamada Saliente'
         this.loadForm();
         this.patients = await this.getPatients();
         this.alarmas = await this.getAlarmas();

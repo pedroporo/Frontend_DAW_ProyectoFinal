@@ -129,6 +129,7 @@ export default {
         }
     },
     async mounted() {
+        document.title = 'Historial de Llamadas Salientes'
         this.llamadasSalientes = await this.fetchCalls();
         this.patients = await this.getPatients();
     },

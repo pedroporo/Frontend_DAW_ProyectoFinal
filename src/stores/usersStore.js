@@ -1,8 +1,8 @@
 import { defineStore, mapActions } from 'pinia';
-import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
+import api from "./api/axiosInstance";
 
-const urlUsers = "http://localhost:3000/users";
+const urlUsers = "users";
 
 export const useUsersStore = defineStore('users', {
   state: () => ({
@@ -21,7 +21,7 @@ export const useUsersStore = defineStore('users', {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getUsers() {
       try {
-        const { data } = await axios.get(urlUsers);
+        const { data } = await api.get(urlUsers);
         this.users = data;
       } catch (error) {
         this.addMessage("Error al obtener los usuarios", "error");
@@ -30,7 +30,7 @@ export const useUsersStore = defineStore('users', {
 
     async getUsersById(id) {
       try {
-        const response = await axios.get(urlUsers + '/' + id);
+        const response = await api.get(urlUsers + '/' + id);
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener el usuario", "error");
@@ -39,7 +39,7 @@ export const useUsersStore = defineStore('users', {
 
     async removeUser(id) {
       try {
-        await axios.delete(urlUsers + '/' + id);
+        await api.delete(urlUsers + '/' + id);
         this.addMessage("Usuario eliminado correctamente", "success");
         return true;
       } catch (error) {
@@ -50,7 +50,7 @@ export const useUsersStore = defineStore('users', {
 
     async addUser(user) {
       try {
-        const response = await axios.post(urlUsers + '/', user);
+        const response = await api.post(urlUsers + '/', user);
         this.addMessage("Usuario creado correctamente", "success");
         return response.data;
       } catch (error) {
@@ -61,7 +61,7 @@ export const useUsersStore = defineStore('users', {
 
     async updateUser(user) {
       try {
-        const response = await axios.put(urlUsers + '/' + user.id, user);
+        const response = await api.put(urlUsers + '/' + user.id, user);
         this.addMessage("Usuario actualizado correctamente", "success");
         return response.data;
       } catch (error) {

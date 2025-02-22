@@ -82,6 +82,7 @@ export default {
     },
 
     async mounted() {
+        document.title = "Llamadas Entrantes";
         this.loadForm();
         this.patients = await this.getPatients();
     },

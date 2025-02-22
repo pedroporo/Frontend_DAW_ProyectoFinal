@@ -6,11 +6,14 @@ import { useAlarmsStore } from './stores/alarmsStore';
 import { useContactsStore } from './stores/contactStore';
 import { useZonesStore } from './stores/zonesStore';
 import { useUsersStore } from './stores/usersStore';
+import LoginGoogle from './components/LoginGoogle.vue';
+import { useLoginStore } from './stores/loginStore';
 
 export default {
   name: 'App',
   components: {
-    AppMessages
+    AppMessages,
+    LoginGoogle
   },
   computed: {
     route() {
@@ -26,6 +29,7 @@ export default {
     ...mapActions(useContactsStore, ['getContacts']),
     ...mapActions(useZonesStore, ['getZones']),
     ...mapActions(useUsersStore, ['getUsers']),
+    ...mapActions(useLoginStore, ['logout']),
     toggleNav() {
       this.isNavVisible = !this.isNavVisible;
     }
@@ -50,7 +54,8 @@ export default {
         <RouterLink to="/outgoing_calls">Llamadas Salientes</RouterLink>
         <RouterLink to="/informes">Informes</RouterLink>
         <RouterLink to="/gestionUsers">Listado de Operadores</RouterLink>
-        <RouterLink to="/">Cerrar Sesion</RouterLink>
+        <a @click="this.logout()">Cerrar Sesion</a>
+        <LoginGoogle/>
       </nav>
     </div>
   </header>
