@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      redirect: '/'
+      component: PatientsView,
     },
     {
       path: '/informes',
