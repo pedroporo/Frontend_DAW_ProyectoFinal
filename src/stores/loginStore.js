@@ -26,7 +26,7 @@ export const useLoginStore = defineStore("login", {
           this.$router.push("/");
         }
       } catch (error) {
-        this.addMessage("Error al autenticar con Google" + code + " " + response, "error");
+        this.addMessage("Error al autenticar con Google" + code, "error");
       }
 
       if (!code) {

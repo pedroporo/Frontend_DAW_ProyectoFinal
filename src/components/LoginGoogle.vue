@@ -12,12 +12,12 @@ export default {
       window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
     },
     
-    checkForGoogleCode() {
+    async checkForGoogleCode() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
-
+      console.log(code);
       if (code) {
-        this.handleGoogleLogin(code);
+        await this.handleGoogleLogin(code);
         window.history.replaceState({}, document.title, "/");
       }
     },
