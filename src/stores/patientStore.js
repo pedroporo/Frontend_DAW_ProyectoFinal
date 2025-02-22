@@ -1,8 +1,8 @@
 import { defineStore, mapActions } from 'pinia';
-import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
+import api from "./api/axiosInstance";
 
-const urlPacientes = "http://localhost:3000/patients";
+const urlPacientes = "patients";
 
 export const usePatientsStore = defineStore('patients', {
   state: () => ({
@@ -14,7 +14,7 @@ export const usePatientsStore = defineStore('patients', {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getPatients() {
       try {
-        const { data } = await axios.get(urlPacientes);
+        const { data } = await api.get(urlPacientes);
         return data;
       } catch (error) {
         this.addMessage("Error al obtener pacientes", "error");
@@ -22,7 +22,7 @@ export const usePatientsStore = defineStore('patients', {
     },
     async getPatientName(id) {
       try {
-        const { data } = await axios.get(`${urlPacientes}/${id}`);
+        const { data } = await api.get(`${urlPacientes}/${id}`);
         return data.name;
       } catch (error) {
         this.addMessage("Error al obtener paciente", "error");
@@ -30,7 +30,7 @@ export const usePatientsStore = defineStore('patients', {
     },
     async getPatient(id) {
       try {
-        const { data } = await axios.get(`${urlPacientes}/${id}`);
+        const { data } = await api.get(`${urlPacientes}/${id}`);
         return data;
       } catch (error) {
         this.addMessage("Error al obtener paciente", "error");
@@ -38,7 +38,7 @@ export const usePatientsStore = defineStore('patients', {
     },
     async addPatient(patient) {
       try {
-        await axios.post(urlPacientes, patient);
+        await api.post(urlPacientes, patient);
         this.addMessage("Paciente creado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al crear paciente", "error");
@@ -46,7 +46,7 @@ export const usePatientsStore = defineStore('patients', {
     },
     async updatePatient(patient) {
       try {
-        const { data } = await axios.put(`${urlPacientes}/${patient.id}`, patient);
+        const { data } = await api.put(`${urlPacientes}/${patient.id}`, patient);
         this.addMessage("Paciente actualizado correctamente", "success");
         return data;
       } catch (error) {
@@ -55,7 +55,7 @@ export const usePatientsStore = defineStore('patients', {
     },
     async removePatient(id) {
       try {
-        await axios.delete(`${urlPacientes}/${id}`);
+        await api.delete(`${urlPacientes}/${id}`);
         this.addMessage("Paciente eliminado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al eliminar paciente", "error");

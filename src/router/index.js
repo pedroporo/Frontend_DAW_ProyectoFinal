@@ -3,13 +3,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PatientsView from '../views/PatientsView.vue'
 import Patient from '../components/Patient.vue'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
 import InformeView from '@/views/InformeView.vue'
 import IncomingCallsView from '@/views/IncomingCallsView.vue'
 import OutgoingCallsView from '@/views/OutgoingCallsView.vue'
 import IncomingCallForm from '@/views/IncomingCallForm.vue'
 import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 import Contact from '@/components/Contact.vue'
+import AlarmForm from '@/components/AlarmForm.vue'
 
 import PatientForm from '@/components/PatientForm.vue'
 import ContactForm from '@/components/ContactForm.vue'
@@ -37,11 +37,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
     },
     {
       path: '/informes',
@@ -99,8 +94,24 @@ const router = createRouter({
       path: '/contact/:id?',
       name: 'contact',
       component: Contact
+    },
+    {
+      path: '/alarmForm/:id?',
+      name: 'alarmForm',
+      component: AlarmForm
     }
   ],
 })
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('authToken');
+
+  if (to.meta.requiresAuth && !token) {
+    next('/'); // Redirige al home si no tiene token
+  } else {
+    next(); // Permite la navegación
+  }
+});
+
 
 export default router

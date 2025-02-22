@@ -99,6 +99,7 @@ export default {
         }
     },
     async mounted() {
+        document.title = "Listado de Pacientes";
         this.patients = await this.getPatients();
     }
 }

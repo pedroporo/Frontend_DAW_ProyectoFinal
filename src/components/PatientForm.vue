@@ -30,6 +30,12 @@ export default {
       phone: yup.string().matches(/^\d{9}$/, 'El teléfono debe tener 9 dígitos').required('El teléfono es requerido'),
       email: yup.string().email('Introduce un email válido').required('El email es requerido'),
       zone_id: yup.string().required('La zona es requerida'),
+      user_id: yup.string().required('El operador es requerido'),
+      personal_situation: yup.string().required('La situación personal es requerida'),
+      health_situation: yup.string().required('La situación de salud es requerida'),
+      housing_situation: yup.string().required('La situación de vivienda es requerida'),
+      personal_autonomy: yup.string().required('La autonomía personal es requerida'),
+      economic_situation: yup.string().required('La situación económica es requerida')
     });
 
     return {
@@ -55,7 +61,12 @@ export default {
       } else {
         await this.addPatient(this.patient);
       }
-      this.$router.push({ name: 'patients' });
+
+      if (confirm('¿Deseas añadir una alarma?')) {
+        this.$router.push({ name: 'alarmForm', params: { id: this.patient.id } });
+      } else {
+        this.$router.push({ name: 'patients' });
+      }
     },
     editContact(id) {
       this.$router.push({ name: 'contactForm', params: { id, edit: true } });
@@ -74,6 +85,7 @@ export default {
   },
   async mounted() {
     await this.loadPatient();
+    document.title = "Nuevo Paciente";
   }
 }
 </script>

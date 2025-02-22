@@ -24,7 +24,7 @@
   "patients": [
     {
       "id": "1",
-      "name": "Juanaabanana",
+      "name": "Juanaabananaaa",
       "last_name": "García",
       "birth_date": "1950-05-15",
       "address": "Calle Mayor 123",
@@ -43,64 +43,24 @@
       "economic_situation": "Pensión de jubilación"
     },
     {
+      "id": "a32a",
       "name": "Aaron",
-      "last_name": "López",
-      "birth_date": "2024-12-02",
-      "address": "Avenida de la Constitución 45",
-      "city": "Barcelona",
-      "postal_code": "08001",
-      "dni": "23912111T",
-      "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
-      "zone_id": "2",
-      "personal_situation": "dwadwa",
-      "health_situation": "dwadwaddwadwa",
-      "housing_situation": "awdwadaw",
-      "personal_autonomy": "dwadawdwad",
-      "economic_situation": "awdwadaw",
-      "id": "e03b",
-      "user_id": "2"
-    },
-    {
-      "id": "ee7b",
-      "name": "xd",
-      "last_name": "dwadaw",
-      "birth_date": "2025-01-15",
-      "address": "Avenida de la Constitución 45",
-      "city": "Barcelona",
-      "postal_code": "08001",
-      "dni": "23912111T",
-      "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
-      "zone_id": "2",
-      "personal_situation": "dwad",
-      "health_situation": "adwadaw",
-      "housing_situation": "dwadawd",
-      "personal_autonomy": "awdaw",
-      "economic_situation": "dwadwa"
-    },
-    {
-      "id": "9fe9",
-      "name": "María",
       "last_name": "García",
-      "birth_date": "2024-12-31",
+      "birth_date": "2025-02-05",
       "address": "Avenida de la Constitución 45",
       "city": "Barcelona",
       "postal_code": "08001",
-      "dni": "23912111T",
+      "dni": "87654321B",
       "health_card_number": "987654321",
-      "phone": "623456789",
-      "email": "aaronfloressanchez12@gmail.com",
+      "phone": "666666666",
+      "email": "Cormier-Cole@manager.com",
       "zone_id": "2",
-      "user_id": "2",
-      "personal_situation": "dwadwa",
-      "health_situation": "dwadawd",
-      "housing_situation": "awdawdawd",
-      "personal_autonomy": "wadwadwad",
-      "economic_situation": "wadawdwa",
-      "contact_id": "2"
+      "user_id": "1",
+      "personal_situation": "dwa",
+      "health_situation": "dwa",
+      "housing_situation": "dwa",
+      "personal_autonomy": "dwa",
+      "economic_situation": "dwa"
     }
   ],
   "contacts": [
@@ -166,14 +126,6 @@
       "relationship": "awdawdawdw"
     },
     {
-      "id": "3707",
-      "patient_id": "ee7b",
-      "first_name": "dwadwa",
-      "last_name": "García",
-      "phone": "+34 623456789",
-      "relationship": "Hija"
-    },
-    {
       "id": "258a",
       "patient_id": "9fe9",
       "first_name": "Juan",
@@ -206,12 +158,68 @@
       "relationship": "Hija"
     },
     {
-      "id": "5838",
-      "patient_id": "9fe9",
+      "id": "3eb0",
+      "patient_id": "1",
+      "first_name": "dwadwa",
+      "last_name": "García",
+      "phone": "+34 623456789",
+      "relationship": "Hijaaaa"
+    },
+    {
+      "id": "5188",
+      "patient_id": "1",
+      "first_name": "dwadwaa",
+      "last_name": "García",
+      "phone": "689012345",
+      "relationship": "123"
+    },
+    {
+      "id": "ad20",
+      "patient_id": "ee7b",
+      "first_name": "Pepe",
+      "last_name": "dwadaw",
+      "phone": "689012345",
+      "relationship": "Hija"
+    },
+    {
+      "id": "67a7",
+      "patient_id": "c138",
+      "first_name": "Pepe",
+      "phone": "666666666",
+      "last_name": "López",
+      "relationship": "Hija"
+    },
+    {
+      "id": "1ab2",
+      "patient_id": "c138",
+      "first_name": "Ana",
+      "last_name": "García Calvo",
+      "phone": "666666666",
+      "relationship": "Hija"
+    },
+    {
+      "id": "a278",
+      "patient_id": "a32a",
+      "first_name": "Pepe",
+      "last_name": "López",
+      "phone": "666666666",
+      "relationship": "dddd"
+    },
+    {
+      "id": "8f7e",
+      "patient_id": "a32a",
+      "last_name": "García Calvo",
+      "phone": "666666666",
+      "first_name": "Regular",
+      "relationship": "Hija"
+    },
+    {
+      "id": "7a30",
+      "patient_id": "abe0",
       "first_name": "Ivana",
-      "last_name": "Banana",
-      "phone": "666",
-      "relationship": "Sentimantal"
+      "last_name": "García",
+      "phone": "666666666",
+      "relationship": "Hija"
     }
   ],
   "users": [
@@ -260,183 +268,69 @@
   "incoming_calls": [
     {
       "id": "1",
-      "timestamp": "2025-02-01T10:30:00",
+      "timestamp": "2023-05-01T10:30:00",
       "patient_id": 1,
       "user_id": 2,
       "type": "medical_emergency",
-      "description": "El paciente reporta dolor en el pecho"
+      "description": "El paciente reporta dolor en el pechoeeeedwee"
     },
     {
-      "id": "2",
-      "timestamp": "2025-02-02T14:45:00",
-      "patient_id": 2,
-      "user_id": 2,
+      "id": "9aae",
+      "user_id": "1",
+      "patient_id": "a32a",
       "type": "loneliness_crisis",
-      "description": "La paciente se siente sola y necesita hablar"
+      "description": "dwadadwa",
+      "timestamp": "2025-02-11T19:56:00"
+    },
+    {
+      "id": "d448",
+      "patient_id": "a32a",
+      "user_id": "2",
+      "type": "accidental",
+      "description": "dwadwadwa",
+      "timestamp": "2025-02-18T15:13:00"
     }
   ],
   "outgoing_calls": [
     {
-      "id": "1",
-      "timestamp": "2025-02-03T09:15:00",
-      "patient_id": 1,
-      "user_id": 2,
-      "type": "alarm_followup",
-      "description": "Seguimiento de la emergencia médica del 01/02",
-      "alarm_id": 1
-    },
-    {
-      "id": "2",
-      "timestamp": "2025-02-04T11:00:00",
-      "patient_id": 2,
-      "user_id": 2,
-      "type": "planned",
-      "description": "Llamada de seguimiento semanal",
-      "alarm_id": 2
-    },
-    {
-      "id": "3",
-      "timestamp": "2025-02-02T10:30:00",
-      "patient_id": 3,
-      "user_id": 3,
-      "type": "alarm_followup",
-      "description": "Seguimiento de la emergencia médica del 03/02",
-      "alarm_id": 3
-    },
-    {
-      "id": "4",
-      "timestamp": "2025-02-06T14:45:00",
-      "patient_id": 4,
-      "user_id": 1,
-      "type": "planned",
-      "description": "Llamada de seguimiento de tratamiento",
-      "alarm_id": 4
-    },
-    {
-      "id": "40",
-      "timestamp": "2025-02-06T14:45:00",
-      "patient_id": 4,
-      "user_id": 1,
-      "type": "planned",
-      "description": "Llamada de seguimiento de tratamiento",
-      "alarm_id": 40
-    },
-    {
-      "id": "5",
-      "timestamp": "2025-02-07T09:00:00",
-      "patient_id": 5,
-      "user_id": 4,
-      "type": "alarm_followup",
-      "description": "Seguimiento de la emergencia médica del 06/02",
-      "alarm_id": 5
-    },
-    {
-      "id": "6",
-      "timestamp": "2025-02-08T16:30:00",
-      "patient_id": 6,
-      "user_id": 2,
-      "type": "planned",
-      "description": "Revisión de tratamiento mensual",
-      "alarm_id": 6
-    },
-    {
-      "id": "7",
-      "timestamp": "2025-02-09T10:00:00",
-      "patient_id": 7,
-      "user_id": 3,
-      "type": "alarm_followup",
-      "description": "Revisión de alarma médica",
-      "alarm_id": 3
-    },
-    {
-      "id": "8",
-      "timestamp": "2025-02-10T15:00:00",
-      "patient_id": 8,
-      "user_id": 1,
-      "type": "planned",
-      "description": "Seguimiento de consulta médica",
-      "alarm_id": 4
-    },
-    {
-      "id": "9",
-      "timestamp": "2025-02-11T12:30:00",
-      "patient_id": 9,
-      "user_id": 2,
-      "type": "alarm_followup",
-      "description": "Verificación de cumplimiento de medicación",
-      "alarm_id": 5
-    },
-    {
-      "id": "10",
-      "timestamp": "2025-02-12T09:45:00",
-      "patient_id": 10,
-      "user_id": 4,
-      "type": "planned",
-      "description": "Llamada para ajuste de dosis",
-      "alarm_id": 6
-    },
-    {
-      "id": "11",
-      "timestamp": "2025-02-13T17:00:00",
-      "patient_id": 11,
-      "user_id": 3,
-      "type": "alarm_followup",
-      "description": "Seguimiento de emergencia",
-      "alarm_id": 7
-    },
-    {
-      "id": "12",
-      "timestamp": "2025-02-14T14:20:00",
-      "patient_id": 12,
-      "user_id": 2,
-      "type": "planned",
-      "description": "Consulta programada con el paciente",
-      "alarm_id": 8
-    },
-    {
-      "id": "e50f",
-      "description": "dasdsa",
-      "type": "planned",
-      "patient_id": "e03b",
-      "alarm_id": 7,
-      "user_id": "1",
-      "timestamp": "2025-02-17T17:08:00"
-    },
-    {
-      "id": "901f",
-      "type": "planned",
-      "description": "dasd",
-      "alarm_id": 7,
-      "user_id": "1",
-      "patient_id": "e03b",
-      "timestamp": "2025-02-17T17:26:00"
-    },
-    {
-      "id": "7972",
+      "id": "3251",
       "user_id": "2",
-      "patient_id": "9fe9",
-      "type": "planned",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "82e6",
+      "alarm_type_id": 6,
+      "timestamp": "2025-02-17T19:12:00"
+    },
+    {
+      "id": "336c",
+      "user_id": "2",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "82e6",
+      "alarm_type_id": 7,
+      "timestamp": "2025-02-20T15:50:00"
+    },
+    {
+      "id": "f811",
+      "user_id": "2",
+      "patient_id": "a32a",
+      "is_planned": true,
+      "description": "dwa",
+      "alarm_id": "82e6",
+      "alarm_type_id": 6,
+      "timestamp": "2025-02-20T15:52:00"
+    },
+    {
+      "id": "b8dd",
+      "user_id": "2",
+      "patient_id": "a32a",
+      "is_planned": true,
       "description": "dasdas",
-      "alarm_id": 1,
-      "timestamp": "2025-02-17T17:28:00"
-    },
-    {
-      "id": "940f",
-      "type": "unplanned",
-      "description": "dasd",
-      "alarm_id": 4,
-      "user_id": "1",
-      "patient_id": "1",
-      "timestamp": "2025-02-17T17:42:00"
-    },
-    {
-      "id": "964a",
-      "description": "dasda",
-      "alarm_id": 6,
-      "user_id": "1",
-      "type": "planned",
-      "patient_id": "ee7b",
-      "timestamp": "2025-02-17T17:44:00"
+      "alarm_type_id": 2,
+      "alarm_id": "217a",
+      "timestamp": "2025-02-21T16:55:00"
     }
   ],
   "alarm_types": [
@@ -462,81 +356,33 @@
       "patient_id": 1,
       "alarm_type_id": 1,
       "type": "medication",
-      "start_date": "2025-02-01",
-      "end_date": "2025-02-22",
+      "start_date": "2023-05-01",
+      "end_date": null,
       "weekday": "monday"
     },
     {
-      "id": "2",
-      "patient_id": 2,
-      "alarm_type_id": 3,
+      "id": "217a",
+      "patient_id": "a32a",
       "type": "special_alert",
-      "start_date": "2025-02-02",
-      "end_date": "2025-02-20",
-      "weekday": "wednesday"
+      "start_date": "2025-02-19",
+      "end_date": "2025-02-21",
+      "weekday": "Monday"
     },
     {
-      "id": "3",
-      "patient_id": 3,
-      "alarm_type_id": 2,
-      "type": "appointment",
-      "start_date": "2025-02-10",
-      "end_date": null,
-      "weekday": null
+      "id": "689a",
+      "patient_id": "a32a",
+      "type": "emergency_followup",
+      "start_date": "2025-02-17",
+      "end_date": "2025-02-30",
+      "weekday": "Monday"
     },
     {
-      "id": "4",
-      "patient_id": 4,
-      "alarm_type_id": 4,
-      "type": "checkup",
-      "start_date": "2025-02-22",
-      "end_date": "2025-03-30",
-      "weekday": "friday"
-    },
-    {
-      "id": "40",
-      "patient_id": 4,
-      "alarm_type_id": 4,
-      "type": "checkup",
-      "start_date": "2025-03-01",
-      "end_date": "2025-04-05",
-      "weekday": "friday"
-    },
-    {
-      "id": "5",
-      "patient_id": 5,
-      "alarm_type_id": 5,
-      "type": "reminder",
-      "start_date": "2025-04-05",
-      "end_date": "2025-04-25",
-      "weekday": null
-    },
-    {
-      "id": "6",
-      "patient_id": 6,
-      "alarm_type_id": 6,
-      "type": "medication",
-      "start_date": "2025-05-10",
-      "end_date": null,
-      "weekday": null
-    },
-    {
-      "id": "7",
-      "patient_id": 7,
-      "alarm_type_id": 7,
-      "type": "special_alert",
-      "start_date": "2025-06-01",
-      "end_date": "2025-06-15",
-      "weekday": "tuesday"
-    },
-    {
-      "id": "8",
-      "patient_id": 8,
-      "alarm_type_id": 8,
-      "type": "checkup",
-      "start_date": "2025-07-20",
-      "end_date": "2025-07-30",
-      "weekday": null
+      "id": "82e6",
+      "patient_id": "a32a",
+      "type": "hospital_discharge",
+      "start_date": "2025-02-19",
+      "end_date": "2025-02-21",
+      "weekday": "thursday"
     }
   ],
   "preventive_alarms": [
@@ -544,15 +390,15 @@
       "id": "1",
       "zone_id": 1,
       "alarm_type_id": 2,
-      "start_date": "2025-06-01",
-      "end_date": "2025-06-30",
+      "start_date": "2023-06-01",
+      "end_date": "2023-06-30",
       "description": "Campaña de vacunación contra la gripe"
     },
     {
       "id": "2",
       "zone_id": 2,
       "alarm_type_id": 3,
-      "start_date": "2025-07-01",
+      "start_date": "2023-07-01",
       "end_date": null,
       "description": "Programa de seguimiento para pacientes con diabetes"
     }
@@ -561,14 +407,14 @@
     {
       "id": "1",
       "patient_id": 1,
-      "timestamp": "2025-05-01T10:30:00",
+      "timestamp": "2023-05-01T10:30:00",
       "type": "emergency",
       "description": "Atendido por dolor en el pecho, derivado a urgencias"
     },
     {
       "id": "2",
       "patient_id": 2,
-      "timestamp": "2025-05-02T14:45:00",
+      "timestamp": "2023-05-02T14:45:00",
       "type": "followup",
       "description": "Llamada de seguimiento por crisis de soledad, se programa visita del trabajador social"
     }

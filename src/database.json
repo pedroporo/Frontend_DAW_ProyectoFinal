@@ -166,7 +166,7 @@
       "zone_id": "5"
     }
   ],
-  "incoming_calls": [
+  "incoming-calls": [
     {
       "id": "1",
       "timestamp": "2025-01-30T17:30:00",
@@ -184,7 +184,7 @@
       "description": "La paciente se siente sola y necesita hablaraaaa"
     }
   ],
-  "outgoing_calls": [
+  "outgoing-calls": [
     {
       "id": "1",
       "timestamp": "2023-05-03T09:15:00",

@@ -1,7 +1,9 @@
 import { defineStore, mapActions } from 'pinia'
-import axios from 'axios'
 import { useMessagesStore } from './messagesStore';
-const urlIncomingCalls = "http://localhost:3000/incoming_calls";
+import api from "./api/axiosInstance";
+
+const urlIncomingCalls = "incoming-calls";
+
 export const useIncomingCallsStore = defineStore('data', {
     state() {
         return {
@@ -30,7 +32,7 @@ export const useIncomingCallsStore = defineStore('data', {
         ...mapActions(useMessagesStore, ["addMessage"]),
         async getLlamadasEntrantes() {
             try {
-                const response = await axios.get(urlIncomingCalls);
+                const response = await api.get(urlIncomingCalls);
                 return response.data;
             } catch (error) {
                 this.addMessage("Error al obtener las llamadas entrantes", "error");
@@ -55,7 +57,7 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async getLlamadasEntrantesPorPaciente(patientid) {
             try {
-                const response = await axios.get(urlIncomingCalls + '?patient_id=' + patientid);
+                const response = await api.get(urlIncomingCalls + '?patient_id=' + patientid);
                 return response.data;
             } catch (error) {
                 console.error(error);
@@ -64,7 +66,7 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async getLlamadasEntrantesId(id) {
             try {
-                const response = await axios.get(urlIncomingCalls + '/' + id);
+                const response = await api.get(urlIncomingCalls + '/' + id);
                 return response.data;
             } catch (error) {
                 this.addMessage("Error al obtener la llamada", "error");
@@ -73,17 +75,27 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async removeIncomingCall(id) {
             try {
-                await axios.delete(urlIncomingCalls + '/' + id);
+                await api.delete(urlIncomingCalls + '/' + id);
                 this.addMessage("Llamada eliminada correctamente", "success");
                 return true;
             } catch (error) {
                 this.addMessage("Error al eliminar la llamada", "error");
             }
         },
-
+        async removeIncomingCallByPatientId(patientId) {
+            try {
+                const response = await api.delete(
+                    `${urlIncomingCalls}?patient_id=${patientId}`
+                );
+                this.addMessage("Llamadas eliminadas correctamente", "success");
+                return response.data;
+            } catch (error) {
+                this.addMessage("Error al eliminar las llamadas", "error");
+            }
+        },
         async addIncomingCall(call) {
             try {
-                const response = await axios.post(urlIncomingCalls + '/', call);
+                const response = await api.post(urlIncomingCalls + '/', call);
                 this.addMessage("Llamada guardada correctamente", "success");
                 return response.data;
             } catch (error) {
@@ -93,7 +105,7 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async updateIncomingCall(call) {
             try {
-                const response = await axios.put(urlIncomingCalls + '/' + call.id, call);
+                const response = await api.put(urlIncomingCalls + '/' + call.id, call);
                 this.addMessage("Llamada actualizada correctamente", "success");
                 return response.data;
             } catch (error) {

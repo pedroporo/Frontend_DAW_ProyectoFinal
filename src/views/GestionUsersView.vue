@@ -51,6 +51,7 @@ export default {
     },
 
     async mounted() {
+        document.title = "Listado de Operadores";
         await this.loadData();
     }
 };
