@@ -18,7 +18,7 @@ export const useLoginStore = defineStore("login", {
         return;
       }
       try {
-        const response = await axios.get(urlLoginGoogle);
+        const response = await axios.get(`${urlLoginGoogle}?code=${code}`);
         const data = response.data;
 
         if (data.success) {
@@ -34,8 +34,8 @@ export const useLoginStore = defineStore("login", {
     logout() {
       
       this.user = {};
-      this.token = {};
-      localStorage.removeItem("token");      
+      this.token = null;
+      localStorage.removeItem("auth_token");      
     },
   },
 });
