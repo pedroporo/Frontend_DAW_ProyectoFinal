@@ -66,8 +66,8 @@ export default {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = timestamp.split("T")[0];
-            this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
+            this.fecha = timestamp.split(" ")[0];
+            this.hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
         },
         
 
@@ -138,7 +138,7 @@ export default {
             <ErrorMessage class="error" name="patient_id" />
         </div>
 
-        <div class="form-group radio-group">
+<!--         <div class="form-group radio-group">
             <label>Tipo:</label>
             <div class="radio-buttons">
                 <label>
@@ -151,9 +151,10 @@ export default {
                 </label>
                 <ErrorMessage class="error" name="selectedCategory" />
             </div>
-        </div>
+        </div> -->
 
         <div class="form-group">
+            <label for="type">Tipo de llamada: </label>
             <Field as="select" name="type" v-model="llamada.type" class="form-control" required>
                 <option value="" selected disabled>-- Selecciona tipo --</option>
                 <option v-for="(label, key) in tiposDisponibles" :key="key" :value="key">
