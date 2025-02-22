@@ -1,12 +1,10 @@
-
-
 name: Deploy web
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -15,20 +13,20 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 21.x]
+        node-version: [21.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the project
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci --progress=false
-    - run: npm run build --if-present
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v4
-      with:
+      - uses: actions/checkout@v4
+      - name: Build the project
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci --progress=false
+      - run: npm run build --if-present
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v4
+        with:
           name: Build
           path: dist
           retention-days: 7
@@ -38,47 +36,44 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        node-version: [ 21.x]
+        node-version: [21.x]
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm run test
-      name: Test node
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Instalar cosas
+        run: npm ci --progress=false
+      - run: npm run test
+        name: Test node
   deploy:
     name: Subir la pagina al server
     runs-on: ubuntu-latest
     needs: [test]
     steps:
-    - name: Download Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: Build
-        path: dist
-    - name: Synchronize Files To Server
-      uses: easingthemes/ssh-deploy@main
-      with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SOURCE: "./dist"
-        REMOTE_HOST: ${{ secrets.HOST }}
-        REMOTE_USER: ${{ secrets.USER }}
-        REMOTE_PORT: ${{ secrets.PORT }}
-        TARGET: "/var/www/front"
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Build
+          path: dist
+      - name: Synchronize Files To Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "./dist"
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USER }}
+          REMOTE_PORT: ${{ secrets.PORT }}
+          TARGET: "/var/www/front"
 
-    - name: Run Remote/Artisan Commands
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.ADMIN }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          sudo chown deployer:www-data /var/www/front -R
-
-    
-
-
-    
+      - name: Run Remote/Artisan Commands
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.ADMIN }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo chown deployer:www-data /var/www/front -R
