@@ -18,11 +18,11 @@ export default {
       }
     },
   },
-  mounted() {
+ /*  mounted() {
     if (this.$route.path === "/login") {
       this.loginWithGoogle();
     }
-  },
+  }, */
 };
 </script>
 
