@@ -7,22 +7,28 @@ const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 export default {
   methods: {
     ...mapActions(useLoginStore, ["handleGoogleLogin"]),
+
     loginWithGoogle() {
+      window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
+    },
+    
+    checkForGoogleCode() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
 
-      window.location.href = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
-      
-      this.handleGoogleLogin(code);
+      if (code) {
+        this.handleGoogleLogin(code);
+        window.history.replaceState({}, document.title, "/");
+      }
     },
   },
- /*  mounted() {
-    if (this.$route.path === "/login") {
-      this.loginWithGoogle();
-    }
-  }, */
+
+  mounted() {
+    this.checkForGoogleCode();
+  },
 };
 </script>
+
 
 <template>
   <div class="login-container">

@@ -12,27 +12,27 @@ export const useLoginStore = defineStore("login", {
   actions: {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async handleGoogleLogin(code) {
-
       if (!code) {
         this.addMessage("Error al autenticar con Google", "error");
         return;
       }
+    
       try {
-        const response = await axios.get(urlLoginGoogle);
-        //const response = await axios.get(`${urlLoginGoogle}?code=${code}`);
-
+        const response = await axios.get(`${urlLoginGoogle}?code=${code}`);
+    
         const data = response.data;
-
         if (data.success) {
           this.user = data.data.user;
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
+    
           this.$router.push("/");
         }
       } catch (error) {
         this.addMessage("Error al autenticar con Google", "error");
       }
     },
+    
     logout() {
       
       this.user = {};
