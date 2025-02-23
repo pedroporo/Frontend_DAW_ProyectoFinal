@@ -39,6 +39,9 @@ export default {
         this.isNavVisible = false;
       }
 
+    },
+    async cerrarSesion(){
+      await this.logout();
     }
 
   },
@@ -62,7 +65,7 @@ export default {
         <RouterLink to="/outgoing_calls" @click="closeNavOnMobile">Llamadas Salientes</RouterLink>
         <RouterLink to="/gestionUsers" @click="closeNavOnMobile">Listado de Operadores</RouterLink>
         <RouterLink to="/informes" @click="closeNavOnMobile">Informes</RouterLink>
-        <RouterLink to="/" @click="closeNavOnMobile">Cerrar Sesión</RouterLink>
+        <RouterLink to="/" @click="cerrarSesion(),closeNavOnMobile()">Cerrar Sesión</RouterLink>
         <LoginGoogle />
       </nav>
     </div>
