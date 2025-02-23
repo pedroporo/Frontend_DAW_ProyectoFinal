@@ -11,6 +11,14 @@ export const useMessagesStore = defineStore("messages", {
     addMessage(message, type = "info") {
       if (message === "Debes estar autenticado") {
         this.messages = [{ text: message, type }];
+        setTimeout(() => {
+          const index = this.messages.findIndex(
+            (msg) => msg.text === message && msg.type === type
+          );
+          if (index !== -1) {
+            this.removeMessage(index);
+          }
+        }, 10000);
         return;
       }
 
