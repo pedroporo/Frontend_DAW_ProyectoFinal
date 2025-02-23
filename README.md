@@ -13,7 +13,65 @@ PacienteZ es un proyecto de código abierto diseñado para desarrollar una aplic
 7. [Inspiración](#inspiración)
 8. [Licencia](#licencia)
 ## Tecnologías utilizadas
-Laravel,php,docker
+
+Este proyecto utiliza las siguientes tecnologías:
+
+### Frontend
+1. **Vue 3**: Framework progresivo de JavaScript para construir interfaces de usuario.
+   - Paquete: `vue@^3.5.13`
+
+2. **Vue Router**: Librería para la gestión de rutas en una aplicación Vue.
+   - Paquete: `vue-router@^4.5.0`
+
+3. **Pinia**: Almacén de estado para Vue 3, utilizado para la gestión de estados de la aplicación.
+   - Paquete: `pinia@^2.3.1`
+
+4. **Bootstrap 5**: Framework CSS para crear interfaces responsivas y atractivas.
+   - Paquete: `bootstrap@^5.3.3`
+
+5. **FullCalendar**: Librería para crear calendarios interactivos.
+   - Paquetes:
+     - `@fullcalendar/bootstrap5@^6.1.15`
+     - `@fullcalendar/core@^6.1.15`
+     - `@fullcalendar/daygrid@^6.1.15`
+     - `@fullcalendar/interaction@^6.1.15`
+     - `@fullcalendar/rrule@^6.1.15`
+     - `@fullcalendar/timegrid@^6.1.15`
+     - `@fullcalendar/vue3@^6.1.15`
+
+6. **Axios**: Librería para hacer peticiones HTTP.
+   - Paquete: `axios@^1.7.9`
+
+7. **VeeValidate**: Sistema de validación de formularios para Vue.
+   - Paquete: `vee-validate@^4.15.0`
+
+8. **Yup**: Librería de validación para JavaScript.
+   - Paquete: `yup@^1.6.1`
+
+### Herramientas de Desarrollo
+1. **Vite**: Bundler de nueva generación para aplicaciones web, optimizado para proyectos de Vue.
+   - Paquete: `vite@^6.0.11`
+
+2. **@vitejs/plugin-vue**: Plugin para Vite que habilita soporte completo para Vue.
+   - Paquete: `@vitejs/plugin-vue@^5.2.1`
+
+3. **Vitest**: Framework de pruebas para proyectos de Vue y JavaScript.
+   - Paquete: `vitest@^3.0.2`
+
+4. **@vue/test-utils**: Utilidad para pruebas de componentes Vue.
+   - Paquete: `@vue/test-utils@^2.4.6`
+
+5. **jsdom**: Implementación de los estándares web en Node.js para pruebas.
+   - Paquete: `jsdom@^26.0.0`
+
+6. **vite-plugin-vue-devtools**: Plugin para integrar herramientas de desarrollo de Vue en Vite.
+   - Paquete: `vite-plugin-vue-devtools@^7.7.0`
+
+### Otros
+1. **json-server**: Servidor RESTful falso para pruebas y desarrollo.
+   - Paquete: `json-server@^1.0.0-beta.3`
+
+---
 ## Puesta en Marcha
 Proceso de instalación, comandos, Requisitos, etc. Debemos tener en cuenta los entornos que hayamos definido
 
