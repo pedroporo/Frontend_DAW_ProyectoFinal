@@ -11,7 +11,6 @@ export default {
         filteredPatients() {
             let filtered = this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
-                //Filtra por nombre completo, cumpleaños, ubicación, dni, tarjeta sanitaria, telefono, e-mail y sus situaciones
                 return (
                     p.name.toLowerCase().includes(searchLower) ||
                     p.last_name.toLowerCase().includes(searchLower) ||
@@ -83,6 +82,21 @@ export default {
         changeIconSortOrder(){
             return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
+        async fetchPatients(page = 1) {
+            const response = await this.getPatients(/* { page } */);
+            this.patients = response;
+            //this.pagination = response.meta;
+        },
+        nextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                this.fetchPatients(this.pagination.current_page + 1);
+            }
+        },
+        prevPage() {
+            if (this.pagination.current_page > 1) {
+                this.fetchPatients(this.pagination.current_page - 1);
+            }
+        }
     },
     data() {
         return {
@@ -95,12 +109,16 @@ export default {
                 name: "Nombre",
                 phone: "Teléfono",
                 zone: "Zona",
+            },
+            pagination: {
+                current_page: 1,
+                last_page: 1
             }
         }
     },
     async mounted() {
         document.title = "Listado de Pacientes";
-        this.patients = await this.getPatients();
+        await this.fetchPatients();
     }
 }
 </script>
@@ -140,9 +158,12 @@ export default {
                 </tr>
             </tbody>
         </table>
+        <div class="pagination">
+            <button class="btn btn-primary" @click="prevPage" :disabled="pagination.current_page === 1">Anterior</button>
+            <button class="btn btn-primary" @click="nextPage" :disabled="pagination.current_page === pagination.last_page">Siguiente</button>
+        </div>
     </div>
 </template>
-
 
 <style scoped>
 /* Contenedor principal */
