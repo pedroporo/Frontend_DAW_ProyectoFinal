@@ -26,7 +26,7 @@ export const useLoginStore = defineStore("login", {
           this.user = data.data.user;
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
-    
+          localStorage.setItem("userData", data.data.user);
           router.push("/");
         }
       } catch (error) {
