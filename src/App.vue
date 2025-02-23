@@ -68,7 +68,7 @@ export default {
         <RouterLink to="/patients" @click="closeNavOnMobile">Listado de Pacientes</RouterLink>
         <RouterLink to="/incoming_calls" @click="closeNavOnMobile">Llamadas Entrantes</RouterLink>
         <RouterLink to="/outgoing_calls" @click="closeNavOnMobile">Llamadas Salientes</RouterLink>
-        <RouterLink to="/gestionUsers" @click="closeNavOnMobile">Listado de Operadores</RouterLink>
+        <!-- <RouterLink to="/gestionUsers" @click="closeNavOnMobile">Listado de Operadores</RouterLink> -->
         <RouterLink to="/informes" @click="closeNavOnMobile">Informes</RouterLink>
         <RouterLink to="/" @click="cerrarSesion(),closeNavOnMobile()">Cerrar Sesión</RouterLink>
         <LoginGoogle />
