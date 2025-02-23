@@ -53,7 +53,7 @@ export const usePatientsStore = defineStore("patients", {
         this.addMessage("Paciente actualizado correctamente", "success");
         return data.data;
       } catch (error) {
-        this.addMessage("Error al actualizar paciente", "error");
+        this.addMessage("Error al actualizar paciente" + error, "error");
       }
     },
     async removePatient(id) {
