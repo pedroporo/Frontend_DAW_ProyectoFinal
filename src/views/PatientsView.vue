@@ -110,10 +110,10 @@ export default {
                 phone: "Teléfono",
                 zone: "Zona",
             },
-            pagination: {
+           /*  pagination: {
                 current_page: 1,
                 last_page: 1
-            }
+            } */
         }
     },
     async mounted() {
@@ -158,10 +158,10 @@ export default {
                 </tr>
             </tbody>
         </table>
-        <div class="pagination">
+        <!-- <div class="pagination">
             <button class="btn btn-primary" @click="prevPage" :disabled="pagination.current_page === 1">Anterior</button>
             <button class="btn btn-primary" @click="nextPage" :disabled="pagination.current_page === pagination.last_page">Siguiente</button>
-        </div>
+        </div> -->
     </div>
 </template>
 

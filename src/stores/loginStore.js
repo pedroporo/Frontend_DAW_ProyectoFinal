@@ -1,13 +1,13 @@
 import { defineStore, mapActions } from "pinia";
 import axios from "axios";
 import { useMessagesStore } from "./messagesStore";
-import router from "@/router"; // Importa el router
+import router from "@/router";
 
 const urlLoginGoogle = import.meta.env.VITE_API_LOGIN_GOOGLE_URL;
 
 export const useLoginStore = defineStore("login", {
   state: () => ({
-    user: {},
+    userLogged: {},
     token: null,
   }),
   actions: {
@@ -26,7 +26,7 @@ export const useLoginStore = defineStore("login", {
           this.user = data.data.user;
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
-    
+          
           router.push("/");
         }
       } catch (error) {

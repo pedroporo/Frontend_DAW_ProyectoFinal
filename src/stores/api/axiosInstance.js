@@ -1,5 +1,4 @@
 import axios from "axios";
-import { mapActions } from "pinia";
 import { useMessagesStore } from "../messagesStore";
 
 const api = axios.create({

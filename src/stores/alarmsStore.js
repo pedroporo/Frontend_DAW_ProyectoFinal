@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { defineStore, mapActions } from 'pinia'
 import { useMessagesStore } from './messagesStore'
-const urlAlarms = "alarms/";
+import api from "./api/axiosInstance";
+
+const urlAlarms = "alerts/";
 
 export const useAlarmsStore = defineStore('alarms', {
   state: () => ({
@@ -41,7 +43,7 @@ export const useAlarmsStore = defineStore('alarms', {
     ...mapActions(useMessagesStore, ['addMessage']),
     async getAlarmas() {
       try {
-        const response = await axios.get(urlAlarms);
+        const response = await api.get(urlAlarms);
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener las alarmas", "error");
@@ -49,7 +51,7 @@ export const useAlarmsStore = defineStore('alarms', {
     },
     async getAlarmById(id) {
       try {
-        const response = await axios.get(urlAlarms + id);
+        const response = await api.get(urlAlarms + id);
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener la alarma", "error");
@@ -57,7 +59,7 @@ export const useAlarmsStore = defineStore('alarms', {
     },
     async addAlarm(alarm) {
       try {
-        const response = await axios.post(urlAlarms, alarm);
+        const response = await api.post(urlAlarms, alarm);
         this.addMessage("Alarma guardada correctamente", "success");
         return response.data;
       } catch (error) {
@@ -66,7 +68,7 @@ export const useAlarmsStore = defineStore('alarms', {
     },
     async updateAlarm(alarm) {
       try {
-        const response = await axios.put(urlAlarms + alarm.id, alarm);
+        const response = await api.put(urlAlarms + alarm.id, alarm);
         this.addMessage("Alarma actualizada correctamente", "success");
         return response.data;
       } catch (error) {

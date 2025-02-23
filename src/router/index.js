@@ -102,10 +102,11 @@ const router = createRouter({
       component: Contact
     },
     {
-      path: '/alarmForm/:id?',
+      path: '/alarmForm/:id/:zoneId',
       name: 'alarmForm',
-      component: AlarmForm
-    }
+      component: AlarmForm,
+      props: true
+    },
   ],
 })
 

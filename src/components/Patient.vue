@@ -58,8 +58,8 @@ export default {
                 this.$emit('callDeleted');
             }
         },
-        añadirAlarma(id) {
-            this.$router.push({ name: 'alarmForm', params: { id } });
+        añadirAlarma(id, zoneId) {
+            this.$router.push({ name: 'alarmForm', params: { id, zoneId } });
         }
     },
     async mounted() {
@@ -122,7 +122,7 @@ export default {
                                 @click="deletePatient(patient.id)">Eliminar</button>
                         </div>
                         <div class="button-row">
-                            <button class="btn btn-quaternary full-width" @click="añadirAlarma(patient.id)">Añadir
+                            <button class="btn btn-quaternary full-width" @click="añadirAlarma(patient.id, patient.zone?.id)">Añadir
                                 alarma</button>
                             <button class="btn btn-tertiary full-width"
                                 @click="$router.push({ name: 'patients' })">Volver</button>
