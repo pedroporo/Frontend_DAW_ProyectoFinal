@@ -72,18 +72,42 @@ Este proyecto utiliza las siguientes tecnologías:
    - Paquete: `json-server@^1.0.0-beta.3`
 
 ---
+
 ## Puesta en Marcha
-Proceso de instalación, comandos, Requisitos, etc. Debemos tener en cuenta los entornos que hayamos definido
+
+A continuación se describen los pasos para poner en marcha el proyecto, incluyendo los requisitos y los comandos necesarios para la instalación y el despliegue.
 
 ### <font color="#2DC26B">Requisitos</font>
 
+Antes de comenzar, asegúrate de tener los siguientes requisitos:
+
+- **Node.js**: Asegúrate de tener instalada la versión de Node.js necesaria para el proyecto.
+- **npm**: Node Package Manager (npm) debe estar disponible para instalar dependencias.
+
 ### <font color="#2DC26B">Puesta en marcha (comandos)</font>
-1. `npm install` <br>
-**si estas en el entorno de desarrollo debes de usar**
--  `npm run dev`<br>
-**Y si estas en entrono de deploy usa**
-- `npm run build` <br>
-y usa los archivos de la carpeta dist
+
+1. **Instalar dependencias**
+
+   Ejecuta el siguiente comando para instalar todas las dependencias del proyecto:
+
+   ```bash
+   npm install
+
+2. **Entorno de desarrollo**
+
+   Si estás trabajando en el entorno de desarrollo, utiliza el siguiente comando para iniciar el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+
+3. **Entorno de despliegue**
+
+   Si estás listo para desplegar la aplicación en producción, utiliza el siguiente comando para generar los archivos optimizados::
+
+   ```bash
+   npm run build
+Después, puedes usar los archivos generados en la carpeta dist para realizar el despliegue en tu servidor de producción.
+
 ## Entornos
 Develop,local
 ## Guía de Contribución 
