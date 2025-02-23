@@ -13,15 +13,13 @@ export default {
             search: '',
             sortKey: '',
             sortOrder: 1,
-            sortableColumns: ["fecha", "hora", "patient", "operator", "type", "description", "alarm"],
+            sortableColumns: ["fecha", "hora", "patient", "type", "description"],
             columnNames: {
                 fecha: "Fecha",
                 hora: "Hora",
                 patient: "Paciente",
-                operator: "Operador",
                 type: "Tipo",
                 description: "Descripción",
-                alarm: "Alarmas"
             }
 
         };
@@ -35,7 +33,6 @@ export default {
                 return (
                     this.getPatientName(call.patient_id).toLowerCase().includes(searchLower) ||
                     call.timestamp.includes(searchLower) ||
-                    this.userNames(call.user_id).includes(searchLower) ||
                     this.getAlarmName(call.alarm_id).toLowerCase().includes(searchLower) ||
                     call.description.toLowerCase().includes(searchLower) ||
                     this.getType(call.type).toLowerCase().includes(searchLower)
@@ -59,10 +56,6 @@ export default {
                             valueA = this.getPatientName(a.patient_id).toLowerCase();
                             valueB = this.getPatientName(b.patient_id).toLowerCase();
                             break;
-                        case "operator":
-                            valueA = this.userNames(a.user_id).toLowerCase();
-                            valueB = this.userNames(b.user_id).toLowerCase();
-                            break;
                         case "type":
                             valueA = this.getType(a.type).toLowerCase();
                             valueB = this.getType(b.type).toLowerCase();
@@ -71,10 +64,10 @@ export default {
                             valueA = a.description.toLowerCase();
                             valueB = b.description.toLowerCase();
                             break;
-                        case "alarm":
+                        /* case "alarm":
                             valueA = this.getAlarmName(a.alarm_id).toLowerCase();
                             valueB = this.getAlarmName(b.alarm_id).toLowerCase();
-                            break;
+                            break;*/
                         default:
                             return 0;
                     }
@@ -97,10 +90,6 @@ export default {
                     this.llamadasSalientes = this.llamadasSalientes.filter(llamada => llamada.id != id);
                 }
             }
-        },
-
-        getType(call) {
-            return call ? 'Planificada' : 'No planificada';
         },
 
         edit(id) {
@@ -161,10 +150,9 @@ export default {
                         <td>{{ formatDateTime(call.timestamp).fecha }}</td>
                         <td>{{ formatDateTime(call.timestamp).hora }}</td>
                         <td>{{ getPatientName(call.patient_id) }}</td>
-                        <td>{{ userNames(call.user_id) }}</td>
-                        <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
+                        <td>{{ call.is_planned == 0 ? 'Planificada' : 'No planificada' }}</td>
                         <td>{{ call.description }}</td>
-                        <td>{{ getAlarmName(call.alarm_type_id) }}</td>
+                        <!-- <td>{{ getAlarmName(call.alarm_id) }}</td> -->
                         <td>
                             <div class="action-buttons">
                                 <button @click="edit(call.id)" class="btn btn-secondary btn-sm">

@@ -138,7 +138,7 @@ export default {
             <ErrorMessage class="error" name="patient_id" />
         </div>
 
-<!--         <div class="form-group radio-group">
+       <div class="form-group radio-group">
             <label>Tipo:</label>
             <div class="radio-buttons">
                 <label>
@@ -151,7 +151,7 @@ export default {
                 </label>
                 <ErrorMessage class="error" name="selectedCategory" />
             </div>
-        </div> -->
+        </div> 
 
         <div class="form-group">
             <label for="type">Clase de llamada</label>

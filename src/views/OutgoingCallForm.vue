@@ -1,4 +1,5 @@
 <script>
+import { useLoginStore } from "@/stores/loginStore";
 import { useAlarmsStore } from "@/stores/alarmsStore";
 import { useUsersStore } from "@/stores/usersStore";
 import { usePatientsStore } from "@/stores/patientStore";
@@ -6,7 +7,6 @@ import { mapActions, mapState } from "pinia";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
 import { useOutgoingCallsStore } from "@/stores/outgoingCallsStore";
-
 export default {
     components: {
         Field,
@@ -30,7 +30,7 @@ export default {
             isEdit: false,
             llamada: {
                 patient_id: "",
-                user_id: "",
+                user_id: 0,
                 is_planned: "",
                 description: ""
             },
@@ -41,15 +41,13 @@ export default {
                 alarma: yup.string().required('Selecciona una alarma'),
                 fecha: yup.string().required('La fecha es obligatoria'),
                 hora: yup.string().required('La hora es obligatoria'),
-                user_id: yup.string().required('Selecciona un operador'),
+                /*user_id: yup.string().required('Selecciona un operador'),*/
                 patient_id: yup.string().required('Selecciona un paciente'),
                 is_planned: yup.string().required('Selecciona el tipo de llamada'),
                 description: yup.string(),
-                alarm_id: yup.string().required('Selecciona una alarma'),
             }),
         };
     },
-
     methods: {
         ...mapActions(useOutgoingCallsStore, ['getCallById', 'addCall', 'updateCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
@@ -68,12 +66,17 @@ export default {
         },
 
         async addOrEdit() {
-            const timestamp = `${this.fecha}T${this.hora}:00`;
+            const timestamp = `${this.fecha} ${this.hora}`;
             this.llamada.timestamp = timestamp;
             if (this.isEdit) {
                 await this.updateCall(this.llamada);
             } else {
-                await this.addCall(this.llamada);
+                const callToSend = {
+                    ...this.llamada,
+                    user_id: localStorage.getItem("userData")?.id,
+                };
+                console.log(callToSend);
+                await this.addCall(callToSend);
                 this.$emit('callCreated');
             }
             this.redirectAfterAction();
@@ -131,7 +134,7 @@ export default {
             <Field as="select" id="alarma" name="alarma" v-model="llamada.alarm_id" class="form-control">
                 <option value="" selected disabled>-- Selecciona alarma --</option>
                 <option v-for="alarm in alarmas" :key="alarm.id" :value="alarm.id">
-                    {{ "Alarma de " + getPatientName(alarm.patient_id) }}
+                    {{ "Alarma del dia " + alarm.start_date + " al " + alarm.end_date }}
                 </option>
             </Field>
             <ErrorMessage class="error" name="alarma" />
@@ -150,17 +153,6 @@ export default {
         </div>
 
         <div class="form-group">
-            <label for="user_id">Operador: </label>
-            <Field as="select" name="user_id" v-model="llamada.user_id" class="form-control">
-                <option value="" selected disabled>-- Selecciona operador --</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.first_name }}
-                </option>
-            </Field>
-            <ErrorMessage class="error" name="user_id" />
-        </div>
-
-        <div class="form-group">
             <label for="patient_id">Paciente: </label>
             <Field as="select" name="patient_id" v-model="llamada.patient_id" class="form-control">
                 <option value="" selected disabled>-- Selecciona paciente --</option>
@@ -175,14 +167,15 @@ export default {
             <label>Tipo: </label>
             <div class="radio-buttons">
                 <label>
-                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="true" /> Planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="0" /> Planificada
                 </label>
                 <label>
-                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="false" /> No planificada
+                    <Field type="radio" name="is_planned" v-model="llamada.is_planned" :value="1" /> No planificada
                 </label>
                 <ErrorMessage class="error" name="is_planned" />
             </div>
         </div>
+
 
         <div class="form-group">
             <label for="description">Descripción: </label>
@@ -190,16 +183,16 @@ export default {
             <ErrorMessage class="error" name="description" />
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="alarm_id">Tipo alarma: </label>
-            <Field as="select" name="alarm_id" v-model="llamada.alarm_type_id" class="form-control">
+            <Field as="select" name="alarm_id" v-model="llamada.alarm_id" class="form-control">
                 <option value="" selected disabled>-- Selecciona tipo de alarma --</option>
                 <option v-for="alarma in alarmasTipo" :key="alarma.type_id" :value="alarma.type_id">
                     {{ translateAlarmType(alarma.type) }}
                 </option>
             </Field>
             <ErrorMessage class="error" name="alarm_id" />
-        </div>
+        </div> -->
 
 
         <div class="form-buttons">
