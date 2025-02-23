@@ -26,7 +26,7 @@ export default {
       city: yup.string().required('La ciudad es requerida'),
       postal_code: yup.string().matches(/^\d{5}$/, 'El código postal debe tener 5 dígitos').required('El código postal es requerido'),
       dni: yup.string().matches(/^\d{8}[A-Z]$/, 'El DNI debe tener 8 números seguidos de una letra mayúscula').required('El DNI es requerido'), // El dni pide que sea un integer
-      health_card_number: yup.number().required('El número de tarjeta sanitaria es requerido'),
+      health_card_number: yup.string().required('El número de tarjeta sanitaria es requerido'),
       phone: yup.string().matches(/^[\d\s()+-]{9,20}$/, 'El teléfono debe tener entre 9 y 20 dígitos y puede incluir espacios, paréntesis, signos más y guiones').required('El teléfono es requerido'),
       email: yup.string().email('Introduce un email válido').required('El email es requerido'),
       zone_id: yup.number().required('La zona es requerida'),
@@ -42,7 +42,8 @@ export default {
       patient: {
         birth_date: "",
         zone_id: 0,
-        health_card_number: 0
+        health_card_number: "0",
+        postal_code: "0",
       },
       isEditing: false,
       schema
@@ -61,7 +62,6 @@ export default {
           birth_date: this.formatDateForInput(loadedPatient.birth_date),
           zone_id: loadedPatient.zone.id
         };
-
         this.isEditing = true;
       }
     },
@@ -71,18 +71,20 @@ export default {
         birth_date: this.formatDateForBackend(this.patient.birth_date)
       };
       console.log(patientToSend);
+      delete patientToSend.zone;
 
       if (this.isEditing) {
         await this.updatePatient(this.patient);
         this.$router.push({ name: 'patients' }); 
       } else {
-        const newPatient = await this.addPatient(this.patient);
-        if (confirm('¿Deseas añadir una alarma?')) {
-        this.$router.push({ name: 'alarmForm', params: { id: newPatient.id } });
+        await this.addPatient(patientToSend);
+      }
+
+/*       if (confirm('¿Deseas añadir una alarma?')) {
+        this.$router.push({ name: 'alarmForm', params: { id: this.patient.id } });
       } else {
         this.$router.push({ name: 'patients' });
-      }
-      }
+      } */
     },
     editContact(id) {
       this.$router.push({ name: 'contactForm', params: { id, edit: true } });
@@ -207,7 +209,7 @@ export default {
         <label for="health_card_number">Número tarjeta sanitaria</label>
         <Field
           name="health_card_number"
-          type="number"
+          type="text"
           class="form-control"
           id="health_card_number"
           v-model="patient.health_card_number"

@@ -18,7 +18,7 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         console.log(response.data);
         return response.data;
       } catch (error) {
-        this.addMessage("Error al obtener llamadas", "error");
+        this.addMessage("Error al obtener llamadas salientes", "error");
       }
     },
     async fetchCallsByPatientId(patientId) {

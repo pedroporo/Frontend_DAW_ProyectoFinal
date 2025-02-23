@@ -73,9 +73,8 @@ export default {
             } else {
                 const callToSend = {
                     ...this.llamada,
-                    user_id: localStorage.getItem("userData")?.id,
+                    user_id: JSON.parse(localStorage.getItem("userData") || "{}").id,
                 };
-                console.log(callToSend);
                 await this.addCall(callToSend);
                 this.$emit('callCreated');
             }
@@ -83,10 +82,21 @@ export default {
         },
 
         formatDateTime(timestamp) {
-            if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
+            if (!timestamp || typeof timestamp !== "string" || !timestamp.includes(" ")) {
+                const now = new Date();
+                this.fecha = now.toISOString().split("T")[0];
+                this.hora = now.toTimeString().split(":").slice(0, 2).join(":");
+                return;
+            }
 
-            this.fecha = this.currentDate || timestamp.split(" ")[0];
-            this.hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
+            const parts = timestamp.split(" ");
+            this.fecha = parts[0];
+
+            if (parts[1] && parts[1].includes(":")) {
+                this.hora = parts[1].split(":").slice(0, 2).join(":");
+            } else {
+                this.hora = new Date().toTimeString().split(":").slice(0, 2).join(":");
+            }
         },
 
         handleCancel() {
