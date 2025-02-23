@@ -92,11 +92,11 @@ const router = createRouter({
       name: 'contactForm',
       component: ContactForm
     },
-    {
+/*     {
       path: '/gestionUsers',
       name: 'gestionUsers',
       component: GestionUsersView
-    },
+    }, */
     {
       path: '/contact/:id?',
       name: 'contact',
