@@ -53,7 +53,7 @@ export default {
         },
 
         async addOrEdit() {
-            const timestamp = `${this.fecha}T${this.hora}:00`;
+            const timestamp = `${this.fecha} ${this.hora}:00`;
             this.llamada.timestamp = timestamp;
             if (this.isEdit) {
                 await this.updateIncomingCall(this.llamada);

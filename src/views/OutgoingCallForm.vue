@@ -44,7 +44,7 @@ export default {
                 user_id: yup.string().required('Selecciona un operador'),
                 patient_id: yup.string().required('Selecciona un paciente'),
                 is_planned: yup.string().required('Selecciona el tipo de llamada'),
-                description: yup.string().required('La descripción es obligatoria'),
+                description: yup.string(),
                 alarm_id: yup.string().required('Selecciona una alarma'),
             }),
         };

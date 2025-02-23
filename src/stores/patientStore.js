@@ -9,14 +9,17 @@ export const usePatientsStore = defineStore("patients", {
   getters: {},
   actions: {
     ...mapActions(useMessagesStore, ["addMessage"]),
-    async getPatients() {
+    async getPatients(/* page = 1 */) {
       try {
-        const { data } = await api.get(urlPacientes);
-        console.log(data);
-
-        return data.data;
+      const { data } = await api.get(urlPacientes); /* ?page=${page}` */
+      console.log(data);
+      return data.data;
+      /* return {
+        patients: data.data,
+        pagination: data.meta
+      }; */
       } catch (error) {
-        this.addMessage("Error al obtener pacientes", "error");
+      this.addMessage("Error al obtener pacientes", "error");
       }
     },
     async getPatientName(id) {
@@ -54,7 +57,7 @@ export const usePatientsStore = defineStore("patients", {
         this.addMessage("Paciente actualizado correctamente", "success");
         return data.data;
       } catch (error) {
-        this.addMessage("Error al actualizar paciente", "error");
+        this.addMessage("Error al actualizar paciente" + error, "error");
       }
     },
     async removePatient(id) {

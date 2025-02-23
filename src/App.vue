@@ -63,10 +63,10 @@ export default {
         <RouterLink to="/gestionUsers" @click="closeNavOnMobile">Listado de Operadores</RouterLink>
         <RouterLink to="/informes" @click="closeNavOnMobile">Informes</RouterLink>
         <RouterLink to="/" @click="closeNavOnMobile">Cerrar Sesión</RouterLink>
+        <LoginGoogle />
       </nav>
     </div>
   </header>
-  <LoginGoogle />
   <div class="main-content-app">
     <AppMessages />
     <RouterView />

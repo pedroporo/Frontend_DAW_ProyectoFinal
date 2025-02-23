@@ -15,7 +15,7 @@ export default {
   computed: {
     // ...mapState(useUsersStore, ['userNames', 'users']),
     ...mapState(useContactsStore, ['contactNames', 'contacts']),
-    ...mapState(useZonesStore, ['zones'])
+    ...mapState(useZonesStore, ['zones', 'zoneNames'])
   },
   data() {
     const schema = yup.object({
@@ -25,11 +25,11 @@ export default {
       address: yup.string().required('La dirección es requerida'),
       city: yup.string().required('La ciudad es requerida'),
       postal_code: yup.string().matches(/^\d{5}$/, 'El código postal debe tener 5 dígitos').required('El código postal es requerido'),
-      dni: yup.string().matches(/^\d{8}[A-Z]$/, 'El DNI debe tener 8 números seguidos de una letra mayúscula').required('El DNI es requerido'),
-      health_card_number: yup.string().required('El número de tarjeta sanitaria es requerido'),
+      dni: yup.string().matches(/^\d{8}[A-Z]$/, 'El DNI debe tener 8 números seguidos de una letra mayúscula').required('El DNI es requerido'), // El dni pide que sea un integer
+      health_card_number: yup.number().required('El número de tarjeta sanitaria es requerido'),
       phone: yup.string().matches(/^[\d\s()+-]{9,20}$/, 'El teléfono debe tener entre 9 y 20 dígitos y puede incluir espacios, paréntesis, signos más y guiones').required('El teléfono es requerido'),
       email: yup.string().email('Introduce un email válido').required('El email es requerido'),
-      zone: yup.object().required('La zona es requerida'),
+      zone_id: yup.number().required('La zona es requerida'),
       // user_id: yup.string().required('El operador es requerido'),
       personal_situation: yup.string().required('La situación personal es requerida'),
       health_situation: yup.string().required('La situación de salud es requerida'),
@@ -40,7 +40,9 @@ export default {
 
     return {
       patient: {
-        birth_date: ""
+        birth_date: "",
+        zone_id: 0,
+        health_card_number: 0
       },
       isEditing: false,
       schema
@@ -56,7 +58,8 @@ export default {
 
         this.patient = {
           ...loadedPatient,
-          birth_date: this.formatDateForInput(loadedPatient.birth_date)
+          birth_date: this.formatDateForInput(loadedPatient.birth_date),
+          zone_id: loadedPatient.zone.id
         };
 
         this.isEditing = true;
@@ -204,7 +207,7 @@ export default {
         <label for="health_card_number">Número tarjeta sanitaria</label>
         <Field
           name="health_card_number"
-          type="text"
+          type="number"
           class="form-control"
           id="health_card_number"
           v-model="patient.health_card_number"
@@ -234,20 +237,20 @@ export default {
         <ErrorMessage name="email" class="error-message" />
       </div>
       <div class="form-group">
-        <label for="zone">Zona</label>
+        <label for="zone_id">Zona</label>
         <Field
-          name="zone"
+          name="zone_id"
           as="select"
           class="form-control"
-          id="zone"
-          v-model="patient.zone"
+          id="zone_id"
+          v-model="patient.zone_id"
         >
-          <option value="">Selecciona una zona</option>
-          <option v-for="zone in zones" :key="zone.id" :value="zone">
+          <option value="0">Selecciona una zona</option>
+          <option v-for="zone in zones" :key="zone.id" :value="zone.id">
             {{ zone.name }}
           </option>
         </Field>
-        <ErrorMessage name="zone" class="error-message" />
+        <ErrorMessage name="zone_id" class="error-message" />
       </div>
       <!-- <div class="form-group">
         <label for="user_id">Operador Asignado</label>
