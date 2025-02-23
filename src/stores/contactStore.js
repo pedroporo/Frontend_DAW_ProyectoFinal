@@ -23,8 +23,8 @@ export const useContactsStore = defineStore('contacts', {
     async getContacts() {
       try {
         const { data } = await api.get(urlContacts);
-        this.contacts = data;
-        return data;
+        this.contacts = data.data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener contactos", "error");
       }
@@ -32,7 +32,7 @@ export const useContactsStore = defineStore('contacts', {
     async getContact(id) {
       try {
         const { data } = await api.get(`${urlContacts}/${id}`);
-        return data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener contacto", "error");
       }
@@ -40,7 +40,7 @@ export const useContactsStore = defineStore('contacts', {
     async addContact(contact) {
       try {
         const { data } = await api.post(urlContacts, contact);
-        this.contacts.push(data);
+        this.contacts.push(data.data);
         this.addMessage("Contacto creado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al crear contacto", "error");
@@ -49,7 +49,7 @@ export const useContactsStore = defineStore('contacts', {
     async updateContact(contact) {
       try {
         const { data } = await api.put(`${urlContacts}/${contact.id}`, contact);
-        this.contacts = this.contacts.map(c => c.id === data.id ? data : c);
+        this.contacts = this.contacts.map(c => c.id === data.data.id ? data.data : c);
         this.addMessage("Contacto actualizado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al actualizar contacto", "error");
@@ -71,7 +71,7 @@ export const useContactsStore = defineStore('contacts', {
         );
         this.contacts = this.contacts.filter(contact => contact.patient_id != patientId);
         this.addMessage("Contactos eliminados correctamente", "success");
-        return response.data;
+        return response.data.data;
       } catch (error) {
         this.addMessage("Error al eliminar contactos", "error");
       }

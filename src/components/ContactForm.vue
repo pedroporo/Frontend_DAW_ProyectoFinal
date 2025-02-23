@@ -16,7 +16,7 @@ export default {
         const schema = yup.object({
             first_name: yup.string().required('El nombre es requerido'),
             last_name: yup.string().required('Los apellidos son requeridos'),
-            phone: yup.string().matches(/^\d{9}$/, 'El teléfono debe tener 9 dígitos').required('El teléfono es requerido'),
+            phone: yup.string().matches(/^[\d\s()+-]{9,20}$/, 'El teléfono debe tener entre 9 y 20 dígitos y puede incluir espacios, paréntesis, signos más y guiones').required('El teléfono es requerido'),
             relationship: yup.string().required('La relación es requerida')
         })
         return {

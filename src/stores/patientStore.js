@@ -14,7 +14,7 @@ export const usePatientsStore = defineStore("patients", {
         const { data } = await api.get(urlPacientes);
         console.log(data);
 
-        return data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener pacientes", "error");
       }
@@ -22,7 +22,7 @@ export const usePatientsStore = defineStore("patients", {
     async getPatientName(id) {
       try {
         const { data } = await api.get(`${urlPacientes}/${id}`);
-        return data.name;
+        return data.data.name;
       } catch (error) {
         this.addMessage("Error al obtener paciente", "error");
       }
@@ -30,7 +30,8 @@ export const usePatientsStore = defineStore("patients", {
     async getPatient(id) {
       try {
         const { data } = await api.get(`${urlPacientes}/${id}`);
-        return data;
+        console.log(data);
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener paciente", "error");
       }
@@ -50,7 +51,7 @@ export const usePatientsStore = defineStore("patients", {
           patient
         );
         this.addMessage("Paciente actualizado correctamente", "success");
-        return data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al actualizar paciente", "error");
       }

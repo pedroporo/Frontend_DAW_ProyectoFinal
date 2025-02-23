@@ -14,7 +14,7 @@ export const useUserZonesStore = defineStore('usersZones', {
       try {
         const { data } = await api.get(urlUsersZones);
         this.usersZone = data;
-        return data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener zonas", "error");
       }

@@ -48,12 +48,12 @@ export default {
 
                     switch (this.sortKey) {
                         case "fecha":
-                            valueA = a.timestamp.split("T")[0];
-                            valueB = b.timestamp.split("T")[0];
+                            valueA = a.timestamp.split(" ")[0];
+                            valueB = b.timestamp.split(" ")[0];
                             break;
                         case "hora":
-                            valueA = a.timestamp.split("T")[1];
-                            valueB = b.timestamp.split("T")[1];
+                            valueA = a.timestamp.split(" ")[1];
+                            valueB = b.timestamp.split(" ")[1];
                             break;
                         case "patient":
                             valueA = this.getPatientName(a.patient_id).toLowerCase();
