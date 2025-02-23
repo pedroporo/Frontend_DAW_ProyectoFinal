@@ -66,6 +66,7 @@ export default {
       </nav>
     </div>
   </header>
+  <LoginGoogle />
   <div class="main-content-app">
     <AppMessages />
     <RouterView />
