@@ -8,6 +8,7 @@ import { useZonesStore } from './stores/zonesStore';
 import { useUsersStore } from './stores/usersStore';
 import LoginGoogle from './components/LoginGoogle.vue';
 import { useLoginStore } from './stores/loginStore';
+import { useMessagesStore } from './stores/messagesStore';
 
 export default {
   name: 'App',
@@ -30,6 +31,8 @@ export default {
     ...mapActions(useZonesStore, ['getZones']),
     ...mapActions(useUsersStore, ['getUsers']),
     ...mapActions(useLoginStore, ['logout']),
+    ...mapActions(useMessagesStore, ['addMessage']),
+
     toggleNav() {
       this.isNavVisible = !this.isNavVisible;
     },
@@ -41,7 +44,9 @@ export default {
 
     },
     async cerrarSesion(){
-      await this.logout();
+      if (await this.logout()) {
+        this.addMessage('Sesión cerrada exitosamente', 'success');
+      }
     }
 
   },
