@@ -1,8 +1,8 @@
 import { defineStore, mapActions } from 'pinia';
-import axios from 'axios';
 import { useMessagesStore } from './messagesStore';
+import api from "./api/axiosInstance";
 
-const urlContacts = "http://localhost:3000/contacts";
+const urlContacts = "contacts";
 
 export const useContactsStore = defineStore('contacts', {
   state: () => ({
@@ -22,25 +22,25 @@ export const useContactsStore = defineStore('contacts', {
     ...mapActions(useMessagesStore, ["addMessage"]),
     async getContacts() {
       try {
-        const { data } = await axios.get(urlContacts);
-        this.contacts = data;
-        return data;
+        const { data } = await api.get(urlContacts);
+        this.contacts = data.data;
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener contactos", "error");
       }
     },
     async getContact(id) {
       try {
-        const { data } = await axios.get(`${urlContacts}/${id}`);
-        return data;
+        const { data } = await api.get(`${urlContacts}/${id}`);
+        return data.data;
       } catch (error) {
         this.addMessage("Error al obtener contacto", "error");
       }
     },
     async addContact(contact) {
       try {
-        const { data } = await axios.post(urlContacts, contact);
-        this.contacts.push(data);
+        const { data } = await api.post(urlContacts, contact);
+        this.contacts.push(data.data);
         this.addMessage("Contacto creado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al crear contacto", "error");
@@ -48,8 +48,8 @@ export const useContactsStore = defineStore('contacts', {
     },
     async updateContact(contact) {
       try {
-        const { data } = await axios.put(`${urlContacts}/${contact.id}`, contact);
-        this.contacts = this.contacts.map(c => c.id === data.id ? data : c);
+        const { data } = await api.put(`${urlContacts}/${contact.id}`, contact);
+        this.contacts = this.contacts.map(c => c.id === data.data.id ? data.data : c);
         this.addMessage("Contacto actualizado correctamente", "success");
       } catch (error) {
         this.addMessage("Error al actualizar contacto", "error");
@@ -57,7 +57,7 @@ export const useContactsStore = defineStore('contacts', {
     },
     async deleteContact(id) {
       try {
-        await axios.delete(`${urlContacts}/${id}`);
+        await api.delete(`${urlContacts}/${id}`);
         this.contacts = this.contacts.filter(contact => contact.id !== id);
         this.addMessage("Contacto eliminado correctamente", "success");
       } catch (error) {
@@ -66,12 +66,12 @@ export const useContactsStore = defineStore('contacts', {
     },
     async deleteContactByPatientId(patientId) {
       try {
-        const response = await axios.delete(
+        const response = await api.delete(
           `${urlContacts}?patient_id=${patientId}`
         );
         this.contacts = this.contacts.filter(contact => contact.patient_id != patientId);
         this.addMessage("Contactos eliminados correctamente", "success");
-        return response.data;
+        return response.data.data;
       } catch (error) {
         this.addMessage("Error al eliminar contactos", "error");
       }

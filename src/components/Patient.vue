@@ -68,6 +68,7 @@ export default {
             this.patient = await this.getPatient(id);
             this.callsPatient = await this.getLlamadasEntrantesPorPaciente(id);
             this.outgoingCallsPatient = await this.fetchCallsByPatientId(id);
+            document.title = "Paciente " + this.patient.name;
         }
     },
 }
@@ -101,7 +102,7 @@ export default {
                                         ? contactNames(patient.id).map(contact => contact.name).join(', ')
                                         : 'Sin contacto'}}
                                 </div>
-                                <div class="detail"><strong>Zona:</strong> {{ zonesNames(patient.zone_id) }}</div>
+                                <div class="detail"><strong>Zona:</strong> {{ patient.zone ? patient.zone.name : 'Sin zona' }}</div>
                                 <div class="detail"><strong>Situación personal:</strong> {{ patient.personal_situation
                                 }}</div>
                                 <div class="detail"><strong>Estado de salud:</strong> {{ patient.health_situation }}
@@ -114,12 +115,18 @@ export default {
                             </div>
                         </div>
                     </div>
-
                     <div class="buttons">
-                        <button class="btn btn-primary" @click="editPatient(patient.id)">Editar</button>
-                        <button class="btn btn-danger" @click="deletePatient(patient.id)">Eliminar</button>
-                        <button class="btn btn-danger" @click="añadirAlarma(patient.id)">Añadir alarma</button>
-                        <button class="btn btn-secondary" @click="$router.push({ name: 'patients' })">Volver</button>
+                        <div class="button-row">
+                            <button class="btn btn-primary full-width" @click="editPatient(patient.id)">Editar</button>
+                            <button class="btn btn-danger full-width"
+                                @click="deletePatient(patient.id)">Eliminar</button>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-quaternary full-width" @click="añadirAlarma(patient.id)">Añadir
+                                alarma</button>
+                            <button class="btn btn-tertiary full-width"
+                                @click="$router.push({ name: 'patients' })">Volver</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,8 +154,10 @@ export default {
                                 <td>{{ translateTipoLlamada(call.type) }}</td>
                                 <td>{{ call.description }}</td>
                                 <td>
-                                    <button @click="editIncomingCall(call.id)">Editar</button>
-                                    <button @click="deleteIncomingCall(call.id)">Eliminar</button>
+                                    <button @click="editIncomingCall(call.id)" class="btn btn-secondary btn-sm"><i
+                                            class="bi bi-pencil-square"></i></button>
+                                    <button @click="deleteIncomingCall(call.id)" class="btn btn-danger btn-sm"><i
+                                            class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -176,8 +185,10 @@ export default {
                                 <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
                                 <td>{{ call.description }}</td>
                                 <td>
-                                    <button @click="editOutgoingCall(call.id)">Editar</button>
-                                    <button @click="deleteOutgoingCall(call.id)">Eliminar</button>
+                                    <button @click="editOutgoingCall(call.id)" class="btn btn-secondary btn-sm"><i
+                                            class="bi bi-pencil-square"></i></button>
+                                    <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i
+                                            class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -191,6 +202,69 @@ export default {
 </template>
 
 <style scoped>
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.btn-secondary {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #ec971f;
+}
+
+.btn-tertiary {
+    background-color: #817f7d;
+    color: #fff;
+}
+
+.btn-tertiary:hover {
+    background-color: #b1afad;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.btn-quaternary {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.btn-quaternary:hover {
+    background-color: #ec971f;
+}
+
 .main-content {
     padding: 20px;
 }
@@ -258,48 +332,104 @@ h2 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Botones */
 .buttons {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    /* Espacio entre las filas */
 }
 
-.btn {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
+.button-row {
+    display: flex;
+    gap: 10px;
+    /* Espacio entre los botones */
+    width: 100%;
+}
+
+.full-width {
+    flex: 1;
+    /* Hace que los botones ocupen el mismo espacio dentro de la fila */
     text-align: center;
+    padding: 10px;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: white;
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .patient-container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .patient-details {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .patient-details .row {
+        flex-direction: column;
+    }
+
+    .detail {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .button-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .btn-sm {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    .patient-calls {
+        padding: 15px;
+    }
+
+    .patient-calls h3 {
+        font-size: 1.5rem;
+    }
+
+    .patient-calls table {
+        font-size: 14px;
+    }
+
+    .patient-calls th,
+    .patient-calls td {
+        padding: 8px;
+    }
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .patient-container,
+    .patient-calls {
+        width: 100%;
+    }
+
+    .patient-calls table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
 </style>

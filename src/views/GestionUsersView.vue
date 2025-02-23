@@ -29,7 +29,7 @@ export default {
                     return {
                         ...user,
                         userZones: userZones.length ? userZones.join(", ") : "Sin zona",
-                        zoneIds: userZoneIds 
+                        zoneIds: userZoneIds
                     };
                 });
         }
@@ -51,6 +51,7 @@ export default {
     },
 
     async mounted() {
+        document.title = "Listado de Operadores";
         await this.loadData();
     }
 };
@@ -58,30 +59,31 @@ export default {
 
 <template>
     <div class="calls-history">
-        <h2>Operadores</h2>
-        <table class="calls-table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
-                    <th>Zonas</th>
-                    <th>Fecha contratación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in usersWithZones" :key="user.id">
-                    <td>{{ user.first_name + " " + user.last_name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phone }}</td>
-                    <td>{{ user.userZones }}</td>
-                    <td>{{ user.hire_date }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <h2>Lista de Operadores</h2>
+        <div class="table-container">
+            <table class="calls-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Zonas</th>
+                        <th>Fecha contratación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in usersWithZones" :key="user.id">
+                        <td>{{ user.first_name + " " + user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.userZones }}</td>
+                        <td>{{ user.hire_date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
-
 
 <style scoped>
 /* Contenedor principal */
@@ -100,26 +102,11 @@ export default {
     color: #333;
 }
 
-/* Botón principal */
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    margin-bottom: 10px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
+/* Contenedor para la tabla con scroll si es necesario */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    /* Permite desplazamiento horizontal en móviles */
 }
 
 /* Tabla */
@@ -127,6 +114,8 @@ export default {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    min-width: 600px;
+    /* Asegura que no se achique demasiado */
 }
 
 .calls-table th,
@@ -150,38 +139,27 @@ export default {
     background-color: #f5f5f5;
 }
 
-/* Botones de acción en la tabla */
-.btn-sm {
-    padding: 5px 10px;
-    font-size: 14px;
-    margin-right: 10px;
-}
-
-.btn-secondary {
-    background-color: #f0ad4e;
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background-color: #ec971f;
-}
-
-.btn-danger {
-    background-color: #d9534f;
-    color: #fff;
-}
-
-.btn-danger:hover {
-    background-color: #c9302c;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
+    .calls-history {
+        padding: 10px;
+    }
+
+    .calls-history h2 {
+        font-size: 1.5rem;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        /* Scroll horizontal en pantallas pequeñas */
+    }
 
     .calls-table th,
     .calls-table td {
         padding: 8px 10px;
         font-size: 14px;
+        white-space: nowrap;
+        /* Evita que el texto se corte */
     }
 }
 </style>

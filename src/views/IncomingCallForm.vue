@@ -66,8 +66,8 @@ export default {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = timestamp.split("T")[0];
-            this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
+            this.fecha = timestamp.split(" ")[0];
+            this.hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
         },
         
 
@@ -82,6 +82,7 @@ export default {
     },
 
     async mounted() {
+        document.title = "Llamadas Entrantes";
         this.loadForm();
         this.patients = await this.getPatients();
     },
@@ -137,7 +138,7 @@ export default {
             <ErrorMessage class="error" name="patient_id" />
         </div>
 
-        <div class="form-group radio-group">
+<!--         <div class="form-group radio-group">
             <label>Tipo:</label>
             <div class="radio-buttons">
                 <label>
@@ -150,7 +151,7 @@ export default {
                 </label>
                 <ErrorMessage class="error" name="selectedCategory" />
             </div>
-        </div>
+        </div> -->
 
         <div class="form-group">
             <label for="type">Clase de llamada</label>

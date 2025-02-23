@@ -82,8 +82,8 @@ export default {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = this.currentDate || timestamp.split("T")[0];
-            this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
+            this.fecha = this.currentDate || timestamp.split(" ")[0];
+            this.hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
         },
 
         handleCancel() {
@@ -106,6 +106,7 @@ export default {
     },
 
     async mounted() {
+        document.title = 'Registrar Llamada Saliente'
         this.loadForm();
         this.patients = await this.getPatients();
         this.alarmas = await this.getAlarmas();

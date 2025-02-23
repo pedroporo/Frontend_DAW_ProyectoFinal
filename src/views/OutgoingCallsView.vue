@@ -48,12 +48,12 @@ export default {
 
                     switch (this.sortKey) {
                         case "fecha":
-                            valueA = a.timestamp.split("T")[0];
-                            valueB = b.timestamp.split("T")[0];
+                            valueA = a.timestamp.split(" ")[0];
+                            valueB = b.timestamp.split(" ")[0];
                             break;
                         case "hora":
-                            valueA = a.timestamp.split("T")[1];
-                            valueB = b.timestamp.split("T")[1];
+                            valueA = a.timestamp.split(" ")[1];
+                            valueB = b.timestamp.split(" ")[1];
                             break;
                         case "patient":
                             valueA = this.getPatientName(a.patient_id).toLowerCase();
@@ -129,6 +129,7 @@ export default {
         }
     },
     async mounted() {
+        document.title = 'Historial de Llamadas Salientes'
         this.llamadasSalientes = await this.fetchCalls();
         this.patients = await this.getPatients();
     },
@@ -141,41 +142,54 @@ export default {
         <h2>Historial de Llamadas Salientes</h2>
         <input type="text" v-model="search" class="form-control mb-3" placeholder="Buscar paciente...">
         <button @click="$router.push('/outgoingForm')" class="btn btn-primary">+ Llamada Saliente</button>
-        <table class="calls-table">
-            <thead>
-                <tr>
-                    <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
-                        {{ columnNames[key] }}
-                        <span v-if="sortKey === key">
-                            <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
-                            <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
-                        </span>
-                    </th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="call in filteredOutgoingCalls" :key="call.id">
-                    <td>{{ formatDateTime(call.timestamp).fecha }}</td>
-                    <td>{{ formatDateTime(call.timestamp).hora }}</td>
-                    <td>{{ getPatientName(call.patient_id) }}</td>
-                    <td>{{ userNames(call.user_id) }}</td>
-                    <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
-                    <td>{{ call.description }}</td>
-                    <td>{{ getAlarmName(call.alarm_type_id) }}</td>
-                    <td>
-                        <button @click="edit(call.id)" class="btn btn-secondary btn-sm"><i
-                                class="bi bi-pencil-square"></i></button>
-                        <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm"><i
-                                class="bi bi-trash"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="calls-table">
+                <thead>
+                    <tr>
+                        <th v-for="key in sortableColumns" :key="key" @click="sortBy(key)" class="click-order">
+                            {{ columnNames[key] }}
+                            <span v-if="sortKey === key">
+                                <i v-if="changeIconSortOrder() === 'v'" class="bi bi-caret-down-fill"></i>
+                                <i v-if="changeIconSortOrder() === '^'" class="bi bi-caret-up-fill"></i>
+                            </span>
+                        </th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="call in filteredOutgoingCalls" :key="call.id">
+                        <td>{{ formatDateTime(call.timestamp).fecha }}</td>
+                        <td>{{ formatDateTime(call.timestamp).hora }}</td>
+                        <td>{{ getPatientName(call.patient_id) }}</td>
+                        <td>{{ userNames(call.user_id) }}</td>
+                        <td>{{ call.is_planned ? 'Planificada' : 'No planificada' }}</td>
+                        <td>{{ call.description }}</td>
+                        <td>{{ getAlarmName(call.alarm_type_id) }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button @click="edit(call.id)" class="btn btn-secondary btn-sm">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button @click="deleteOutgoingCall(call.id)" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </template>
 
 <style scoped>
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    /* Espacio entre botones */
+}
+
 /* Contenedor principal */
 .calls-history {
     max-width: 1200px;
@@ -282,13 +296,18 @@ export default {
     background-color: #c9302f;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
 
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
     .calls-table th,
     .calls-table td {
         padding: 8px 10px;
         font-size: 14px;
     }
+
+    .table-responsive {
+        overflow-x: auto; /* Scroll horizontal */
+    }
 }
+
 </style>

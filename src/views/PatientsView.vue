@@ -39,9 +39,9 @@ export default {
                             valueA = (a.name).toLowerCase();
                             valueB = (b.name).toLowerCase();
                             break;
-                        case "operator":
-                            valueA = this.userNames(a.user_id).toLowerCase();
-                            valueB = this.userNames(b.user_id).toLowerCase();
+                        case "zone":
+                            valueA = (a.zone.name).toLowerCase();
+                            valueB = (b.zone.name).toLowerCase();
                             break;
                         case "phone":
                             valueA = a.phone.toLowerCase();
@@ -90,15 +90,16 @@ export default {
             search: '',
             sortKey: '',
             sortOrder: 1,
-            sortableColumns: ["name", "phone", "operator"],
+            sortableColumns: ["name", "phone", "zone"],
             columnNames: {
                 name: "Nombre",
                 phone: "Teléfono",
-                operator: "Operador",
+                zone: "Zona",
             }
         }
     },
     async mounted() {
+        document.title = "Listado de Pacientes";
         this.patients = await this.getPatients();
     }
 }
@@ -126,8 +127,8 @@ export default {
             <tbody>
                 <tr v-for="patient in filteredPatients" :key="patient.id">
                     <td>{{ patient.name + ' ' + patient.last_name }}</td>
-                    <td>{{ "+34 " + patient.phone }}</td>
-                    <td>{{ userNames(patient.user_id) || 'Sin asignar' }}</td>
+                    <td>{{ patient.phone }}</td>
+                    <td>{{ patient.zone.name || 'Sin asignar' }}</td>
                     <td>
                         {{ contactNames(patient.id).length > 0
                             ? contactNames(patient.id).map(contact => contact.name).join(', ')
