@@ -240,6 +240,14 @@
       "last_name": "García",
       "phone": "666666666",
       "relationship": "Hija"
+    },
+    {
+      "id": "4341",
+      "patient_id": "39b4",
+      "first_name": "Ana",
+      "last_name": "dwadaw",
+      "phone": "666666666",
+      "relationship": "Hija"
     }
   ],
   "users": [

@@ -153,7 +153,8 @@ export default {
         </div>
 
         <div class="form-group">
-            <Field as="select" name="type" v-model="llamada.type" class="form-control" required>
+            <label for="type">Clase de llamada</label>
+            <Field as="select" name="type" v-model="llamada.type" class="form-control">
                 <option value="" selected disabled>-- Selecciona tipo --</option>
                 <option v-for="(label, key) in tiposDisponibles" :key="key" :value="key">
                     {{ label }}

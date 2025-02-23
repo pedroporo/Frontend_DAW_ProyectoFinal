@@ -1,81 +1,70 @@
 <script>
-import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 export default {
   name: 'InformeView',
   props: ['tipo'],
-  setup(props) {
-    const informes = ref([]);
-    const informesFiltrados = ref([]);
-    const error = ref(null);
-    const fechaFiltro = ref('');
-    const loading = ref(true);
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/${props.tipo}`);
-        informes.value = response.data;
-        if (props.tipo === 'patients') {
-          informes.value.sort((a, b) => a.last_name.localeCompare(b.last_name));
+  data() {
+    return {
+      informes: [],
+      informesFiltrados: [],
+      error: null,
+      fechaFiltro: '',
+      loading: true
+    };
+  },
+  computed: {
+    columnas() {
+      if (this.informesFiltrados.length > 0) {
+        if (this.tipo === 'patients') {
+          return ['id', 'name', 'last_name', 'birth_date', 'phone', 'email'];
         }
-        informesFiltrados.value = informes.value;
-        loading.value = false;
+        return Object.keys(this.informesFiltrados[0]);
+      }
+      return [];
+    },
+    mostrarFiltroFecha() {
+      return this.tipo !== 'patients';
+    }
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get(`http://localhost:3000/${this.tipo}`);
+        this.informes = response.data;
+        if (this.tipo === 'patients') {
+          this.informes.sort((a, b) => a.last_name.localeCompare(b.last_name));
+        }
+        this.informesFiltrados = this.informes;
+        this.loading = false;
       } catch (err) {
         console.error('Error fetching data:', err);
-        error.value = `Error al cargar los datos para: ${props.tipo}`;
-        loading.value = false;
+        this.error = `Error al cargar los datos para: ${this.tipo}`;
+        this.loading = false;
       }
-    };
-
-    onMounted(() => {
-      fetchData();
-    });
-
-    const filtrarPorFecha = () => {
-      if (props.tipo !== 'patients' && fechaFiltro.value) {
-        informesFiltrados.value = informes.value.filter(informe => {
-          if (props.tipo === 'historicoLlamadasPaciente') {
-            return informe.llamadas.some(llamada => llamada.fecha === fechaFiltro.value);
+    },
+    filtrarPorFecha() {
+      if (this.tipo !== 'patients' && this.fechaFiltro) {
+        this.informesFiltrados = this.informes.filter(informe => {
+          if (this.tipo === 'historicoLlamadasPaciente') {
+            return informe.llamadas.some(llamada => llamada.fecha === this.fechaFiltro);
           } else {
-            return informe.fecha === fechaFiltro.value || informe.birth_date === fechaFiltro.value;
+            return informe.fecha === this.fechaFiltro || informe.birth_date === this.fechaFiltro;
           }
         });
       } else {
-        informesFiltrados.value = informes.value;
+        this.informesFiltrados = this.informes;
       }
-    };
-
-    const resetearFiltro = () => {
-      fechaFiltro.value = '';
-      informesFiltrados.value = informes.value;
-    };
-
-    const columnas = computed(() => {
-      if (informesFiltrados.value.length > 0) {
-        if (props.tipo === 'patients') {
-          return ['id', 'name', 'last_name', 'birth_date', 'phone', 'email'];
-        }
-        return Object.keys(informesFiltrados.value[0]);
-      }
-      return [];
-    });
-
-    const mostrarFiltroFecha = computed(() => props.tipo !== 'patients');
-
-    return {
-      informesFiltrados,
-      error,
-      fechaFiltro,
-      filtrarPorFecha,
-      resetearFiltro,
-      columnas,
-      tipo: props.tipo,
-      loading,
-      mostrarFiltroFecha
-    };
+    },
+    resetearFiltro() {
+      this.fechaFiltro = '';
+      this.informesFiltrados = this.informes;
+    }
+  },
+  mounted() {
+    this.fetchData();
   }
-}
+};
 </script>
 
 <template>
