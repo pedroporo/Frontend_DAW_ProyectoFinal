@@ -109,7 +109,47 @@ Antes de comenzar, asegúrate de tener los siguientes requisitos:
 Después, puedes usar los archivos generados en la carpeta dist para realizar el despliegue en tu servidor de producción.
 
 ## Entornos
-Develop,local
+
+El proyecto está diseñado para trabajar en diferentes entornos, cada uno con su configuración específica. A continuación se describen los entornos utilizados en este proyecto:
+
+### **Entorno de Desarrollo (Local)**
+
+- **Propósito**: Este entorno está destinado para el desarrollo de nuevas características, pruebas locales y depuración.
+- **Configuración**: 
+  - Usa el servidor de desarrollo de Vite.
+  - Depende de un entorno de Node.js local, configurado con los paquetes del archivo `package.json`.
+  - Se debe ejecutar el siguiente comando para iniciar el entorno de desarrollo:
+    ```bash
+    npm run dev
+    ```
+  - Los cambios realizados en el código fuente se reflejarán en tiempo real a medida que se guardan.
+
+### **Entorno de Producción (Deploy Automático)**
+
+- **Propósito**: Este entorno está destinado para la ejecución de la aplicación en producción.
+- **Configuración**: 
+  - El despliegue a producción se realiza automáticamente al hacer un *push* a la rama `main`.
+  - El pipeline CI/CD solo ejecuta el comando `npm run build` al hacer el *push*.
+  - Este comando construye los archivos optimizados para producción en la carpeta `dist`.
+  - Los archivos generados por `npm run build` son los que se suben al servidor de producción.
+  - **Proceso de despliegue**:
+    1. Se hace un *push* a la rama `main`.
+    2. El pipeline CI/CD se activa y ejecuta automáticamente el siguiente comando:
+       ```bash
+       npm run build
+       ```
+    3. Los archivos construidos se suben al servidor de producción y son servidos a los usuarios finales.
+
+### **Entorno de Pruebas**
+
+- **Propósito**: Este entorno está destinado a ejecutar pruebas automatizadas y validaciones.
+- **Configuración**: 
+  - Se utiliza **Vitest** para ejecutar pruebas unitarias y de integración.
+  - Para ejecutar las pruebas, se usa el siguiente comando:
+    ```bash
+    npm run test
+    ```
+
 ## Guía de Contribución 
 Cualquier contribución al proyecto deberá seguir las siguientes [normas de contribución](CONTRIBUTING.md).
 ## Documentación de desarrollo
