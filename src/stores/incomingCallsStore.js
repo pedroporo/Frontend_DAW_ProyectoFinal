@@ -1,4 +1,4 @@
-import { defineStore, mapActions } from 'pinia'
+import { defineStore, mapActions } from 'pinia';
 import { useMessagesStore } from './messagesStore';
 import api from "./api/axiosInstance";
 
@@ -33,7 +33,8 @@ export const useIncomingCallsStore = defineStore('data', {
         async getLlamadasEntrantes() {
             try {
                 const response = await api.get(urlIncomingCalls);
-                return response.data;
+                console.log(response.data);
+                return response.data.data;
             } catch (error) {
                 this.addMessage("Error al obtener las llamadas entrantes", "error");
             }
@@ -49,16 +50,16 @@ export const useIncomingCallsStore = defineStore('data', {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            const fecha = timestamp.split("T")[0];
-            const hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
+            const fecha = timestamp.split(" ")[0];
+            const hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
 
             return { fecha, hora };
         },
 
         async getLlamadasEntrantesPorPaciente(patientid) {
             try {
-                const response = await api.get(urlIncomingCalls + '?patient_id=' + patientid);
-                return response.data;
+                const response = await api.get(`${urlIncomingCalls}?patient_id=${patientid}`);
+                return response.data.data;
             } catch (error) {
                 console.error(error);
             }
@@ -66,8 +67,8 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async getLlamadasEntrantesId(id) {
             try {
-                const response = await api.get(urlIncomingCalls + '/' + id);
-                return response.data;
+                const response = await api.get(`${urlIncomingCalls}/${id}`);
+                return response.data.data;
             } catch (error) {
                 this.addMessage("Error al obtener la llamada", "error");
             }
@@ -75,7 +76,7 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async removeIncomingCall(id) {
             try {
-                await api.delete(urlIncomingCalls + '/' + id);
+                await api.delete(`${urlIncomingCalls}/${id}`);
                 this.addMessage("Llamada eliminada correctamente", "success");
                 return true;
             } catch (error) {
@@ -84,20 +85,18 @@ export const useIncomingCallsStore = defineStore('data', {
         },
         async removeIncomingCallByPatientId(patientId) {
             try {
-                const response = await api.delete(
-                    `${urlIncomingCalls}?patient_id=${patientId}`
-                );
+                const response = await api.delete(`${urlIncomingCalls}?patient_id=${patientId}`);
                 this.addMessage("Llamadas eliminadas correctamente", "success");
-                return response.data;
+                return response.data.data;
             } catch (error) {
                 this.addMessage("Error al eliminar las llamadas", "error");
             }
         },
         async addIncomingCall(call) {
             try {
-                const response = await api.post(urlIncomingCalls + '/', call);
+                const response = await api.post(`${urlIncomingCalls}/`, call);
                 this.addMessage("Llamada guardada correctamente", "success");
-                return response.data;
+                return response.data.data;
             } catch (error) {
                 this.addMessage("Error al guardar la llamada", "error");
             }
@@ -105,13 +104,12 @@ export const useIncomingCallsStore = defineStore('data', {
 
         async updateIncomingCall(call) {
             try {
-                const response = await api.put(urlIncomingCalls + '/' + call.id, call);
+                const response = await api.put(`${urlIncomingCalls}/${call.id}`, call);
                 this.addMessage("Llamada actualizada correctamente", "success");
-                return response.data;
+                return response.data.data;
             } catch (error) {
                 this.addMessage("Error al actualizar la llamada", "error");
             }
         }
     }
-
-})
+});

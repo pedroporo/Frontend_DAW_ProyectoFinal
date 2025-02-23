@@ -11,7 +11,6 @@ export default {
         filteredPatients() {
             let filtered = this.patients.filter(p => {
                 const searchLower = this.search.toLowerCase();
-                //Filtra por nombre completo, cumpleaños, ubicación, dni, tarjeta sanitaria, telefono, e-mail y sus situaciones
                 return (
                     p.name.toLowerCase().includes(searchLower) ||
                     p.last_name.toLowerCase().includes(searchLower) ||
@@ -39,9 +38,9 @@ export default {
                             valueA = (a.name).toLowerCase();
                             valueB = (b.name).toLowerCase();
                             break;
-                        case "operator":
-                            valueA = this.userNames(a.user_id).toLowerCase();
-                            valueB = this.userNames(b.user_id).toLowerCase();
+                        case "zone":
+                            valueA = (a.zone.name).toLowerCase();
+                            valueB = (b.zone.name).toLowerCase();
                             break;
                         case "phone":
                             valueA = a.phone.toLowerCase();
@@ -83,24 +82,43 @@ export default {
         changeIconSortOrder(){
             return (this.sortOrder === 1 ? '^' : (this.sortOrder === -1 ? 'v' : ''));
         },
+        async fetchPatients(page = 1) {
+            const response = await this.getPatients(/* { page } */);
+            this.patients = response;
+            //this.pagination = response.meta;
+        },
+        nextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                this.fetchPatients(this.pagination.current_page + 1);
+            }
+        },
+        prevPage() {
+            if (this.pagination.current_page > 1) {
+                this.fetchPatients(this.pagination.current_page - 1);
+            }
+        }
     },
     data() {
         return {
-            patients: {},
+            patients: [],
             search: '',
             sortKey: '',
             sortOrder: 1,
-            sortableColumns: ["name", "phone", "operator"],
+            sortableColumns: ["name", "phone", "zone"],
             columnNames: {
                 name: "Nombre",
                 phone: "Teléfono",
-                operator: "Operador",
-            }
+                zone: "Zona",
+            },
+           /*  pagination: {
+                current_page: 1,
+                last_page: 1
+            } */
         }
     },
     async mounted() {
         document.title = "Listado de Pacientes";
-        this.patients.data = await this.getPatients();
+        await this.fetchPatients();
     }
 }
 </script>
@@ -127,8 +145,8 @@ export default {
             <tbody>
                 <tr v-for="patient in filteredPatients" :key="patient.id">
                     <td>{{ patient.name + ' ' + patient.last_name }}</td>
-                    <td>{{ "+34 " + patient.phone }}</td>
-                    <td>{{ userNames(patient.user_id) || 'Sin asignar' }}</td>
+                    <td>{{ patient.phone }}</td>
+                    <td>{{ patient.zone.name || 'Sin asignar' }}</td>
                     <td>
                         {{ contactNames(patient.id).length > 0
                             ? contactNames(patient.id).map(contact => contact.name).join(', ')
@@ -140,9 +158,12 @@ export default {
                 </tr>
             </tbody>
         </table>
+        <!-- <div class="pagination">
+            <button class="btn btn-primary" @click="prevPage" :disabled="pagination.current_page === 1">Anterior</button>
+            <button class="btn btn-primary" @click="nextPage" :disabled="pagination.current_page === pagination.last_page">Siguiente</button>
+        </div> -->
     </div>
 </template>
-
 
 <style scoped>
 /* Contenedor principal */

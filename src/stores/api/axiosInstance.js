@@ -1,5 +1,4 @@
 import axios from "axios";
-import { mapActions } from "pinia";
 import { useMessagesStore } from "../messagesStore";
 
 const api = axios.create({
@@ -10,6 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("auth_token");
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

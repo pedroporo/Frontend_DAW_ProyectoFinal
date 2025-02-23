@@ -44,7 +44,7 @@ export default {
                 user_id: yup.string().required('Selecciona un operador'),
                 patient_id: yup.string().required('Selecciona un paciente'),
                 is_planned: yup.string().required('Selecciona el tipo de llamada'),
-                description: yup.string().required('La descripción es obligatoria'),
+                description: yup.string(),
                 alarm_id: yup.string().required('Selecciona una alarma'),
             }),
         };
@@ -82,8 +82,8 @@ export default {
         formatDateTime(timestamp) {
             if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
 
-            this.fecha = this.currentDate || timestamp.split("T")[0];
-            this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
+            this.fecha = this.currentDate || timestamp.split(" ")[0];
+            this.hora = timestamp.split(" ")[1].split(":").slice(0, 2).join(":");
         },
 
         handleCancel() {

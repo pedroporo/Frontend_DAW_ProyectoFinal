@@ -2,7 +2,6 @@
 import { useIncomingCallsStore } from "@/stores/incomingCallsStore";
 import { usePatientsStore } from "@/stores/patientStore";
 import { useUsersStore } from "@/stores/usersStore";
-import { useAlarmsStore } from "@/stores/alarmsStore";
 import { mapActions, mapState } from "pinia";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as yup from "yup";
@@ -17,43 +16,44 @@ export default {
         return {
             patients: [],
             isEdit: false,
-            llamada: {},
+            llamada: {
+                type: '',
+            },
             fecha: "",
             hora: "",
             mySchema: yup.object({
                 fecha: yup.date().required("La fecha es obligatoria"),
                 hora: yup.string().required("La hora es obligatoria"),
-                user_id: yup.string().required("Debe seleccionar un operador"),
                 patient_id: yup.string().required("Debe seleccionar un paciente"),
-                selectedCategory: yup.string().required("Debe seleccionar una categoría"),
                 type: yup.string().required("Debe seleccionar un tipo de llamada"),
                 description: yup.string().required("La descripción es obligatoria")
             }),
-            selectedCategory: "",
-            selectedType: "",
         };
-
     },
 
     methods: {
         ...mapActions(useIncomingCallsStore, ['getLlamadasEntrantesId', 'addIncomingCall', 'updateIncomingCall']),
         ...mapActions(usePatientsStore, ['getPatients']),
         async loadForm() {
-            const llamadaId = this.$route.params.id
+            const llamadaId = this.$route.params.id;
             if (llamadaId) {
-                this.isEdit = true
-                this.llamada = await this.getLlamadasEntrantesId(llamadaId);
-                this.formatDateTime(this.llamada.timestamp);
-                this.selectedCategory = this.findCategoryByType(this.llamada.type);
+                this.isEdit = true;
+                const loadedCall = await this.getLlamadasEntrantesId(llamadaId);
+                if (loadedCall) {
+                    this.llamada = { ...loadedCall };
+                    this.formatDateTime(this.llamada.timestamp);
+                    this.llamada.type = this.normalizeCallType(this.llamada.type);
+                } else {
+                    console.error("No se pudo cargar la llamada");
+                }
             } else {
-                this.isEdit = false
+                this.isEdit = false;
                 this.formatDateTime(new Date().toISOString());
-                this.llamada = {}
             }
         },
 
         async addOrEdit() {
-            const timestamp = `${this.fecha}T${this.hora}:00`;
+            const timestamp = `${this.fecha} ${this.hora}:00`;
             this.llamada.timestamp = timestamp;
             if (this.isEdit) {
                 await this.updateIncomingCall(this.llamada);
@@ -64,33 +64,45 @@ export default {
         },
 
         formatDateTime(timestamp) {
-            if (!timestamp) return { fecha: "Fecha no disponible", hora: "Hora no disponible" };
-
-            this.fecha = timestamp.split("T")[0];
-            this.hora = timestamp.split("T")[1].split(":").slice(0, 2).join(":");
-        },
-        
-
-        findCategoryByType(type) {
-            for (let categoria in this.tiposLlamada) {
-                if (type in this.tiposLlamada[categoria]) {
-                    return categoria;
-                }
+            if (!timestamp || typeof timestamp !== "string" || !timestamp.includes(" ")) {
+                const now = new Date();
+                this.fecha = now.toISOString().split("T")[0];
+                this.hora = now.toTimeString().split(":").slice(0, 2).join(":");
+                return;
             }
-            return null;
+
+            const parts = timestamp.split(" ");
+            this.fecha = parts[0];
+
+            if (parts[1] && parts[1].includes(":")) {
+                this.hora = parts[1].split(":").slice(0, 2).join(":");
+            } else {
+                this.hora = new Date().toTimeString().split(":").slice(0, 2).join(":");
+            }
+        },
+
+        normalizeCallType(type) {
+            const normalizedType = type.toLowerCase().replace(/ /g, '_');
+            if (this.tiposDisponibles.hasOwnProperty(normalizedType)) {
+                return normalizedType;
+            }
+            console.warn(`Tipo de llamada no reconocido: ${type}`);
+            return type;
         },
     },
 
     async mounted() {
         document.title = "Llamadas Entrantes";
-        this.loadForm();
+        await this.loadForm();
         this.patients = await this.getPatients();
     },
+
     computed: {
         ...mapState(useIncomingCallsStore, ['tiposLlamada']),
         ...mapState(useUsersStore, ['users']),
         tiposDisponibles() {
-            return this.selectedCategory ? this.tiposLlamada[this.selectedCategory] : {};
+            const tipos = Object.assign({}, ...Object.values(this.tiposLlamada));
+            return tipos;
         }
     },
 };
@@ -117,17 +129,6 @@ export default {
         </div>
 
         <div class="form-group">
-            <label for="user_id">Operador: </label>
-            <Field as="select" name="user_id" v-model="llamada.user_id" class="form-control">
-                <option value="" selected disabled>-- Selecciona operador --</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.first_name }}
-                </option>
-            </Field>
-            <ErrorMessage class="error" name="user_id" />
-        </div>
-
-        <div class="form-group">
             <label for="patient_id">Paciente: </label>
             <Field as="select" name="patient_id" v-model="llamada.patient_id" class="form-control">
                 <option value="" selected disabled>-- Selecciona paciente --</option>
@@ -138,24 +139,10 @@ export default {
             <ErrorMessage class="error" name="patient_id" />
         </div>
 
-        <div class="form-group radio-group">
-            <label>Tipo:</label>
-            <div class="radio-buttons">
-                <label>
-                    <Field type="radio" name="selectedCategory" v-model="selectedCategory" value="emergencia" />
-                    Emergencia
-                </label>
-                <label>
-                    <Field type="radio" name="selectedCategory" v-model="selectedCategory" value="no_emergencia" /> No
-                    Emergencia
-                </label>
-                <ErrorMessage class="error" name="selectedCategory" />
-            </div>
-        </div>
-
         <div class="form-group">
+            <label for="type">Tipo de llamada: </label>
             <Field as="select" name="type" v-model="llamada.type" class="form-control" required>
-                <option value="" selected disabled>-- Selecciona tipo --</option>
+                <option value="" disabled>-- Selecciona tipo --</option>
                 <option v-for="(label, key) in tiposDisponibles" :key="key" :value="key">
                     {{ label }}
                 </option>
@@ -175,7 +162,6 @@ export default {
         </div>
     </Form>
 </template>
-
 
 <style scoped>
 /* Estilo general */
