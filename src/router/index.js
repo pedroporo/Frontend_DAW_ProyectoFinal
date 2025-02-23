@@ -37,6 +37,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      redirect: '/patients',
       component: HomeView,
     },
 /*     {
