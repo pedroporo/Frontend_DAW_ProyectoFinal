@@ -2,7 +2,7 @@
 import { mapActions } from 'pinia';
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import AppMessages from './components/AppMessages.vue';
-import { useAlarmsStore } from './stores/alarmsStore';
+/* import { useAlarmsStore } from './stores/alarmsStore';*/
 import { useContactsStore } from './stores/contactStore';
 import { useZonesStore } from './stores/zonesStore';
 import { useUsersStore } from './stores/usersStore';
@@ -43,8 +43,6 @@ export default {
 
     },
     async cerrarSesion(){
-      console.log('Hola');
-      
       if (await this.logout()) {
         this.addMessage('Sesión cerrada exitosamente', 'success');
       }
@@ -54,7 +52,7 @@ export default {
   async mounted() {
     //await this.getUsers();
     await this.getZones(),
-      await this.getContacts()
+    await this.getContacts()
   }
 };
 </script>
