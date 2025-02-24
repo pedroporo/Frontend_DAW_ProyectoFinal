@@ -12,6 +12,7 @@ import Contact from "@/components/Contact.vue";
 import AlarmForm from "@/components/AlarmForm.vue";
 import PatientForm from "@/components/PatientForm.vue";
 import ContactForm from "@/components/ContactForm.vue";
+import AccoutInfoView from "@/views/AccoutInfoView.vue";
 // import GestionUsersView from "@/views/GestionUsersView.vue";
 // import LoginGoogle from "@/components/LoginGoogle.vue";
 
@@ -106,6 +107,11 @@ const router = createRouter({
       name: "alarmForm",
       component: AlarmForm,
       props: true,
+    },
+    {
+      path: "/cuenta",
+      name: "cuenta",
+      component: AccoutInfoView,
     },
   ],
 });
