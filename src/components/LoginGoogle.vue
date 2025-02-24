@@ -15,6 +15,7 @@ export default {
     async checkForGoogleCode() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
+      console.log(code, urlParams)
       if (code) {
         await this.handleGoogleLogin(code);
         window.history.replaceState({}, document.title, "/");

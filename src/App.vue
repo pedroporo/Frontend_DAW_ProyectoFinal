@@ -17,7 +17,9 @@ export default {
     LoginGoogle
   },
   computed: {
-
+    route() {
+      return useRoute();
+    }
   },
   data() {
     return {
