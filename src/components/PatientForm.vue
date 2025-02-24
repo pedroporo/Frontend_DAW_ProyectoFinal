@@ -74,10 +74,13 @@ export default {
       delete patientToSend.zone;
 
       if (this.isEditing) {
-        await this.updatePatient(this.patient);
-        this.$router.push({ name: 'patients' }); 
+        if (await this.updatePatient(this.patient)){
+          this.$router.push({ name: 'patients' }); 
+        }
       } else {
-        await this.addPatient(patientToSend);
+        if (await this.addPatient(patientToSend)) {
+          this.$router.push({ name: 'patients' });
+        }
       }
 
 /*       if (confirm('¿Deseas añadir una alarma?')) {
