@@ -16,6 +16,7 @@ export const useLoginStore = defineStore("login", {
     async handleGoogleLogin(code) {
       if (!code) {
         this.addMessage("Error al autenticar con Google !code", "error");
+        console.log("Error al autenticar con Google !code", code);
         return;
       }
 
@@ -30,8 +31,9 @@ export const useLoginStore = defineStore("login", {
           this.token = data.data.token;
           localStorage.setItem("auth_token", data.data.token);
           localStorage.setItem("userData", JSON.stringify(this.user));
-    
+          console.log("data", data);
           router.push("/");
+          this.addMessage("Autenticado con Google", "success");
         }
       } catch (error) {
         this.addMessage("Error al autenticar con Google" + error, "error");
@@ -42,15 +44,14 @@ export const useLoginStore = defineStore("login", {
       try {
         const response = await api.post(`${urlNormal}logout`);
         
-        this.user = {};
-        this.token = null;
-
         localStorage.removeItem("auth_token");
         localStorage.removeItem("userData");
         return response.data;
       } catch (error) {
         this.addMessage("Error al cerrar sesión" + error, "error");
       }
+      this.user = {};
+      this.token = null;
     },
   },
 });
