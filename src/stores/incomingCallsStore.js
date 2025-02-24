@@ -33,17 +33,18 @@ export const useIncomingCallsStore = defineStore('data', {
         async getLlamadasEntrantes() {
             try {
                 const response = await api.get(urlIncomingCalls);
-                console.log(response.data);
+                console.log("getLlamadasEntrantes", response.data);
                 return response.data.data;
             } catch (error) {
                 this.addMessage("Error al obtener las llamadas entrantes", "error");
             }
         },
         translateTipoLlamada(type) {
+            const formattedType = type.toLowerCase().replace(/\s+/g, "_");
             for (let categoria in this.tiposLlamada) {
-                if (type in this.tiposLlamada[categoria]) {
-                    return this.tiposLlamada[categoria][type];
-                }
+            if (formattedType in this.tiposLlamada[categoria]) {
+                return this.tiposLlamada[categoria][formattedType];
+            }
             }
             return type;
         },
