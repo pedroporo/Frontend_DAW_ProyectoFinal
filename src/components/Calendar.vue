@@ -13,7 +13,6 @@ import { useAlarmsStore } from '../stores/alarmsStore' // Store de alarmas
 import { usePatientsStore } from '@/stores/patientStore'
 import OutgoingCallForm from '@/views/OutgoingCallForm.vue'
 
-
 export default defineComponent({
     name: 'Calendar',
     props: {
@@ -60,15 +59,28 @@ export default defineComponent({
         ...mapActions(usePatientsStore, ['getPatient']),
         translateDay(day) {
             const days = {
-                'mo': 'Lunes',
-                'tu': 'Martes',
-                'we': 'Miércoles',
-                'th': 'Jueves',
-                'fr': 'Viernes',
-                'sa': 'Sábado',
-                'su': 'Domingo'
+                1: 'Lunes',
+                2: 'Martes',
+                3: 'Miércoles',
+                4: 'Jueves',
+                5: 'Viernes',
+                6: 'Sábado',
+                7: 'Domingo'
             };
-            return days[day] || day;
+            return days[day] || 'Desconocido';
+        },
+        translateWeekday(weekday) {
+            const weekdays = {
+                0: null,
+                1: 'mo',
+                2: 'tu',
+                3: 'we',
+                4: 'th',
+                5: 'fr',
+                6: 'sa',
+                7: 'su'
+            };
+            return weekdays[weekday] || null;
         },
         handleEventClick(info) {
             this.selectedDate = info.event.startStr.split('T')[0];
@@ -88,42 +100,41 @@ export default defineComponent({
             this.showModalCreate = false;
         },
         async loadCalls() {
-    this.outgoingCalls = await this.fetchCallsByPatientId(this.id);
+            this.outgoingCalls = await this.fetchCallsByPatientId(this.id);
 
-    if (this.outgoingCalls.length > 0) {
-        const events = await Promise.all(
-            this.outgoingCalls.map(async (call) => {
-                const alarm = await this.getAlarmById(call.alarm_id);
-                return {
-                    title: call.description,
-                    start: alarm?.start_date || call.timestamp,
-                    end: alarm?.end_date || null,
-                    day: call.timestamp.split('T')[0],
-                    hour: call.timestamp.split('T')[1].slice(0, 5),
-                    rrule: alarm?.weekday && alarm?.end_date !== null
-                        ? {
-                            freq: 'weekly',
-                            byweekday: alarm.weekday.slice(0, 2).toLowerCase(),
-                            dtstart: alarm.start_date,
-                            until: alarm.end_date
-                        }
-                        : undefined,
-                    classNames: call.is_planned ? "planned" : "unplanned",
-                    extendedProps: {
-                        description: call.description || 'Sin descripción',
-                        alarm_type: this.translateAlarmType(alarm.type),
-                        call_id: call.id,
-                        is_planned: call.is_planned,
-                    }
-                };
-            })
-        );
-
-        // 🔴 Importante: Asigna un NUEVO array para que Vue detecte el cambio
-        this.calendarOptions = { ...this.calendarOptions, events };
-    } else {
-        this.calendarOptions.events = [];
-    }
+            if (this.outgoingCalls.length > 0) {
+                const events = await Promise.all(
+                    this.outgoingCalls.map(async (call) => {
+                        const alarm = await this.getAlarmById(call.alarm_id);
+                        return {
+                            title: call.description,
+                            start: alarm?.start_date || call.timestamp,
+                            end: alarm?.end_date || null,
+                            day: call.timestamp.split(' ')[0],
+                            hour: call.timestamp.split(' ')[1].slice(0, 5),
+                            rrule: alarm?.weekday && alarm?.end_date !== null
+                                ? {
+                                    freq: 'weekly',
+                                    byweekday: this.translateWeekday(alarm.weekday),
+                                    dtstart: alarm.start_date,
+                                    until: alarm.end_date
+                                }
+                                : undefined,
+                            classNames: call.is_planned ? "planned" : "unplanned",
+                            extendedProps: {
+                                description: call.description || 'Sin descripción',
+                                alarm_type: this.translateAlarmType(alarm.type),
+                                call_id: call.id,
+                                is_planned: call.is_planned,
+                            }
+                        };
+                    })
+                );
+                    console.log("events", events);
+                this.calendarOptions = { ...this.calendarOptions, events };
+            } else {
+                this.calendarOptions.events = [];
+            }
 }
 ,
     },
@@ -138,11 +149,11 @@ export default defineComponent({
     watch: {
         id: {
             handler() {
-                this.loadCalls() // Recargar llamadas si cambia el ID del paciente
+                this.loadCalls()
             }
         },
         showModalCreate(newValue) {
-            if (newValue && this.showModal) this.showModalCreate = false; // Si se abre el modal de creación, cerrar el de detalles
+            if (newValue && this.showModal) this.showModalCreate = false;
         }
     }
 })
