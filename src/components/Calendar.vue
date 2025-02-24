@@ -21,6 +21,7 @@ export default defineComponent({
             required: true
         }
     },
+    emits: ['callCreated'],
     components: {
         FullCalendar,
         OutgoingCallForm
