@@ -1,9 +1,6 @@
 <script>
-import axios from 'axios';
 export default {
     methods: {
-        //Dependiendo del tipo de informe que nos manden
-        //Pediremos unos informes u otros
         verInformes(tipoInforme) {
             this.$router.push(`/informe/${tipoInforme}`);
         },
@@ -23,24 +20,24 @@ export default {
             </thead>
             <tbody>
                 <tr>
-                    <td>Emergencias</td>
-                    <td><button @click="verInformes('alarms')">Ver</button></td>
-                </tr>
-                <tr>
-                    <td>Pacientes</td>
-                    <td><button @click="verInformes('patients')">Ver</button></td>
-                </tr>
-                <tr>
-                    <td>Llamadas Previstas</td>
-                    <td><button @click="verInformes('incoming_calls')">Ver</button></td>
-                </tr>
-                <tr>
                     <td>Llamadas Realizadas</td>
-                    <td><button @click="verInformes('outgoing_calls')">Ver</button></td>
+                    <td><button @click="verInformes('calls_done')">Ver</button></td>
                 </tr>
                 <tr>
-                    <td>Histórico Paciente</td>
-                    <td><button @click="verInformes('patient_history')">Ver</button></td>
+                    <td>Llamadas Planificadas</td>
+                    <td><button @click="verInformes('calls_to_do')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Llamadas del Usuario</td>
+                    <td><button @click="verInformes('calls_by_user')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Historial de Llamadas de Paciente</td>
+                    <td><button @click="verInformes('pacient_history')">Ver</button></td>
+                </tr>
+                <tr>
+                    <td>Emergencias por Zona</td>
+                    <td><button @click="verInformes('zone_info')">Ver</button></td>
                 </tr>
             </tbody>
         </table>
