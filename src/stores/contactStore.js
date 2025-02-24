@@ -11,7 +11,7 @@ export const useContactsStore = defineStore('contacts', {
   getters: {
     contactNames: (state) => (id) => {
       return state.contacts
-        .filter(contact => contact.patient_id == id)
+        .filter(contact => contact.patient?.id == id)
         .map(contact => ({
           id: contact.id,
           name: `${contact.first_name} ${contact.last_name}`
@@ -23,6 +23,7 @@ export const useContactsStore = defineStore('contacts', {
     async getContacts() {
       try {
         const { data } = await api.get(urlContacts);
+        console.log("this.getContacts", data.data);
         this.contacts = data.data;
         return data.data;
       } catch (error) {
