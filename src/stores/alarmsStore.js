@@ -51,6 +51,7 @@ export const useAlarmsStore = defineStore('alarms', {
     async getAlarmById(id) {
       try {
         const response = await api.get(urlAlarms + id);
+        console.log("getAlarmById", response.data.data);
         return response.data.data;
       } catch (error) {
         this.addMessage("Error al obtener la alarma", "error");

@@ -26,6 +26,7 @@ export const useOutgoingCallsStore = defineStore("outgoingCalls", {
         const response = await api.get(
           `${CALLS}?patient_id=${patientId}`
         );
+        console.log("fetchCallsByPatientId", response.data);
         return response.data;
       } catch (error) {
         this.addMessage("Error al obtener llamadas del paciente", "error");

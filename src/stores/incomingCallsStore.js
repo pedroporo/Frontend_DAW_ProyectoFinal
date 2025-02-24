@@ -59,6 +59,7 @@ export const useIncomingCallsStore = defineStore('data', {
         async getLlamadasEntrantesPorPaciente(patientid) {
             try {
                 const response = await api.get(`${urlIncomingCalls}?patient_id=${patientid}`);
+                
                 return response.data.data;
             } catch (error) {
                 console.error(error);
