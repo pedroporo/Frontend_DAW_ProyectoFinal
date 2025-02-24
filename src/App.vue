@@ -23,7 +23,8 @@ export default {
   },
   data() {
     return {
-      isNavVisible: false
+      isNavVisible: false,
+      userDataAvatar: JSON.parse(localStorage.getItem('userData'))?.avatar || null,
     };
   },
   methods: {
@@ -61,10 +62,13 @@ export default {
 <template>
   <header>
     <div class="sidebar" v-if="route.path !== '/login'">
-      <h1>Teleasistencia</h1>
+      <div class="header-content">
+        <img v-if="userDataAvatar" :src="userDataAvatar" alt="Avatar" class="avatar" />
+        <h1>Teleasistencia</h1>
+      </div>
       <button @click="toggleNav" class="toggle-nav-btn"><i class="bi bi-list"></i></button>
       <nav class="nav" :class="{ 'nav-visible': isNavVisible }">
-        <RouterLink to="/" @click="closeNavOnMobile">Mi Cuenta</RouterLink>
+        <RouterLink to="/cuenta" @click="closeNavOnMobile">Mi Cuenta</RouterLink>
         <RouterLink to="/patients" @click="closeNavOnMobile">Listado de Pacientes</RouterLink>
         <RouterLink to="/incoming_calls" @click="closeNavOnMobile">Llamadas Entrantes</RouterLink>
         <RouterLink to="/outgoing_calls" @click="closeNavOnMobile">Llamadas Salientes</RouterLink>
@@ -100,9 +104,24 @@ export default {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  margin-right: 10px;
+  border-radius: 15%;
+  width: 32px;
+  display: block;
+  margin-bottom: 4px;
+}
+
 h1 {
-  font-size: 30px;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .toggle-nav-btn {
