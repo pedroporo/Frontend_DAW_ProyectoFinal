@@ -157,8 +157,7 @@ Enlace a la wiki / páginas con la documentación del proyecto
 Ejemplos https://github.com/pedroporo/Backend_DAW_ProyectoFinal/wiki
 
 ## Lista de Contribuidores
-Listado de usuarios que ha contribuido en la realización (Incluir foto en formato tabla)
-<sub>quiero llorar, github no pilla las contribuciones de ivana</sub>
+Listado de usuarios que ha contribuido en la realización.
 
 <a href="https://github.com/pedroporo/Frontend_DAW_ProyectoFinal/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=pedroporo/Frontend_DAW_ProyectoFinal" />

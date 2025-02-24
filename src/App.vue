@@ -17,9 +17,7 @@ export default {
     LoginGoogle
   },
   computed: {
-    route() {
-      return useRoute();
-    }
+
   },
   data() {
     return {
@@ -61,7 +59,7 @@ export default {
 
 <template>
   <header>
-    <div class="sidebar" v-if="route.path !== '/login'">
+    <div class="sidebar">
       <div class="header-content">
         <img v-if="userDataAvatar" :src="userDataAvatar" alt="Avatar" class="avatar" />
         <h1>Teleasistencia</h1>
