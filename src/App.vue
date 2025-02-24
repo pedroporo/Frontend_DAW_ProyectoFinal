@@ -43,6 +43,8 @@ export default {
 
     },
     async cerrarSesion(){
+      console.log('Hola');
+      
       if (await this.logout()) {
         this.addMessage('Sesión cerrada exitosamente', 'success');
       }
