@@ -41,11 +41,11 @@ export const usePatientsStore = defineStore("patients", {
     },
     async addPatient(patient) {
       try {
-        const { data } = await axios.post(urlPacientes, patient);
+        const { data } = await api.post(urlPacientes, patient);
         this.addMessage("Paciente creado correctamente", "success");
         return data;
       } catch (error) {
-        this.addMessage("Error al crear paciente", "error");
+        this.addMessage("Error al crear paciente" + error, "error");
       }
     },
     async updatePatient(patient) {
